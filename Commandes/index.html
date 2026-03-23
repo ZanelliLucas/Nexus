@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NEXUS — Commandes</title>
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500&family=Inter:wght@300;400;500;600&display=swap"
+    rel="stylesheet"
+  >
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar"></aside>
+
+
+  <!-- MAIN -->
+  <div class="main">
+
+    <div class="topbar">
+      <div class="tb-left">
+        <div>
+          <p class="page-title">Commandes</p>
+          <p class="page-sub">Suivi et gestion de toutes vos commandes</p>
+        </div>
+      </div>
+      <div class="tb-right">
+        <div class="date-range" id="dateRangeBtn">📅 <span id="dateRangeLabel">Nov 1 — Nov 30, 2025</span> ▾</div>
+        <button class="tb-btn ghost" id="exportBtn">↓ Exporter</button>
+        <button class="tb-btn primary" id="commandeBtn">+ Nouvelle commande</button>
+      </div>
+    </div>
+
+
+    <div class="content">
+
+      <!-- KPI -->
+      <div class="kpi-row">
+
+        <div class="kpi-card">
+          <div class="kpi-header">
+            <span class="kpi-label">Commandes totales</span>
+            <div class="kpi-icon" style="background:var(--blue-dim);color:var(--blue);">◈</div>
+          </div>
+          <div class="kpi-value">3,018</div>
+          <div class="kpi-delta"><span class="delta-up">↑ 11.2%</span><span class="delta-text">vs mois dernier</span></div>
+          <div class="sparkline">
+            <svg class="spark-svg" viewBox="0 0 120 36" preserveAspectRatio="none">
+              <defs><linearGradient id="sg1" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#3B82F6" stop-opacity=".3"/>
+                <stop offset="100%" stop-color="#3B82F6" stop-opacity="0"/>
+              </linearGradient></defs>
+              <path d="M0,30 L15,24 L30,26 L45,16 L60,20 L75,10 L90,14 L105,7 L120,5" fill="none" stroke="#3B82F6" stroke-width="1.5"/>
+              <path d="M0,30 L15,24 L30,26 L45,16 L60,20 L75,10 L90,14 L105,7 L120,5 L120,36 L0,36Z" fill="url(#sg1)"/>
+            </svg>
+          </div>
+        </div>
+
+        <div class="kpi-card">
+          <div class="kpi-header">
+            <span class="kpi-label">En cours</span>
+            <div class="kpi-icon" style="background:var(--amber-dim);color:var(--amber);">⏳</div>
+          </div>
+          <div class="kpi-value">284</div>
+          <div class="kpi-delta"><span class="delta-up">↑ 18</span><span class="delta-text">depuis hier</span></div>
+          <div class="sparkline">
+            <svg class="spark-svg" viewBox="0 0 120 36" preserveAspectRatio="none">
+              <defs><linearGradient id="sg2" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#F59E0B" stop-opacity=".3"/>
+                <stop offset="100%" stop-color="#F59E0B" stop-opacity="0"/>
+              </linearGradient></defs>
+              <path d="M0,20 L15,22 L30,18 L45,24 L60,16 L75,20 L90,14 L105,18 L120,14" fill="none" stroke="#F59E0B" stroke-width="1.5"/>
+              <path d="M0,20 L15,22 L30,18 L45,24 L60,16 L75,20 L90,14 L105,18 L120,14 L120,36 L0,36Z" fill="url(#sg2)"/>
+            </svg>
+          </div>
+        </div>
+
+        <div class="kpi-card">
+          <div class="kpi-header">
+            <span class="kpi-label">Taux de livraison</span>
+            <div class="kpi-icon" style="background:var(--green-dim);color:var(--green);">✓</div>
+          </div>
+          <div class="kpi-value">97.3%</div>
+          <div class="kpi-delta"><span class="delta-up">↑ 0.8%</span><span class="delta-text">vs mois dernier</span></div>
+          <div class="sparkline">
+            <svg class="spark-svg" viewBox="0 0 120 36" preserveAspectRatio="none">
+              <defs><linearGradient id="sg3" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#22C55E" stop-opacity=".3"/>
+                <stop offset="100%" stop-color="#22C55E" stop-opacity="0"/>
+              </linearGradient></defs>
+              <path d="M0,16 L15,14 L30,16 L45,12 L60,10 L75,8 L90,10 L105,7 L120,5" fill="none" stroke="#22C55E" stroke-width="1.5"/>
+              <path d="M0,16 L15,14 L30,16 L45,12 L60,10 L75,8 L90,10 L105,7 L120,5 L120,36 L0,36Z" fill="url(#sg3)"/>
+            </svg>
+          </div>
+        </div>
+
+        <div class="kpi-card">
+          <div class="kpi-header">
+            <span class="kpi-label">Délai moyen livraison</span>
+            <div class="kpi-icon" style="background:var(--violet-dim);color:var(--violet);">🚚</div>
+          </div>
+          <div class="kpi-value">2.4j</div>
+          <div class="kpi-delta"><span class="delta-up">↓ 0.3j</span><span class="delta-text">amélioration</span></div>
+          <div class="sparkline">
+            <svg class="spark-svg" viewBox="0 0 120 36" preserveAspectRatio="none">
+              <defs><linearGradient id="sg4" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#8B5CF6" stop-opacity=".3"/>
+                <stop offset="100%" stop-color="#8B5CF6" stop-opacity="0"/>
+              </linearGradient></defs>
+              <path d="M0,10 L15,14 L30,12 L45,18 L60,14 L75,20 L90,18 L105,22 L120,24" fill="none" stroke="#8B5CF6" stroke-width="1.5"/>
+              <path d="M0,10 L15,14 L30,12 L45,18 L60,14 L75,20 L90,18 L105,22 L120,24 L120,36 L0,36Z" fill="url(#sg4)"/>
+            </svg>
+          </div>
+        </div>
+
+      </div>
+
+
+      <!-- Graphique + Entonnoir statuts -->
+      <div class="mid-row">
+
+        <div class="chart-card">
+          <div class="card-header">
+            <div>
+              <p class="card-title">Volume de commandes</p>
+              <p class="card-subtitle">Commandes reçues par jour</p>
+            </div>
+            <div class="chart-tabs">
+              <span class="chart-tab active">7J</span>
+              <span class="chart-tab">30J</span>
+              <span class="chart-tab">90J</span>
+            </div>
+          </div>
+          <div class="bar-chart" id="commandesChart"></div>
+          <div class="chart-legend">
+            <span class="cl-item"><span class="cl-dot" style="background:var(--blue);"></span>Reçues</span>
+            <span class="cl-item"><span class="cl-dot" style="background:var(--green);"></span>Livrées</span>
+          </div>
+        </div>
+
+        <!-- Entonnoir statuts -->
+        <div class="chart-card">
+          <div class="card-header">
+            <div>
+              <p class="card-title">Statuts en cours</p>
+              <p class="card-subtitle">Pipeline des commandes</p>
+            </div>
+          </div>
+          <div class="funnel-wrap">
+
+            <div class="funnel-item">
+              <div class="funnel-left">
+                <div class="funnel-dot" style="background:var(--blue);"></div>
+                <span class="funnel-label">Confirmées</span>
+              </div>
+              <div class="funnel-bar-wrap">
+                <div class="funnel-bar" style="width:100%; background:var(--blue);"></div>
+              </div>
+              <span class="funnel-val">1,842</span>
+            </div>
+
+            <div class="funnel-item">
+              <div class="funnel-left">
+                <div class="funnel-dot" style="background:var(--violet);"></div>
+                <span class="funnel-label">En préparation</span>
+              </div>
+              <div class="funnel-bar-wrap">
+                <div class="funnel-bar" style="width:72%; background:var(--violet);"></div>
+              </div>
+              <span class="funnel-val">620</span>
+            </div>
+
+            <div class="funnel-item">
+              <div class="funnel-left">
+                <div class="funnel-dot" style="background:var(--cyan);"></div>
+                <span class="funnel-label">Expédiées</span>
+              </div>
+              <div class="funnel-bar-wrap">
+                <div class="funnel-bar" style="width:54%; background:var(--cyan);"></div>
+              </div>
+              <span class="funnel-val">284</span>
+            </div>
+
+            <div class="funnel-item">
+              <div class="funnel-left">
+                <div class="funnel-dot" style="background:var(--green);"></div>
+                <span class="funnel-label">Livrées</span>
+              </div>
+              <div class="funnel-bar-wrap">
+                <div class="funnel-bar" style="width:89%; background:var(--green);"></div>
+              </div>
+              <span class="funnel-val">2,938</span>
+            </div>
+
+            <div class="funnel-item">
+              <div class="funnel-left">
+                <div class="funnel-dot" style="background:var(--amber);"></div>
+                <span class="funnel-label">En litige</span>
+              </div>
+              <div class="funnel-bar-wrap">
+                <div class="funnel-bar" style="width:8%; background:var(--amber);"></div>
+              </div>
+              <span class="funnel-val">47</span>
+            </div>
+
+            <div class="funnel-item">
+              <div class="funnel-left">
+                <div class="funnel-dot" style="background:var(--red);"></div>
+                <span class="funnel-label">Annulées</span>
+              </div>
+              <div class="funnel-bar-wrap">
+                <div class="funnel-bar" style="width:4%; background:var(--red);"></div>
+              </div>
+              <span class="funnel-val">33</span>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+
+
+      <!-- Tableau commandes + Transporteurs -->
+      <div class="bot-row">
+
+        <div class="table-card">
+          <div class="tc-head card-header">
+            <div>
+              <p class="card-title">Commandes récentes</p>
+              <p class="card-subtitle">30 derniers jours</p>
+            </div>
+            <div style="display:flex;gap:8px;">
+              <div class="search-box">
+                <span class="search-icon">🔍</span>
+                <input class="search-input" placeholder="Rechercher…" id="searchInput"/>
+              </div>
+              <button class="tb-btn ghost" style="font-size:11px;">Voir tout</button>
+            </div>
+          </div>
+          <table>
+            <thead>
+              <tr>
+                <th>Commande</th>
+                <th>Client</th>
+                <th>Produits</th>
+                <th>Date</th>
+                <th>Montant</th>
+                <th>Transporteur</th>
+                <th>Statut</th>
+              </tr>
+            </thead>
+            <tbody id="commandesBody">
+              <tr>
+                <td>
+                  <div class="order-cell">
+                    <div class="order-icon" style="background:var(--green-dim);color:var(--green);">✓</div>
+                    <span class="order-id">#CMD-9841</span>
+                  </div>
+                </td>
+                <td><div class="client-mini"><div class="mini-av" style="background:linear-gradient(135deg,#3B82F6,#8B5CF6);">ML</div><span>Marie L.</span></div></td>
+                <td class="t-val">3 articles</td>
+                <td class="t-val">28 Nov</td>
+                <td class="t-val t-pos">€349</td>
+                <td><span class="carrier-badge carrier-chrono">Chronopost</span></td>
+                <td><span class="status-pill st-delivered">✓ Livré</span></td>
+              </tr>
+              <tr>
+                <td>
+                  <div class="order-cell">
+                    <div class="order-icon" style="background:var(--cyan-dim);color:var(--cyan);">🚚</div>
+                    <span class="order-id">#CMD-9840</span>
+                  </div>
+                </td>
+                <td><div class="client-mini"><div class="mini-av" style="background:linear-gradient(135deg,#22C55E,#06B6D4);">AT</div><span>Alex T.</span></div></td>
+                <td class="t-val">1 article</td>
+                <td class="t-val">27 Nov</td>
+                <td class="t-val t-pos">€2,990</td>
+                <td><span class="carrier-badge carrier-ups">UPS</span></td>
+                <td><span class="status-pill st-shipped">🚚 Expédié</span></td>
+              </tr>
+              <tr>
+                <td>
+                  <div class="order-cell">
+                    <div class="order-icon" style="background:var(--violet-dim);color:var(--violet);">⚙</div>
+                    <span class="order-id">#CMD-9839</span>
+                  </div>
+                </td>
+                <td><div class="client-mini"><div class="mini-av" style="background:linear-gradient(135deg,#F59E0B,#EF4444);">SM</div><span>Sophie M.</span></div></td>
+                <td class="t-val">2 articles</td>
+                <td class="t-val">26 Nov</td>
+                <td class="t-val t-pos">€178</td>
+                <td><span class="carrier-badge carrier-colissimo">Colissimo</span></td>
+                <td><span class="status-pill st-prep">⚙ Préparation</span></td>
+              </tr>
+              <tr>
+                <td>
+                  <div class="order-cell">
+                    <div class="order-icon" style="background:var(--green-dim);color:var(--green);">✓</div>
+                    <span class="order-id">#CMD-9838</span>
+                  </div>
+                </td>
+                <td><div class="client-mini"><div class="mini-av" style="background:linear-gradient(135deg,#06B6D4,#3B82F6);">LR</div><span>Laura R.</span></div></td>
+                <td class="t-val">5 articles</td>
+                <td class="t-val">25 Nov</td>
+                <td class="t-val t-pos">€891</td>
+                <td><span class="carrier-badge carrier-dhl">DHL</span></td>
+                <td><span class="status-pill st-delivered">✓ Livré</span></td>
+              </tr>
+              <tr>
+                <td>
+                  <div class="order-cell">
+                    <div class="order-icon" style="background:var(--amber-dim);color:var(--amber);">⚠</div>
+                    <span class="order-id">#CMD-9830</span>
+                  </div>
+                </td>
+                <td><div class="client-mini"><div class="mini-av" style="background:linear-gradient(135deg,#8B5CF6,#EC4899);">PM</div><span>Pierre M.</span></div></td>
+                <td class="t-val">2 articles</td>
+                <td class="t-val">23 Nov</td>
+                <td class="t-val t-pos">€420</td>
+                <td><span class="carrier-badge carrier-chrono">Chronopost</span></td>
+                <td><span class="status-pill st-dispute">⚠ Litige</span></td>
+              </tr>
+              <tr>
+                <td>
+                  <div class="order-cell">
+                    <div class="order-icon" style="background:var(--red-dim);color:var(--red);">✕</div>
+                    <span class="order-id">#CMD-9821</span>
+                  </div>
+                </td>
+                <td><div class="client-mini"><div class="mini-av" style="background:linear-gradient(135deg,#71717A,#52525B);">JK</div><span>Jonas K.</span></div></td>
+                <td class="t-val">1 article</td>
+                <td class="t-val">21 Nov</td>
+                <td class="t-val t-neg">−€140</td>
+                <td><span class="carrier-badge carrier-none">—</span></td>
+                <td><span class="status-pill st-cancelled">✕ Annulé</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Colonne droite -->
+        <div class="right-col">
+
+          <!-- Transporteurs -->
+          <div class="side-card">
+            <div class="card-header" style="margin-bottom:16px;">
+              <div>
+                <p class="card-title">Transporteurs</p>
+                <p class="card-subtitle">Performance ce mois</p>
+              </div>
+            </div>
+            <div class="carrier-list">
+
+              <div class="carrier-item">
+                <div class="carrier-logo carrier-chrono-bg">CP</div>
+                <div class="carrier-info">
+                  <div class="carrier-header">
+                    <span class="carrier-name">Chronopost</span>
+                    <span class="carrier-rate" style="color:var(--green);">98.1%</span>
+                  </div>
+                  <div class="gauge-track">
+                    <div class="gauge-fill" style="width:98%; background:var(--green);"></div>
+                  </div>
+                  <span class="carrier-meta">1,204 livraisons · 2.1j moy.</span>
+                </div>
+              </div>
+
+              <div class="carrier-item">
+                <div class="carrier-logo carrier-colissimo-bg">Co</div>
+                <div class="carrier-info">
+                  <div class="carrier-header">
+                    <span class="carrier-name">Colissimo</span>
+                    <span class="carrier-rate" style="color:var(--green);">96.4%</span>
+                  </div>
+                  <div class="gauge-track">
+                    <div class="gauge-fill" style="width:96%; background:var(--blue);"></div>
+                  </div>
+                  <span class="carrier-meta">892 livraisons · 2.8j moy.</span>
+                </div>
+              </div>
+
+              <div class="carrier-item">
+                <div class="carrier-logo carrier-ups-bg">UP</div>
+                <div class="carrier-info">
+                  <div class="carrier-header">
+                    <span class="carrier-name">UPS</span>
+                    <span class="carrier-rate" style="color:var(--green);">97.8%</span>
+                  </div>
+                  <div class="gauge-track">
+                    <div class="gauge-fill" style="width:98%; background:var(--violet);"></div>
+                  </div>
+                  <span class="carrier-meta">641 livraisons · 1.9j moy.</span>
+                </div>
+              </div>
+
+              <div class="carrier-item">
+                <div class="carrier-logo carrier-dhl-bg">DH</div>
+                <div class="carrier-info">
+                  <div class="carrier-header">
+                    <span class="carrier-name">DHL</span>
+                    <span class="carrier-rate" style="color:var(--amber);">94.2%</span>
+                  </div>
+                  <div class="gauge-track">
+                    <div class="gauge-fill" style="width:94%; background:var(--amber);"></div>
+                  </div>
+                  <span class="carrier-meta">281 livraisons · 3.4j moy.</span>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- Zones de livraison -->
+          <div class="side-card">
+            <div class="card-header" style="margin-bottom:16px;">
+              <div>
+                <p class="card-title">Zones de livraison</p>
+                <p class="card-subtitle">Volume par région</p>
+              </div>
+            </div>
+            <div class="zone-list">
+
+              <div class="zone-item">
+                <span class="zone-flag">🇫🇷</span>
+                <div class="zone-info">
+                  <div class="zone-header">
+                    <span class="zone-name">France métropolitaine</span>
+                    <span class="zone-val">1,842</span>
+                  </div>
+                  <div class="gauge-track">
+                    <div class="gauge-fill" style="width:100%; background:var(--blue);"></div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="zone-item">
+                <span class="zone-flag">🇩🇪</span>
+                <div class="zone-info">
+                  <div class="zone-header">
+                    <span class="zone-name">Allemagne</span>
+                    <span class="zone-val">604</span>
+                  </div>
+                  <div class="gauge-track">
+                    <div class="gauge-fill" style="width:33%; background:var(--violet);"></div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="zone-item">
+                <span class="zone-flag">🇬🇧</span>
+                <div class="zone-info">
+                  <div class="zone-header">
+                    <span class="zone-name">Royaume-Uni</span>
+                    <span class="zone-val">381</span>
+                  </div>
+                  <div class="gauge-track">
+                    <div class="gauge-fill" style="width:21%; background:var(--green);"></div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="zone-item">
+                <span class="zone-flag">🌍</span>
+                <div class="zone-info">
+                  <div class="zone-header">
+                    <span class="zone-name">Autres pays</span>
+                    <span class="zone-val">191</span>
+                  </div>
+                  <div class="gauge-track">
+                    <div class="gauge-fill" style="width:10%; background:var(--amber);"></div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- ── Date Picker ── -->
+  <div class="date-picker-popup" id="datePickerPopup" style="display:none;">
+    <div class="dp-header">Sélectionner une période</div>
+    <div class="dp-presets">
+      <button class="dp-preset active" data-days="30">30 derniers jours</button>
+      <button class="dp-preset" data-days="7">7 derniers jours</button>
+      <button class="dp-preset" data-days="90">90 derniers jours</button>
+      <button class="dp-preset" data-days="365">Cette année</button>
+    </div>
+    <div class="dp-custom">
+      <div class="dp-field"><label>Début</label><input type="date" id="dpStart" value="2025-11-01"/></div>
+      <div class="dp-field"><label>Fin</label><input type="date" id="dpEnd" value="2025-11-30"/></div>
+    </div>
+    <div class="dp-footer">
+      <button class="dp-cancel" id="dpCancel">Annuler</button>
+      <button class="dp-apply" id="dpApply">Appliquer</button>
+    </div>
+  </div>
+
+  <!-- ── Modal Nouvelle commande ── -->
+  <div class="modal-overlay" id="commandeModal" style="display:none;">
+    <div class="modal">
+      <div class="modal-header">
+        <p class="modal-title">Nouvelle commande</p>
+        <button class="modal-close" id="commandeClose">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="modal-field">
+          <label>Client</label>
+          <input type="text" class="modal-input" id="commandeClient" placeholder="Nom du client"/>
+        </div>
+        <div class="modal-field">
+          <label>Produit / Service</label>
+          <input type="text" class="modal-input" id="commandeProduit" placeholder="Ex : NEXUS Pro · 1 licence"/>
+        </div>
+        <div class="modal-field">
+          <label>Montant (€)</label>
+          <input type="number" class="modal-input" id="commandeMontant" placeholder="0.00" min="0" step="0.01"/>
+        </div>
+        <div class="modal-field">
+          <label>Transporteur</label>
+          <select class="modal-select" id="commandeTransporteur">
+            <option>Chronopost</option>
+            <option>Colissimo</option>
+            <option>UPS</option>
+            <option>DHL</option>
+            <option>Téléchargement</option>
+          </select>
+        </div>
+        <div class="modal-field">
+          <label>Statut initial</label>
+          <div class="modal-radio-group">
+            <label class="modal-radio"><input type="radio" name="commandeStatut" value="En préparation" checked/> En préparation</label>
+            <label class="modal-radio"><input type="radio" name="commandeStatut" value="Expédiée"/> Expédiée</label>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="tb-btn ghost" id="commandeCancelBtn">Annuler</button>
+        <button class="tb-btn primary" id="commandeCreateBtn">Créer la commande</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Toast ── -->
+  <div class="toast-notif" id="toastNotif"></div>
+
+  <script src="app.js"></script>
+<script>
+/* ============================================
+   NEXUS — sidebar.js  v4
+   Compatible file:// — pas de localStorage cross-dossier
+   Stratégie : cookie-like via document.cookie (partagé par domaine/chemin)
+   + fallback paramètre URL
+   ============================================ */
+
+(function () {
+
+  /* ════════════════════════════════════════
+     PROFIL — stockage via cookie (fonctionne en file://)
+     ════════════════════════════════════════ */
+
+  function saveProfile(data) {
+    // Stocker dans TOUS les localStorage possibles + cookie
+    const json = JSON.stringify(data);
+    try { localStorage.setItem('nexus_profile', json); } catch(e){}
+    try { sessionStorage.setItem('nexus_profile', json); } catch(e){}
+    // Cookie lisible par tous les sous-dossiers du même domaine
+    try {
+      document.cookie = 'nexus_profile=' + encodeURIComponent(json) + '; path=/; max-age=31536000';
+    } catch(e){}
+  }
+
+  function loadProfile() {
+    // 1. Essayer localStorage
+    try {
+      const raw = localStorage.getItem('nexus_profile');
+      if (raw) { const p = JSON.parse(raw); if (p && p.prenom) return p; }
+    } catch(e){}
+
+    // 2. Essayer sessionStorage
+    try {
+      const raw = sessionStorage.getItem('nexus_profile');
+      if (raw) { const p = JSON.parse(raw); if (p && p.prenom) return p; }
+    } catch(e){}
+
+    // 3. Essayer cookie
+    try {
+      const match = document.cookie.match(/nexus_profile=([^;]+)/);
+      if (match) {
+        const p = JSON.parse(decodeURIComponent(match[1]));
+        if (p && p.prenom) return p;
+      }
+    } catch(e){}
+
+    // 4. Défauts
+    return { prenom: 'Jean', nom: 'Dupont', email: 'jean.dupont@nexus.io' };
+  }
+
+  function saveAvatar(dataUrl) {
+    try { localStorage.setItem('nexus_avatar', dataUrl); } catch(e){}
+    try { sessionStorage.setItem('nexus_avatar', dataUrl); } catch(e){}
+    // Cookie trop grand pour une image — on garde juste un flag
+    try { document.cookie = 'nexus_has_avatar=1; path=/; max-age=31536000'; } catch(e){}
+  }
+
+  function loadAvatar() {
+    try {
+      const v = localStorage.getItem('nexus_avatar');
+      if (v) return v;
+    } catch(e){}
+    try {
+      const v = sessionStorage.getItem('nexus_avatar');
+      if (v) return v;
+    } catch(e){}
+    return null;
+  }
+
+  function getInitials(p) {
+    return (((p.prenom||'').charAt(0)) + ((p.nom||'').charAt(0))).toUpperCase() || 'JD';
+  }
+
+  function getFullName(p) {
+    return [(p.prenom||'').trim(),(p.nom||'').trim()].filter(Boolean).join(' ') || 'Utilisateur';
+  }
+
+  /* ════════════════════════════════════════
+     NAVIGATION
+     ════════════════════════════════════════ */
+  const PAGE_MAP = {
+    "Vue d'ensemble": "../Vue d'ensemble/index.html",
+    "Analytique":     "../Analytique/index.html",
+    "Rapports":       "../Rapports/index.html",
+    "Campagnes":      "../Campagnes/index.html",
+    "Revenus":        "../Revenus/index.html",
+    "Clients":        "../Clients/index.html",
+    "Produits":       "../Produits/index.html",
+    "Commandes":      "../Commandes/index.html",
+    "Performance":    "../Performance/index.html",
+    "Logs":           "../Logs/index.html",
+    "Param\u00e8tres":"../Param\u00e8tres/index.html",
+  };
+
+  const NAV = [
+    { label:'Principal', items:[
+      { name:"Vue d'ensemble", icon:'◈' },
+      { name:'Analytique', icon:'◫', badge:'NEW' },
+      { name:'Rapports', icon:'◉' },
+      { name:'Campagnes', icon:'▤' },
+    ]},
+    { label:'Commerce', items:[
+      { name:'Revenus', icon:'◈' },
+      { name:'Clients', icon:'⊞' },
+      { name:'Produits', icon:'◧' },
+      { name:'Commandes', icon:'◈' },
+    ]},
+    { label:'Syst\u00e8me', items:[
+      { name:'Performance', icon:'◩' },
+      { name:'Logs', icon:'◈' },
+      { name:'Param\u00e8tres', icon:'◧' },
+    ]},
+  ];
+
+  function getActivePage() {
+    const parts = window.location.pathname.split('/');
+    for (let i = parts.length - 1; i >= 0; i--) {
+      const seg = decodeURIComponent(parts[i]);
+      if (seg && seg !== 'index.html') return seg;
+    }
+    // Fallback sur le titre de la page (utile en file://)
+    return document.title.replace(/^NEXUS\s*[—-]\s*/i, '').trim();
+  }
+
+  /* ════════════════════════════════════════
+     BUILD + INJECT
+     ════════════════════════════════════════ */
+  function buildHTML(profile) {
+    const active = getActivePage();
+    const ini  = getInitials(profile);
+    const name = getFullName(profile);
+    let sections = '';
+    NAV.forEach(function(sec) {
+      let items = '';
+      sec.items.forEach(function(item) {
+        const isActive = decodeURIComponent(active) === item.name || active === item.name;
+        const badge = item.badge ? '<span class="sb-badge">'+item.badge+'</span>' : '';
+        items += '<a href="'+(PAGE_MAP[item.name]||'#')+'" class="sb-item'+(isActive?' active':'')+'"><span class="sb-icon">'+item.icon+'</span> '+item.name+badge+'</a>';
+      });
+      sections += '<div class="sb-section"><p class="sb-section-label">'+sec.label+'</p>'+items+'</div>';
+    });
+    return '<div class="sb-logo"><div class="logo-icon">Nx</div><span class="logo-text">Nexus</span></div>'
+      + sections
+      + '<div class="sb-bottom"><div class="sb-user"><div class="user-av" id="sidebarAv">'+ini+'</div><div><p class="user-name" id="sidebarName">'+name+'</p><p class="user-plan">Pro &middot; Admin</p></div></div></div>';
+  }
+
+  function applyAvatar() {
+    const photo = loadAvatar();
+    const av = document.getElementById('sidebarAv');
+    if (!av || !photo) return;
+    av.textContent = '';
+    av.style.backgroundImage = 'url('+photo+')';
+    av.style.backgroundSize = 'cover';
+    av.style.backgroundPosition = 'center';
+  }
+
+  function inject() {
+    const sidebar = document.querySelector('aside.sidebar');
+    if (!sidebar) return;
+    sidebar.innerHTML = buildHTML(loadProfile());
+    applyAvatar();
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', inject);
+  } else {
+    inject();
+  }
+
+  /* ════════════════════════════════════════
+     API PUBLIQUE
+     ════════════════════════════════════════ */
+  window.NexusSidebar = {
+    updateDisplay: function(prenom, nom) {
+      const av = document.getElementById('sidebarAv');
+      const nm = document.getElementById('sidebarName');
+      if (av && !loadAvatar()) av.textContent = getInitials({prenom:prenom,nom:nom});
+      if (nm) nm.textContent = getFullName({prenom:prenom,nom:nom});
+    },
+    saveProfile: function(prenom, nom, email) {
+      saveProfile({prenom:prenom, nom:nom, email:email});
+      this.updateDisplay(prenom, nom);
+    },
+    saveAvatar: saveAvatar,
+    getProfile: loadProfile,
+    refresh: inject,
+  };
+
+})();
+
+</script>
+</body>
+</html>

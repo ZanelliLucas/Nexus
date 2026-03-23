@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NEXUS — Revenus</title>
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500&family=Inter:wght@300;400;500;600&display=swap"
+    rel="stylesheet"
+  >
+
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- ==========================================
+       SIDEBAR
+       ========================================== -->
+  <aside class="sidebar"></aside>
+
+
+  <!-- ==========================================
+       MAIN
+       ========================================== -->
+  <div class="main">
+
+    <div class="topbar">
+      <div class="tb-left">
+        <div>
+          <p class="page-title">Revenus</p>
+          <p class="page-sub">Suivi financier et analyse des revenus</p>
+        </div>
+      </div>
+      <div class="tb-right">
+        <div class="date-range" id="dateRangeBtn">
+          📅 <span id="dateRangeLabel">Nov 1 — Nov 30, 2025</span> ▾
+        </div>
+        <button class="tb-btn ghost" id="exportBtn">↓ Exporter</button>
+        <button class="tb-btn primary" id="transactionBtn">+ Nouvelle transaction</button>
+      </div>
+    </div>
+
+
+    <div class="content">
+
+      <!-- ---- KPI Cards ---- -->
+      <div class="kpi-row">
+
+        <div class="kpi-card">
+          <div class="kpi-header">
+            <span class="kpi-label">Revenu total</span>
+            <div class="kpi-icon" style="background:var(--green-dim); color:var(--green);">€</div>
+          </div>
+          <div class="kpi-value">€284,591</div>
+          <div class="kpi-delta">
+            <span class="delta-up">↑ 12.4%</span>
+            <span class="delta-text">vs mois dernier</span>
+          </div>
+          <div class="sparkline">
+            <svg class="spark-svg" viewBox="0 0 120 36" preserveAspectRatio="none">
+              <defs>
+                <linearGradient id="sg1" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%"   stop-color="#22C55E" stop-opacity=".3"/>
+                  <stop offset="100%" stop-color="#22C55E" stop-opacity="0"/>
+                </linearGradient>
+              </defs>
+              <path d="M0,28 L15,22 L30,25 L45,15 L60,18 L75,10 L90,14 L105,6 L120,4"
+                    fill="none" stroke="#22C55E" stroke-width="1.5"/>
+              <path d="M0,28 L15,22 L30,25 L45,15 L60,18 L75,10 L90,14 L105,6 L120,4 L120,36 L0,36Z"
+                    fill="url(#sg1)"/>
+            </svg>
+          </div>
+        </div>
+
+        <div class="kpi-card">
+          <div class="kpi-header">
+            <span class="kpi-label">Revenu récurrent (MRR)</span>
+            <div class="kpi-icon" style="background:var(--blue-dim); color:var(--blue);">↻</div>
+          </div>
+          <div class="kpi-value">€89,420</div>
+          <div class="kpi-delta">
+            <span class="delta-up">↑ 7.8%</span>
+            <span class="delta-text">vs mois dernier</span>
+          </div>
+          <div class="sparkline">
+            <svg class="spark-svg" viewBox="0 0 120 36" preserveAspectRatio="none">
+              <defs>
+                <linearGradient id="sg2" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%"   stop-color="#3B82F6" stop-opacity=".3"/>
+                  <stop offset="100%" stop-color="#3B82F6" stop-opacity="0"/>
+                </linearGradient>
+              </defs>
+              <path d="M0,24 L15,20 L30,22 L45,16 L60,14 L75,10 L90,12 L105,7 L120,5"
+                    fill="none" stroke="#3B82F6" stroke-width="1.5"/>
+              <path d="M0,24 L15,20 L30,22 L45,16 L60,14 L75,10 L90,12 L105,7 L120,5 L120,36 L0,36Z"
+                    fill="url(#sg2)"/>
+            </svg>
+          </div>
+        </div>
+
+        <div class="kpi-card">
+          <div class="kpi-header">
+            <span class="kpi-label">Valeur moy. commande</span>
+            <div class="kpi-icon" style="background:var(--violet-dim); color:var(--violet);">⊞</div>
+          </div>
+          <div class="kpi-value">€94.30</div>
+          <div class="kpi-delta">
+            <span class="delta-up">↑ 4.7%</span>
+            <span class="delta-text">vs mois dernier</span>
+          </div>
+          <div class="sparkline">
+            <svg class="spark-svg" viewBox="0 0 120 36" preserveAspectRatio="none">
+              <defs>
+                <linearGradient id="sg3" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%"   stop-color="#8B5CF6" stop-opacity=".3"/>
+                  <stop offset="100%" stop-color="#8B5CF6" stop-opacity="0"/>
+                </linearGradient>
+              </defs>
+              <path d="M0,26 L15,22 L30,24 L45,18 L60,20 L75,14 L90,12 L105,10 L120,8"
+                    fill="none" stroke="#8B5CF6" stroke-width="1.5"/>
+              <path d="M0,26 L15,22 L30,24 L45,18 L60,20 L75,14 L90,12 L105,10 L120,8 L120,36 L0,36Z"
+                    fill="url(#sg3)"/>
+            </svg>
+          </div>
+        </div>
+
+        <div class="kpi-card">
+          <div class="kpi-header">
+            <span class="kpi-label">Remboursements</span>
+            <div class="kpi-icon" style="background:var(--red-dim); color:var(--red);">↩</div>
+          </div>
+          <div class="kpi-value">€3,812</div>
+          <div class="kpi-delta">
+            <span class="delta-down">↓ 1.3%</span>
+            <span class="delta-text">amélioration</span>
+          </div>
+          <div class="sparkline">
+            <svg class="spark-svg" viewBox="0 0 120 36" preserveAspectRatio="none">
+              <defs>
+                <linearGradient id="sg4" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%"   stop-color="#EF4444" stop-opacity=".3"/>
+                  <stop offset="100%" stop-color="#EF4444" stop-opacity="0"/>
+                </linearGradient>
+              </defs>
+              <path d="M0,10 L15,14 L30,12 L45,18 L60,16 L75,22 L90,20 L105,24 L120,26"
+                    fill="none" stroke="#EF4444" stroke-width="1.5"/>
+              <path d="M0,10 L15,14 L30,12 L45,18 L60,16 L75,22 L90,20 L105,24 L120,26 L120,36 L0,36Z"
+                    fill="url(#sg4)"/>
+            </svg>
+          </div>
+        </div>
+
+      </div>
+
+
+      <!-- ---- Graphique revenus + Répartition ---- -->
+      <div class="mid-row">
+
+        <div class="chart-card">
+          <div class="card-header">
+            <div>
+              <p class="card-title">Évolution des revenus</p>
+              <p class="card-subtitle">Revenus bruts &amp; nets — Novembre 2025</p>
+            </div>
+            <div class="chart-tabs">
+              <span class="chart-tab active">7J</span>
+              <span class="chart-tab">30J</span>
+              <span class="chart-tab">90J</span>
+            </div>
+          </div>
+          <div class="bar-chart" id="revenusChart"></div>
+          <div class="chart-legend">
+            <span class="cl-item">
+              <span class="cl-dot" style="background:var(--green);"></span>Revenus bruts
+            </span>
+            <span class="cl-item">
+              <span class="cl-dot" style="background:rgba(34,197,94,0.3);"></span>Revenus nets
+            </span>
+          </div>
+        </div>
+
+        <div class="chart-card">
+          <div class="card-header">
+            <div>
+              <p class="card-title">Sources de revenus</p>
+              <p class="card-subtitle">Répartition ce mois</p>
+            </div>
+          </div>
+          <div class="donut-wrap">
+            <div class="donut-svg-wrap">
+              <svg class="donut-svg" viewBox="0 0 120 120">
+                <circle cx="60" cy="60" r="45" fill="none" stroke="#22C55E"
+                        stroke-width="18" stroke-dasharray="127 155" stroke-dashoffset="0"/>
+                <circle cx="60" cy="60" r="45" fill="none" stroke="#3B82F6"
+                        stroke-width="18" stroke-dasharray="79 203" stroke-dashoffset="-127"/>
+                <circle cx="60" cy="60" r="45" fill="none" stroke="#8B5CF6"
+                        stroke-width="18" stroke-dasharray="45 237" stroke-dashoffset="-206"/>
+                <circle cx="60" cy="60" r="45" fill="none" stroke="#F59E0B"
+                        stroke-width="18" stroke-dasharray="31 251" stroke-dashoffset="-251"/>
+              </svg>
+              <div class="donut-center">
+                <p class="donut-val">€284k</p>
+                <p class="donut-lbl">total</p>
+              </div>
+            </div>
+            <div class="donut-legend">
+              <div class="legend-item">
+                <div class="legend-dot" style="background:#22C55E;"></div>
+                <span class="legend-name">Ventes directes</span>
+                <div class="legend-bar"><div class="legend-fill" style="width:45%; background:#22C55E;"></div></div>
+                <span class="legend-pct">45%</span>
+              </div>
+              <div class="legend-item">
+                <div class="legend-dot" style="background:#3B82F6;"></div>
+                <span class="legend-name">Abonnements</span>
+                <div class="legend-bar"><div class="legend-fill" style="width:28%; background:#3B82F6;"></div></div>
+                <span class="legend-pct">28%</span>
+              </div>
+              <div class="legend-item">
+                <div class="legend-dot" style="background:#8B5CF6;"></div>
+                <span class="legend-name">Services</span>
+                <div class="legend-bar"><div class="legend-fill" style="width:16%; background:#8B5CF6;"></div></div>
+                <span class="legend-pct">16%</span>
+              </div>
+              <div class="legend-item">
+                <div class="legend-dot" style="background:#F59E0B;"></div>
+                <span class="legend-name">Partenariats</span>
+                <div class="legend-bar"><div class="legend-fill" style="width:11%; background:#F59E0B;"></div></div>
+                <span class="legend-pct">11%</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+
+      <!-- ---- Transactions + Objectifs ---- -->
+      <div class="bot-row">
+
+        <!-- Tableau transactions récentes -->
+        <div class="table-card">
+          <div class="tc-head card-header">
+            <div>
+              <p class="card-title">Transactions récentes</p>
+              <p class="card-subtitle">30 derniers jours</p>
+            </div>
+            <div style="display:flex; gap:8px;">
+              <button class="tb-btn ghost" style="font-size:11px;">🔍 Filtrer</button>
+              <button class="tb-btn ghost" style="font-size:11px;">Voir tout</button>
+            </div>
+          </div>
+          <table>
+            <thead>
+              <tr>
+                <th>Transaction</th>
+                <th>Client</th>
+                <th>Source</th>
+                <th>Date</th>
+                <th>Montant</th>
+                <th>Statut</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <div class="tx-name">
+                    <div class="tx-icon" style="background:var(--green-dim); color:var(--green);">€</div>
+                    <div>
+                      <p class="tx-title">#TXN-8821</p>
+                      <p class="tx-sub">Abonnement Enterprise</p>
+                    </div>
+                  </div>
+                </td>
+                <td class="t-client">Société Dupont SAS</td>
+                <td><span class="source-badge" style="background:var(--blue-dim); color:var(--blue);">Abonnement</span></td>
+                <td class="t-val">28 Nov 2025</td>
+                <td class="t-amount t-pos">+€2,990</td>
+                <td><span class="status-pill st-up">✓ Payé</span></td>
+              </tr>
+              <tr>
+                <td>
+                  <div class="tx-name">
+                    <div class="tx-icon" style="background:var(--green-dim); color:var(--green);">€</div>
+                    <div>
+                      <p class="tx-title">#TXN-8820</p>
+                      <p class="tx-sub">Commande produits</p>
+                    </div>
+                  </div>
+                </td>
+                <td class="t-client">Marie Laurent</td>
+                <td><span class="source-badge" style="background:var(--green-dim); color:var(--green);">Vente directe</span></td>
+                <td class="t-val">27 Nov 2025</td>
+                <td class="t-amount t-pos">+€349</td>
+                <td><span class="status-pill st-up">✓ Payé</span></td>
+              </tr>
+              <tr>
+                <td>
+                  <div class="tx-name">
+                    <div class="tx-icon" style="background:var(--violet-dim); color:var(--violet);">€</div>
+                    <div>
+                      <p class="tx-title">#TXN-8819</p>
+                      <p class="tx-sub">Service consulting</p>
+                    </div>
+                  </div>
+                </td>
+                <td class="t-client">TechCorp EURL</td>
+                <td><span class="source-badge" style="background:var(--violet-dim); color:var(--violet);">Services</span></td>
+                <td class="t-val">25 Nov 2025</td>
+                <td class="t-amount t-pos">+€1,800</td>
+                <td><span class="status-pill st-up">✓ Payé</span></td>
+              </tr>
+              <tr>
+                <td>
+                  <div class="tx-name">
+                    <div class="tx-icon" style="background:var(--red-dim); color:var(--red);">↩</div>
+                    <div>
+                      <p class="tx-title">#TXN-8812</p>
+                      <p class="tx-sub">Remboursement</p>
+                    </div>
+                  </div>
+                </td>
+                <td class="t-client">Pierre Moreau</td>
+                <td><span class="source-badge" style="background:var(--green-dim); color:var(--green);">Vente directe</span></td>
+                <td class="t-val">23 Nov 2025</td>
+                <td class="t-amount t-neg">−€189</td>
+                <td><span class="status-pill st-dn">↩ Remboursé</span></td>
+              </tr>
+              <tr>
+                <td>
+                  <div class="tx-name">
+                    <div class="tx-icon" style="background:var(--amber-dim); color:var(--amber);">€</div>
+                    <div>
+                      <p class="tx-title">#TXN-8808</p>
+                      <p class="tx-sub">Commission partenaire</p>
+                    </div>
+                  </div>
+                </td>
+                <td class="t-client">Agence Boost</td>
+                <td><span class="source-badge" style="background:var(--amber-dim); color:var(--amber);">Partenariat</span></td>
+                <td class="t-val">21 Nov 2025</td>
+                <td class="t-amount t-pos">+€620</td>
+                <td><span class="status-pill st-up">✓ Payé</span></td>
+              </tr>
+              <tr>
+                <td>
+                  <div class="tx-name">
+                    <div class="tx-icon" style="background:var(--blue-dim); color:var(--blue);">€</div>
+                    <div>
+                      <p class="tx-title">#TXN-8801</p>
+                      <p class="tx-sub">Abonnement Pro</p>
+                    </div>
+                  </div>
+                </td>
+                <td class="t-client">Sophie Martin</td>
+                <td><span class="source-badge" style="background:var(--blue-dim); color:var(--blue);">Abonnement</span></td>
+                <td class="t-val">18 Nov 2025</td>
+                <td class="t-amount t-pos">+€89</td>
+                <td><span class="status-pill st-pending">⏳ En attente</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Colonne droite -->
+        <div class="right-col">
+
+          <!-- Objectifs mensuels -->
+          <div class="side-card">
+            <div class="card-header" style="margin-bottom:16px;">
+              <div>
+                <p class="card-title">Objectifs du mois</p>
+                <p class="card-subtitle">Novembre 2025</p>
+              </div>
+              <span class="obj-badge">4/5</span>
+            </div>
+            <div class="obj-list">
+
+              <div class="obj-item">
+                <div class="obj-header">
+                  <span class="obj-label">Revenu total</span>
+                  <span class="obj-vals"><span style="color:var(--green);">€284k</span> / €280k</span>
+                </div>
+                <div class="obj-track">
+                  <div class="obj-fill" style="width:100%; background:var(--green);"></div>
+                </div>
+                <div class="obj-footer">
+                  <span class="obj-pct" style="color:var(--green);">✓ Atteint — 101.6%</span>
+                </div>
+              </div>
+
+              <div class="obj-item">
+                <div class="obj-header">
+                  <span class="obj-label">Nouvelles ventes</span>
+                  <span class="obj-vals"><span style="color:var(--blue);">2,841</span> / 3,000</span>
+                </div>
+                <div class="obj-track">
+                  <div class="obj-fill" style="width:94.7%; background:var(--blue);"></div>
+                </div>
+                <div class="obj-footer">
+                  <span class="obj-pct" style="color:var(--muted);">94.7% — Il manque 159</span>
+                </div>
+              </div>
+
+              <div class="obj-item">
+                <div class="obj-header">
+                  <span class="obj-label">MRR</span>
+                  <span class="obj-vals"><span style="color:var(--green);">€89.4k</span> / €85k</span>
+                </div>
+                <div class="obj-track">
+                  <div class="obj-fill" style="width:100%; background:var(--green);"></div>
+                </div>
+                <div class="obj-footer">
+                  <span class="obj-pct" style="color:var(--green);">✓ Atteint — 105.2%</span>
+                </div>
+              </div>
+
+              <div class="obj-item">
+                <div class="obj-header">
+                  <span class="obj-label">Taux conversion</span>
+                  <span class="obj-vals"><span style="color:var(--amber);">3.82%</span> / 4.5%</span>
+                </div>
+                <div class="obj-track">
+                  <div class="obj-fill" style="width:84.9%; background:var(--amber);"></div>
+                </div>
+                <div class="obj-footer">
+                  <span class="obj-pct" style="color:var(--muted);">84.9% — En retard</span>
+                </div>
+              </div>
+
+              <div class="obj-item">
+                <div class="obj-header">
+                  <span class="obj-label">Panier moyen</span>
+                  <span class="obj-vals"><span style="color:var(--green);">€94.30</span> / €90</span>
+                </div>
+                <div class="obj-track">
+                  <div class="obj-fill" style="width:100%; background:var(--green);"></div>
+                </div>
+                <div class="obj-footer">
+                  <span class="obj-pct" style="color:var(--green);">✓ Atteint — 104.8%</span>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- Top pays par revenu -->
+          <div class="side-card">
+            <div class="card-header" style="margin-bottom:16px;">
+              <div>
+                <p class="card-title">Top marchés</p>
+                <p class="card-subtitle">Revenus par pays</p>
+              </div>
+            </div>
+            <div class="market-list">
+
+              <div class="market-item">
+                <span class="market-flag">🇫🇷</span>
+                <div class="market-info">
+                  <div class="market-header">
+                    <span class="market-name">France</span>
+                    <span class="market-val">€84,200</span>
+                  </div>
+                  <div class="gauge-track">
+                    <div class="gauge-fill" style="width:100%; background:var(--blue);"></div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="market-item">
+                <span class="market-flag">🇩🇪</span>
+                <div class="market-info">
+                  <div class="market-header">
+                    <span class="market-name">Allemagne</span>
+                    <span class="market-val">€61,380</span>
+                  </div>
+                  <div class="gauge-track">
+                    <div class="gauge-fill" style="width:73%; background:var(--violet);"></div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="market-item">
+                <span class="market-flag">🇬🇧</span>
+                <div class="market-info">
+                  <div class="market-header">
+                    <span class="market-name">Royaume-Uni</span>
+                    <span class="market-val">€49,100</span>
+                  </div>
+                  <div class="gauge-track">
+                    <div class="gauge-fill" style="width:58%; background:var(--green);"></div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="market-item">
+                <span class="market-flag">🇪🇸</span>
+                <div class="market-info">
+                  <div class="market-header">
+                    <span class="market-name">Espagne</span>
+                    <span class="market-val">€36,200</span>
+                  </div>
+                  <div class="gauge-track">
+                    <div class="gauge-fill" style="width:43%; background:var(--amber);"></div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- ── Date Picker ── -->
+  <div class="date-picker-popup" id="datePickerPopup" style="display:none;">
+    <div class="dp-header">Sélectionner une période</div>
+    <div class="dp-presets">
+      <button class="dp-preset active" data-days="30">30 derniers jours</button>
+      <button class="dp-preset" data-days="7">7 derniers jours</button>
+      <button class="dp-preset" data-days="90">90 derniers jours</button>
+      <button class="dp-preset" data-days="365">Cette année</button>
+    </div>
+    <div class="dp-custom">
+      <div class="dp-field"><label>Début</label><input type="date" id="dpStart" value="2025-11-01"/></div>
+      <div class="dp-field"><label>Fin</label><input type="date" id="dpEnd" value="2025-11-30"/></div>
+    </div>
+    <div class="dp-footer">
+      <button class="dp-cancel" id="dpCancel">Annuler</button>
+      <button class="dp-apply" id="dpApply">Appliquer</button>
+    </div>
+  </div>
+
+  <!-- ── Modal Nouvelle transaction ── -->
+  <div class="modal-overlay" id="transactionModal" style="display:none;">
+    <div class="modal">
+      <div class="modal-header">
+        <p class="modal-title">Nouvelle transaction</p>
+        <button class="modal-close" id="transactionClose">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="modal-field">
+          <label>Description</label>
+          <input type="text" class="modal-input" id="txDescription" placeholder="Ex : Abonnement Enterprise"/>
+        </div>
+        <div class="modal-field">
+          <label>Montant (€)</label>
+          <input type="number" class="modal-input" id="txMontant" placeholder="0.00" min="0" step="0.01"/>
+        </div>
+        <div class="modal-field">
+          <label>Type</label>
+          <div class="modal-radio-group">
+            <label class="modal-radio"><input type="radio" name="txType" value="Entrée" checked/> Entrée</label>
+            <label class="modal-radio"><input type="radio" name="txType" value="Remboursement"/> Remboursement</label>
+          </div>
+        </div>
+        <div class="modal-field">
+          <label>Source</label>
+          <select class="modal-select" id="txSource">
+            <option>Abonnement</option>
+            <option>Marketplace</option>
+            <option>API</option>
+            <option>Services</option>
+            <option>Autre</option>
+          </select>
+        </div>
+        <div class="modal-field">
+          <label>Date</label>
+          <input type="date" class="modal-input" id="txDate"/>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="tb-btn ghost" id="transactionCancelBtn">Annuler</button>
+        <button class="tb-btn primary" id="transactionCreateBtn">Enregistrer</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Toast ── -->
+  <div class="toast-notif" id="toastNotif"></div>
+
+  <script src="app.js"></script>
+<script>
+/* ============================================
+   NEXUS — sidebar.js  v4
+   Compatible file:// — pas de localStorage cross-dossier
+   Stratégie : cookie-like via document.cookie (partagé par domaine/chemin)
+   + fallback paramètre URL
+   ============================================ */
+
+(function () {
+
+  /* ════════════════════════════════════════
+     PROFIL — stockage via cookie (fonctionne en file://)
+     ════════════════════════════════════════ */
+
+  function saveProfile(data) {
+    // Stocker dans TOUS les localStorage possibles + cookie
+    const json = JSON.stringify(data);
+    try { localStorage.setItem('nexus_profile', json); } catch(e){}
+    try { sessionStorage.setItem('nexus_profile', json); } catch(e){}
+    // Cookie lisible par tous les sous-dossiers du même domaine
+    try {
+      document.cookie = 'nexus_profile=' + encodeURIComponent(json) + '; path=/; max-age=31536000';
+    } catch(e){}
+  }
+
+  function loadProfile() {
+    // 1. Essayer localStorage
+    try {
+      const raw = localStorage.getItem('nexus_profile');
+      if (raw) { const p = JSON.parse(raw); if (p && p.prenom) return p; }
+    } catch(e){}
+
+    // 2. Essayer sessionStorage
+    try {
+      const raw = sessionStorage.getItem('nexus_profile');
+      if (raw) { const p = JSON.parse(raw); if (p && p.prenom) return p; }
+    } catch(e){}
+
+    // 3. Essayer cookie
+    try {
+      const match = document.cookie.match(/nexus_profile=([^;]+)/);
+      if (match) {
+        const p = JSON.parse(decodeURIComponent(match[1]));
+        if (p && p.prenom) return p;
+      }
+    } catch(e){}
+
+    // 4. Défauts
+    return { prenom: 'Jean', nom: 'Dupont', email: 'jean.dupont@nexus.io' };
+  }
+
+  function saveAvatar(dataUrl) {
+    try { localStorage.setItem('nexus_avatar', dataUrl); } catch(e){}
+    try { sessionStorage.setItem('nexus_avatar', dataUrl); } catch(e){}
+    // Cookie trop grand pour une image — on garde juste un flag
+    try { document.cookie = 'nexus_has_avatar=1; path=/; max-age=31536000'; } catch(e){}
+  }
+
+  function loadAvatar() {
+    try {
+      const v = localStorage.getItem('nexus_avatar');
+      if (v) return v;
+    } catch(e){}
+    try {
+      const v = sessionStorage.getItem('nexus_avatar');
+      if (v) return v;
+    } catch(e){}
+    return null;
+  }
+
+  function getInitials(p) {
+    return (((p.prenom||'').charAt(0)) + ((p.nom||'').charAt(0))).toUpperCase() || 'JD';
+  }
+
+  function getFullName(p) {
+    return [(p.prenom||'').trim(),(p.nom||'').trim()].filter(Boolean).join(' ') || 'Utilisateur';
+  }
+
+  /* ════════════════════════════════════════
+     NAVIGATION
+     ════════════════════════════════════════ */
+  const PAGE_MAP = {
+    "Vue d'ensemble": "../Vue d'ensemble/index.html",
+    "Analytique":     "../Analytique/index.html",
+    "Rapports":       "../Rapports/index.html",
+    "Campagnes":      "../Campagnes/index.html",
+    "Revenus":        "../Revenus/index.html",
+    "Clients":        "../Clients/index.html",
+    "Produits":       "../Produits/index.html",
+    "Commandes":      "../Commandes/index.html",
+    "Performance":    "../Performance/index.html",
+    "Logs":           "../Logs/index.html",
+    "Param\u00e8tres":"../Param\u00e8tres/index.html",
+  };
+
+  const NAV = [
+    { label:'Principal', items:[
+      { name:"Vue d'ensemble", icon:'◈' },
+      { name:'Analytique', icon:'◫', badge:'NEW' },
+      { name:'Rapports', icon:'◉' },
+      { name:'Campagnes', icon:'▤' },
+    ]},
+    { label:'Commerce', items:[
+      { name:'Revenus', icon:'◈' },
+      { name:'Clients', icon:'⊞' },
+      { name:'Produits', icon:'◧' },
+      { name:'Commandes', icon:'◈' },
+    ]},
+    { label:'Syst\u00e8me', items:[
+      { name:'Performance', icon:'◩' },
+      { name:'Logs', icon:'◈' },
+      { name:'Param\u00e8tres', icon:'◧' },
+    ]},
+  ];
+
+  function getActivePage() {
+    const parts = window.location.pathname.split('/');
+    for (let i = parts.length - 1; i >= 0; i--) {
+      const seg = decodeURIComponent(parts[i]);
+      if (seg && seg !== 'index.html') return seg;
+    }
+    // Fallback sur le titre de la page (utile en file://)
+    return document.title.replace(/^NEXUS\s*[—-]\s*/i, '').trim();
+  }
+
+  /* ════════════════════════════════════════
+     BUILD + INJECT
+     ════════════════════════════════════════ */
+  function buildHTML(profile) {
+    const active = getActivePage();
+    const ini  = getInitials(profile);
+    const name = getFullName(profile);
+    let sections = '';
+    NAV.forEach(function(sec) {
+      let items = '';
+      sec.items.forEach(function(item) {
+        const isActive = decodeURIComponent(active) === item.name || active === item.name;
+        const badge = item.badge ? '<span class="sb-badge">'+item.badge+'</span>' : '';
+        items += '<a href="'+(PAGE_MAP[item.name]||'#')+'" class="sb-item'+(isActive?' active':'')+'"><span class="sb-icon">'+item.icon+'</span> '+item.name+badge+'</a>';
+      });
+      sections += '<div class="sb-section"><p class="sb-section-label">'+sec.label+'</p>'+items+'</div>';
+    });
+    return '<div class="sb-logo"><div class="logo-icon">Nx</div><span class="logo-text">Nexus</span></div>'
+      + sections
+      + '<div class="sb-bottom"><div class="sb-user"><div class="user-av" id="sidebarAv">'+ini+'</div><div><p class="user-name" id="sidebarName">'+name+'</p><p class="user-plan">Pro &middot; Admin</p></div></div></div>';
+  }
+
+  function applyAvatar() {
+    const photo = loadAvatar();
+    const av = document.getElementById('sidebarAv');
+    if (!av || !photo) return;
+    av.textContent = '';
+    av.style.backgroundImage = 'url('+photo+')';
+    av.style.backgroundSize = 'cover';
+    av.style.backgroundPosition = 'center';
+  }
+
+  function inject() {
+    const sidebar = document.querySelector('aside.sidebar');
+    if (!sidebar) return;
+    sidebar.innerHTML = buildHTML(loadProfile());
+    applyAvatar();
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', inject);
+  } else {
+    inject();
+  }
+
+  /* ════════════════════════════════════════
+     API PUBLIQUE
+     ════════════════════════════════════════ */
+  window.NexusSidebar = {
+    updateDisplay: function(prenom, nom) {
+      const av = document.getElementById('sidebarAv');
+      const nm = document.getElementById('sidebarName');
+      if (av && !loadAvatar()) av.textContent = getInitials({prenom:prenom,nom:nom});
+      if (nm) nm.textContent = getFullName({prenom:prenom,nom:nom});
+    },
+    saveProfile: function(prenom, nom, email) {
+      saveProfile({prenom:prenom, nom:nom, email:email});
+      this.updateDisplay(prenom, nom);
+    },
+    saveAvatar: saveAvatar,
+    getProfile: loadProfile,
+    refresh: inject,
+  };
+
+})();
+
+</script>
+</body>
+</html>

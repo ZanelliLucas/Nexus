@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NEXUS — Rapports</title>
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500&family=Inter:wght@300;400;500;600&display=swap"
+    rel="stylesheet"
+  >
+
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- ==========================================
+       SIDEBAR
+       ========================================== -->
+  <aside class="sidebar"></aside>
+
+
+  <!-- ==========================================
+       MAIN
+       ========================================== -->
+  <div class="main">
+
+    <!-- Topbar -->
+    <div class="topbar">
+      <div class="tb-left">
+        <div>
+          <p class="page-title">Rapports</p>
+          <p class="page-sub">Génération et suivi de vos rapports</p>
+        </div>
+      </div>
+      <div class="tb-right">
+        <div class="date-range" id="dateRangeBtn">
+          📅 <span id="dateRangeLabel">Nov 1 — Nov 30, 2025</span> ▾
+        </div>
+        <button class="tb-btn ghost" id="exportBtn">↓ Tout exporter</button>
+        <button class="tb-btn primary" id="rapportBtn">+ Nouveau rapport</button>
+      </div>
+    </div>
+
+
+    <div class="content">
+
+      <!-- ---- KPI Cards ---- -->
+      <div class="kpi-row">
+
+        <div class="kpi-card">
+          <div class="kpi-header">
+            <span class="kpi-label">Rapports générés</span>
+            <div class="kpi-icon" style="background:var(--blue-dim); color:var(--blue);">◉</div>
+          </div>
+          <div class="kpi-value">1,284</div>
+          <div class="kpi-delta">
+            <span class="delta-up">↑ 9.3%</span>
+            <span class="delta-text">vs mois dernier</span>
+          </div>
+          <div class="sparkline">
+            <svg class="spark-svg" viewBox="0 0 120 36" preserveAspectRatio="none">
+              <defs>
+                <linearGradient id="sg1" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%"   stop-color="#3B82F6" stop-opacity=".3"/>
+                  <stop offset="100%" stop-color="#3B82F6" stop-opacity="0"/>
+                </linearGradient>
+              </defs>
+              <path d="M0,28 L15,24 L30,26 L45,16 L60,18 L75,10 L90,13 L105,6 L120,4"
+                    fill="none" stroke="#3B82F6" stroke-width="1.5"/>
+              <path d="M0,28 L15,24 L30,26 L45,16 L60,18 L75,10 L90,13 L105,6 L120,4 L120,36 L0,36Z"
+                    fill="url(#sg1)"/>
+            </svg>
+          </div>
+        </div>
+
+        <div class="kpi-card">
+          <div class="kpi-header">
+            <span class="kpi-label">Rapports planifiés</span>
+            <div class="kpi-icon" style="background:var(--violet-dim); color:var(--violet);">⏰</div>
+          </div>
+          <div class="kpi-value">47</div>
+          <div class="kpi-delta">
+            <span class="delta-up">↑ 4</span>
+            <span class="delta-text">nouveaux ce mois</span>
+          </div>
+          <div class="sparkline">
+            <svg class="spark-svg" viewBox="0 0 120 36" preserveAspectRatio="none">
+              <defs>
+                <linearGradient id="sg2" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%"   stop-color="#8B5CF6" stop-opacity=".3"/>
+                  <stop offset="100%" stop-color="#8B5CF6" stop-opacity="0"/>
+                </linearGradient>
+              </defs>
+              <path d="M0,22 L15,20 L30,18 L45,16 L60,20 L75,14 L90,12 L105,10 L120,8"
+                    fill="none" stroke="#8B5CF6" stroke-width="1.5"/>
+              <path d="M0,22 L15,20 L30,18 L45,16 L60,20 L75,14 L90,12 L105,10 L120,8 L120,36 L0,36Z"
+                    fill="url(#sg2)"/>
+            </svg>
+          </div>
+        </div>
+
+        <div class="kpi-card">
+          <div class="kpi-header">
+            <span class="kpi-label">Taux de livraison</span>
+            <div class="kpi-icon" style="background:var(--green-dim); color:var(--green);">✓</div>
+          </div>
+          <div class="kpi-value">98.7%</div>
+          <div class="kpi-delta">
+            <span class="delta-up">↑ 0.4%</span>
+            <span class="delta-text">vs mois dernier</span>
+          </div>
+          <div class="sparkline">
+            <svg class="spark-svg" viewBox="0 0 120 36" preserveAspectRatio="none">
+              <defs>
+                <linearGradient id="sg3" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%"   stop-color="#22C55E" stop-opacity=".3"/>
+                  <stop offset="100%" stop-color="#22C55E" stop-opacity="0"/>
+                </linearGradient>
+              </defs>
+              <path d="M0,16 L15,14 L30,16 L45,12 L60,10 L75,8 L90,10 L105,7 L120,5"
+                    fill="none" stroke="#22C55E" stroke-width="1.5"/>
+              <path d="M0,16 L15,14 L30,16 L45,12 L60,10 L75,8 L90,10 L105,7 L120,5 L120,36 L0,36Z"
+                    fill="url(#sg3)"/>
+            </svg>
+          </div>
+        </div>
+
+        <div class="kpi-card">
+          <div class="kpi-header">
+            <span class="kpi-label">Erreurs de génération</span>
+            <div class="kpi-icon" style="background:var(--red-dim); color:var(--red);">⚠</div>
+          </div>
+          <div class="kpi-value">17</div>
+          <div class="kpi-delta">
+            <span class="delta-down">↓ 8</span>
+            <span class="delta-text">amélioration</span>
+          </div>
+          <div class="sparkline">
+            <svg class="spark-svg" viewBox="0 0 120 36" preserveAspectRatio="none">
+              <defs>
+                <linearGradient id="sg4" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%"   stop-color="#EF4444" stop-opacity=".3"/>
+                  <stop offset="100%" stop-color="#EF4444" stop-opacity="0"/>
+                </linearGradient>
+              </defs>
+              <path d="M0,8 L15,12 L30,10 L45,16 L60,14 L75,20 L90,18 L105,22 L120,24"
+                    fill="none" stroke="#EF4444" stroke-width="1.5"/>
+              <path d="M0,8 L15,12 L30,10 L45,16 L60,14 L75,20 L90,18 L105,22 L120,24 L120,36 L0,36Z"
+                    fill="url(#sg4)"/>
+            </svg>
+          </div>
+        </div>
+
+      </div>
+
+
+      <!-- ---- Ligne milieu : Activité + Types ---- -->
+      <div class="mid-row">
+
+        <!-- Graphique génération de rapports -->
+        <div class="chart-card">
+          <div class="card-header">
+            <div>
+              <p class="card-title">Activité de génération</p>
+              <p class="card-subtitle">Rapports créés par jour</p>
+            </div>
+            <div class="chart-tabs">
+              <span class="chart-tab active">7J</span>
+              <span class="chart-tab">30J</span>
+              <span class="chart-tab">90J</span>
+            </div>
+          </div>
+          <div class="bar-chart" id="rapportsChart"></div>
+          <div class="chart-legend">
+            <span class="cl-item">
+              <span class="cl-dot" style="background:var(--blue);"></span>Générés
+            </span>
+            <span class="cl-item">
+              <span class="cl-dot" style="background:rgba(59,130,246,0.3);"></span>Planifiés
+            </span>
+          </div>
+        </div>
+
+        <!-- Types de rapports -->
+        <div class="chart-card">
+          <div class="card-header">
+            <div>
+              <p class="card-title">Types de rapports</p>
+              <p class="card-subtitle">Répartition ce mois</p>
+            </div>
+          </div>
+          <div class="donut-wrap">
+            <div class="donut-svg-wrap">
+              <svg class="donut-svg" viewBox="0 0 120 120">
+                <circle cx="60" cy="60" r="45" fill="none" stroke="#3B82F6"
+                        stroke-width="18" stroke-dasharray="113 169" stroke-dashoffset="0"/>
+                <circle cx="60" cy="60" r="45" fill="none" stroke="#8B5CF6"
+                        stroke-width="18" stroke-dasharray="79 203" stroke-dashoffset="-113"/>
+                <circle cx="60" cy="60" r="45" fill="none" stroke="#22C55E"
+                        stroke-width="18" stroke-dasharray="57 225" stroke-dashoffset="-192"/>
+                <circle cx="60" cy="60" r="45" fill="none" stroke="#F59E0B"
+                        stroke-width="18" stroke-dasharray="34 248" stroke-dashoffset="-249"/>
+              </svg>
+              <div class="donut-center">
+                <p class="donut-val">1,284</p>
+                <p class="donut-lbl">total</p>
+              </div>
+            </div>
+            <div class="donut-legend">
+              <div class="legend-item">
+                <div class="legend-dot" style="background:#3B82F6;"></div>
+                <span class="legend-name">Ventes</span>
+                <div class="legend-bar"><div class="legend-fill" style="width:40%; background:#3B82F6;"></div></div>
+                <span class="legend-pct">40%</span>
+              </div>
+              <div class="legend-item">
+                <div class="legend-dot" style="background:#8B5CF6;"></div>
+                <span class="legend-name">Analytique</span>
+                <div class="legend-bar"><div class="legend-fill" style="width:28%; background:#8B5CF6;"></div></div>
+                <span class="legend-pct">28%</span>
+              </div>
+              <div class="legend-item">
+                <div class="legend-dot" style="background:#22C55E;"></div>
+                <span class="legend-name">Performance</span>
+                <div class="legend-bar"><div class="legend-fill" style="width:20%; background:#22C55E;"></div></div>
+                <span class="legend-pct">20%</span>
+              </div>
+              <div class="legend-item">
+                <div class="legend-dot" style="background:#F59E0B;"></div>
+                <span class="legend-name">Personnalisé</span>
+                <div class="legend-bar"><div class="legend-fill" style="width:12%; background:#F59E0B;"></div></div>
+                <span class="legend-pct">12%</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+
+      <!-- ---- Tableau rapports récents + Planifiés ---- -->
+      <div class="bot-row">
+
+        <!-- Tableau rapports récents -->
+        <div class="table-card">
+          <div class="tc-head card-header">
+            <div>
+              <p class="card-title">Rapports récents</p>
+              <p class="card-subtitle">30 derniers jours</p>
+            </div>
+            <div style="display:flex; gap:8px;">
+              <button class="tb-btn ghost" style="font-size:11px;">🔍 Filtrer</button>
+              <button class="tb-btn ghost" style="font-size:11px;">Voir tout</button>
+            </div>
+          </div>
+          <table>
+            <thead>
+              <tr>
+                <th>Nom du rapport</th>
+                <th>Type</th>
+                <th>Créé par</th>
+                <th>Date</th>
+                <th>Taille</th>
+                <th>Statut</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <div class="report-name">
+                    <div class="report-icon" style="background:var(--blue-dim); color:var(--blue);">📊</div>
+                    <span>Rapport ventes Nov. 2025</span>
+                  </div>
+                </td>
+                <td><span class="type-badge" style="background:var(--blue-dim); color:var(--blue);">Ventes</span></td>
+                <td class="t-author">Jean D.</td>
+                <td class="t-val">28 Nov 2025</td>
+                <td class="t-val">2.4 MB</td>
+                <td><span class="status-pill st-up">✓ Livré</span></td>
+              </tr>
+              <tr>
+                <td>
+                  <div class="report-name">
+                    <div class="report-icon" style="background:var(--violet-dim); color:var(--violet);">📈</div>
+                    <span>Analyse trafic Q4</span>
+                  </div>
+                </td>
+                <td><span class="type-badge" style="background:var(--violet-dim); color:var(--violet);">Analytique</span></td>
+                <td class="t-author">Marie L.</td>
+                <td class="t-val">25 Nov 2025</td>
+                <td class="t-val">5.1 MB</td>
+                <td><span class="status-pill st-up">✓ Livré</span></td>
+              </tr>
+              <tr>
+                <td>
+                  <div class="report-name">
+                    <div class="report-icon" style="background:var(--green-dim); color:var(--green);">⚡</div>
+                    <span>Performance serveurs Oct.</span>
+                  </div>
+                </td>
+                <td><span class="type-badge" style="background:var(--green-dim); color:var(--green);">Performance</span></td>
+                <td class="t-author">Alex T.</td>
+                <td class="t-val">22 Nov 2025</td>
+                <td class="t-val">1.8 MB</td>
+                <td><span class="status-pill st-up">✓ Livré</span></td>
+              </tr>
+              <tr>
+                <td>
+                  <div class="report-name">
+                    <div class="report-icon" style="background:var(--amber-dim); color:var(--amber);">📋</div>
+                    <span>Rapport personnalisé clients</span>
+                  </div>
+                </td>
+                <td><span class="type-badge" style="background:var(--amber-dim); color:var(--amber);">Personnalisé</span></td>
+                <td class="t-author">Sophie M.</td>
+                <td class="t-val">20 Nov 2025</td>
+                <td class="t-val">3.7 MB</td>
+                <td><span class="status-pill st-pending">⏳ En cours</span></td>
+              </tr>
+              <tr>
+                <td>
+                  <div class="report-name">
+                    <div class="report-icon" style="background:var(--blue-dim); color:var(--blue);">📊</div>
+                    <span>Bilan mensuel Oct. 2025</span>
+                  </div>
+                </td>
+                <td><span class="type-badge" style="background:var(--blue-dim); color:var(--blue);">Ventes</span></td>
+                <td class="t-author">Jean D.</td>
+                <td class="t-val">18 Nov 2025</td>
+                <td class="t-val">4.2 MB</td>
+                <td><span class="status-pill st-up">✓ Livré</span></td>
+              </tr>
+              <tr>
+                <td>
+                  <div class="report-name">
+                    <div class="report-icon" style="background:var(--red-dim); color:var(--red);">⚠</div>
+                    <span>Rapport anomalies système</span>
+                  </div>
+                </td>
+                <td><span class="type-badge" style="background:var(--violet-dim); color:var(--violet);">Analytique</span></td>
+                <td class="t-author">Alex T.</td>
+                <td class="t-val">15 Nov 2025</td>
+                <td class="t-val">0.9 MB</td>
+                <td><span class="status-pill st-dn">✕ Erreur</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Colonne droite -->
+        <div class="right-col">
+
+          <!-- Rapports planifiés -->
+          <div class="side-card">
+            <div class="card-header" style="margin-bottom:16px;">
+              <div>
+                <p class="card-title">Planifiés</p>
+                <p class="card-subtitle">Prochaines générations</p>
+              </div>
+              <span class="count-badge">47</span>
+            </div>
+            <div class="scheduled-list">
+
+              <div class="scheduled-item">
+                <div class="scheduled-left">
+                  <div class="sched-dot" style="background:var(--blue);"></div>
+                  <div>
+                    <p class="sched-name">Rapport ventes hebdo</p>
+                    <p class="sched-freq">Chaque lundi · 08h00</p>
+                  </div>
+                </div>
+                <span class="sched-next">Dans 2j</span>
+              </div>
+
+              <div class="scheduled-item">
+                <div class="scheduled-left">
+                  <div class="sched-dot" style="background:var(--violet);"></div>
+                  <div>
+                    <p class="sched-name">Analyse trafic mensuelle</p>
+                    <p class="sched-freq">1er du mois · 07h00</p>
+                  </div>
+                </div>
+                <span class="sched-next">Dans 3j</span>
+              </div>
+
+              <div class="scheduled-item">
+                <div class="scheduled-left">
+                  <div class="sched-dot" style="background:var(--green);"></div>
+                  <div>
+                    <p class="sched-name">Performance quotidienne</p>
+                    <p class="sched-freq">Chaque jour · 06h30</p>
+                  </div>
+                </div>
+                <span class="sched-next" style="color:var(--green);">Demain</span>
+              </div>
+
+              <div class="scheduled-item">
+                <div class="scheduled-left">
+                  <div class="sched-dot" style="background:var(--amber);"></div>
+                  <div>
+                    <p class="sched-name">Bilan clients trimestriel</p>
+                    <p class="sched-freq">Chaque trimestre</p>
+                  </div>
+                </div>
+                <span class="sched-next">Dans 28j</span>
+              </div>
+
+              <div class="scheduled-item">
+                <div class="scheduled-left">
+                  <div class="sched-dot" style="background:var(--cyan);"></div>
+                  <div>
+                    <p class="sched-name">Rapport commandes</p>
+                    <p class="sched-freq">Chaque vendredi · 17h00</p>
+                  </div>
+                </div>
+                <span class="sched-next">Dans 5j</span>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- Destinataires top -->
+          <div class="side-card">
+            <div class="card-header" style="margin-bottom:16px;">
+              <div>
+                <p class="card-title">Top destinataires</p>
+                <p class="card-subtitle">Rapports reçus ce mois</p>
+              </div>
+            </div>
+            <div class="recipients-list">
+
+              <div class="recipient-item">
+                <div class="recip-av" style="background: linear-gradient(135deg, #3B82F6, #8B5CF6);">JD</div>
+                <div class="recip-info">
+                  <p class="recip-name">Jean Dupont</p>
+                  <div class="gauge-track" style="margin-top:4px;">
+                    <div class="gauge-fill" style="width:100%; background:var(--blue);"></div>
+                  </div>
+                </div>
+                <span class="recip-count">284</span>
+              </div>
+
+              <div class="recipient-item">
+                <div class="recip-av" style="background: linear-gradient(135deg, #8B5CF6, #EC4899);">ML</div>
+                <div class="recip-info">
+                  <p class="recip-name">Marie Laurent</p>
+                  <div class="gauge-track" style="margin-top:4px;">
+                    <div class="gauge-fill" style="width:72%; background:var(--violet);"></div>
+                  </div>
+                </div>
+                <span class="recip-count">204</span>
+              </div>
+
+              <div class="recipient-item">
+                <div class="recip-av" style="background: linear-gradient(135deg, #22C55E, #06B6D4);">AT</div>
+                <div class="recip-info">
+                  <p class="recip-name">Alex Thomas</p>
+                  <div class="gauge-track" style="margin-top:4px;">
+                    <div class="gauge-fill" style="width:54%; background:var(--green);"></div>
+                  </div>
+                </div>
+                <span class="recip-count">153</span>
+              </div>
+
+              <div class="recipient-item">
+                <div class="recip-av" style="background: linear-gradient(135deg, #F59E0B, #EF4444);">SM</div>
+                <div class="recip-info">
+                  <p class="recip-name">Sophie Martin</p>
+                  <div class="gauge-track" style="margin-top:4px;">
+                    <div class="gauge-fill" style="width:38%; background:var(--amber);"></div>
+                  </div>
+                </div>
+                <span class="recip-count">108</span>
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <div class="date-picker-popup" id="datePickerPopup" style="display:none;">
+    <div class="dp-header">Sélectionner une période</div>
+    <div class="dp-presets">
+      <button class="dp-preset active" data-days="30">30 derniers jours</button>
+      <button class="dp-preset" data-days="7">7 derniers jours</button>
+      <button class="dp-preset" data-days="90">90 derniers jours</button>
+      <button class="dp-preset" data-days="365">Cette année</button>
+    </div>
+    <div class="dp-custom">
+      <div class="dp-field"><label>Début</label><input type="date" id="dpStart" value="2025-11-01"/></div>
+      <div class="dp-field"><label>Fin</label><input type="date" id="dpEnd" value="2025-11-30"/></div>
+    </div>
+    <div class="dp-footer">
+      <button class="dp-cancel" id="dpCancel">Annuler</button>
+      <button class="dp-apply" id="dpApply">Appliquer</button>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="rapportModal" style="display:none;">
+    <div class="modal">
+      <div class="modal-header">
+        <p class="modal-title">Nouveau rapport</p>
+        <button class="modal-close" id="rapportClose">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="modal-field">
+          <label>Nom du rapport</label>
+          <input type="text" class="modal-input" id="rapportNom" value="Rapport Novembre 2025"/>
+        </div>
+        <div class="modal-field">
+          <label>Type</label>
+          <select class="modal-select" id="rapportType">
+            <option>Résumé exécutif</option>
+            <option>Analytique complet</option>
+            <option>Performance commerciale</option>
+            <option>Rapport personnalisé</option>
+          </select>
+        </div>
+        <div class="modal-field">
+          <label>Format</label>
+          <div class="modal-radio-group">
+            <label class="modal-radio"><input type="radio" name="fmt" value="PDF" checked/> PDF</label>
+            <label class="modal-radio"><input type="radio" name="fmt" value="Excel"/> Excel</label>
+            <label class="modal-radio"><input type="radio" name="fmt" value="CSV"/> CSV</label>
+          </div>
+        </div>
+        <div class="modal-field">
+          <label>Planifier</label>
+          <select class="modal-select" id="rapportSchedule">
+            <option>Une seule fois</option>
+            <option>Quotidien</option>
+            <option>Hebdomadaire</option>
+            <option>Mensuel</option>
+          </select>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="tb-btn ghost" id="rapportCancelBtn">Annuler</button>
+        <button class="tb-btn primary" id="rapportGenBtn">Créer le rapport</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast-notif" id="toastNotif"></div>
+
+  <script src="app.js"></script>
+<script>
+/* ============================================
+   NEXUS — sidebar.js  v4
+   Compatible file:// — pas de localStorage cross-dossier
+   Stratégie : cookie-like via document.cookie (partagé par domaine/chemin)
+   + fallback paramètre URL
+   ============================================ */
+
+(function () {
+
+  /* ════════════════════════════════════════
+     PROFIL — stockage via cookie (fonctionne en file://)
+     ════════════════════════════════════════ */
+
+  function saveProfile(data) {
+    // Stocker dans TOUS les localStorage possibles + cookie
+    const json = JSON.stringify(data);
+    try { localStorage.setItem('nexus_profile', json); } catch(e){}
+    try { sessionStorage.setItem('nexus_profile', json); } catch(e){}
+    // Cookie lisible par tous les sous-dossiers du même domaine
+    try {
+      document.cookie = 'nexus_profile=' + encodeURIComponent(json) + '; path=/; max-age=31536000';
+    } catch(e){}
+  }
+
+  function loadProfile() {
+    // 1. Essayer localStorage
+    try {
+      const raw = localStorage.getItem('nexus_profile');
+      if (raw) { const p = JSON.parse(raw); if (p && p.prenom) return p; }
+    } catch(e){}
+
+    // 2. Essayer sessionStorage
+    try {
+      const raw = sessionStorage.getItem('nexus_profile');
+      if (raw) { const p = JSON.parse(raw); if (p && p.prenom) return p; }
+    } catch(e){}
+
+    // 3. Essayer cookie
+    try {
+      const match = document.cookie.match(/nexus_profile=([^;]+)/);
+      if (match) {
+        const p = JSON.parse(decodeURIComponent(match[1]));
+        if (p && p.prenom) return p;
+      }
+    } catch(e){}
+
+    // 4. Défauts
+    return { prenom: 'Jean', nom: 'Dupont', email: 'jean.dupont@nexus.io' };
+  }
+
+  function saveAvatar(dataUrl) {
+    try { localStorage.setItem('nexus_avatar', dataUrl); } catch(e){}
+    try { sessionStorage.setItem('nexus_avatar', dataUrl); } catch(e){}
+    // Cookie trop grand pour une image — on garde juste un flag
+    try { document.cookie = 'nexus_has_avatar=1; path=/; max-age=31536000'; } catch(e){}
+  }
+
+  function loadAvatar() {
+    try {
+      const v = localStorage.getItem('nexus_avatar');
+      if (v) return v;
+    } catch(e){}
+    try {
+      const v = sessionStorage.getItem('nexus_avatar');
+      if (v) return v;
+    } catch(e){}
+    return null;
+  }
+
+  function getInitials(p) {
+    return (((p.prenom||'').charAt(0)) + ((p.nom||'').charAt(0))).toUpperCase() || 'JD';
+  }
+
+  function getFullName(p) {
+    return [(p.prenom||'').trim(),(p.nom||'').trim()].filter(Boolean).join(' ') || 'Utilisateur';
+  }
+
+  /* ════════════════════════════════════════
+     NAVIGATION
+     ════════════════════════════════════════ */
+  const PAGE_MAP = {
+    "Vue d'ensemble": "../Vue d'ensemble/index.html",
+    "Analytique":     "../Analytique/index.html",
+    "Rapports":       "../Rapports/index.html",
+    "Campagnes":      "../Campagnes/index.html",
+    "Revenus":        "../Revenus/index.html",
+    "Clients":        "../Clients/index.html",
+    "Produits":       "../Produits/index.html",
+    "Commandes":      "../Commandes/index.html",
+    "Performance":    "../Performance/index.html",
+    "Logs":           "../Logs/index.html",
+    "Param\u00e8tres":"../Param\u00e8tres/index.html",
+  };
+
+  const NAV = [
+    { label:'Principal', items:[
+      { name:"Vue d'ensemble", icon:'◈' },
+      { name:'Analytique', icon:'◫', badge:'NEW' },
+      { name:'Rapports', icon:'◉' },
+      { name:'Campagnes', icon:'▤' },
+    ]},
+    { label:'Commerce', items:[
+      { name:'Revenus', icon:'◈' },
+      { name:'Clients', icon:'⊞' },
+      { name:'Produits', icon:'◧' },
+      { name:'Commandes', icon:'◈' },
+    ]},
+    { label:'Syst\u00e8me', items:[
+      { name:'Performance', icon:'◩' },
+      { name:'Logs', icon:'◈' },
+      { name:'Param\u00e8tres', icon:'◧' },
+    ]},
+  ];
+
+  function getActivePage() {
+    const parts = window.location.pathname.split('/');
+    for (let i = parts.length - 1; i >= 0; i--) {
+      const seg = decodeURIComponent(parts[i]);
+      if (seg && seg !== 'index.html') return seg;
+    }
+    // Fallback sur le titre de la page (utile en file://)
+    return document.title.replace(/^NEXUS\s*[—-]\s*/i, '').trim();
+  }
+
+  /* ════════════════════════════════════════
+     BUILD + INJECT
+     ════════════════════════════════════════ */
+  function buildHTML(profile) {
+    const active = getActivePage();
+    const ini  = getInitials(profile);
+    const name = getFullName(profile);
+    let sections = '';
+    NAV.forEach(function(sec) {
+      let items = '';
+      sec.items.forEach(function(item) {
+        const isActive = decodeURIComponent(active) === item.name || active === item.name;
+        const badge = item.badge ? '<span class="sb-badge">'+item.badge+'</span>' : '';
+        items += '<a href="'+(PAGE_MAP[item.name]||'#')+'" class="sb-item'+(isActive?' active':'')+'"><span class="sb-icon">'+item.icon+'</span> '+item.name+badge+'</a>';
+      });
+      sections += '<div class="sb-section"><p class="sb-section-label">'+sec.label+'</p>'+items+'</div>';
+    });
+    return '<div class="sb-logo"><div class="logo-icon">Nx</div><span class="logo-text">Nexus</span></div>'
+      + sections
+      + '<div class="sb-bottom"><div class="sb-user"><div class="user-av" id="sidebarAv">'+ini+'</div><div><p class="user-name" id="sidebarName">'+name+'</p><p class="user-plan">Pro &middot; Admin</p></div></div></div>';
+  }
+
+  function applyAvatar() {
+    const photo = loadAvatar();
+    const av = document.getElementById('sidebarAv');
+    if (!av || !photo) return;
+    av.textContent = '';
+    av.style.backgroundImage = 'url('+photo+')';
+    av.style.backgroundSize = 'cover';
+    av.style.backgroundPosition = 'center';
+  }
+
+  function inject() {
+    const sidebar = document.querySelector('aside.sidebar');
+    if (!sidebar) return;
+    sidebar.innerHTML = buildHTML(loadProfile());
+    applyAvatar();
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', inject);
+  } else {
+    inject();
+  }
+
+  /* ════════════════════════════════════════
+     API PUBLIQUE
+     ════════════════════════════════════════ */
+  window.NexusSidebar = {
+    updateDisplay: function(prenom, nom) {
+      const av = document.getElementById('sidebarAv');
+      const nm = document.getElementById('sidebarName');
+      if (av && !loadAvatar()) av.textContent = getInitials({prenom:prenom,nom:nom});
+      if (nm) nm.textContent = getFullName({prenom:prenom,nom:nom});
+    },
+    saveProfile: function(prenom, nom, email) {
+      saveProfile({prenom:prenom, nom:nom, email:email});
+      this.updateDisplay(prenom, nom);
+    },
+    saveAvatar: saveAvatar,
+    getProfile: loadProfile,
+    refresh: inject,
+  };
+
+})();
+
+</script>
+</body>
+</html>

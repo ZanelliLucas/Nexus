@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NEXUS — Produits</title>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <aside class="sidebar"></aside>
+
+  <div class="main">
+
+    <div class="topbar">
+      <div class="tb-left">
+        <div>
+          <p class="page-title">Produits</p>
+          <p class="page-sub">Catalogue, stock et performance produits</p>
+        </div>
+      </div>
+      <div class="tb-right">
+        <div class="date-range" id="dateRangeBtn">📅 <span id="dateRangeLabel">Nov 1 — Nov 30, 2025</span> ▾</div>
+        <button class="tb-btn ghost" id="exportBtn">↓ Exporter</button>
+        <button class="tb-btn primary" id="produitBtn">+ Nouveau produit</button>
+      </div>
+    </div>
+
+    <div class="content">
+
+      <!-- KPI -->
+      <div class="kpi-row">
+        <div class="kpi-card">
+          <div class="kpi-header">
+            <span class="kpi-label">Produits actifs</span>
+            <div class="kpi-icon" style="background:var(--blue-dim);color:var(--blue);">◧</div>
+          </div>
+          <div class="kpi-value">248</div>
+          <div class="kpi-delta"><span class="delta-up">↑ 12</span><span class="delta-text">ajoutés ce mois</span></div>
+          <div class="sparkline">
+            <svg class="spark-svg" viewBox="0 0 120 36" preserveAspectRatio="none">
+              <defs><linearGradient id="sg1" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#3B82F6" stop-opacity=".3"/><stop offset="100%" stop-color="#3B82F6" stop-opacity="0"/></linearGradient></defs>
+              <path d="M0,28 L15,24 L30,22 L45,18 L60,20 L75,12 L90,10 L105,7 L120,5" fill="none" stroke="#3B82F6" stroke-width="1.5"/>
+              <path d="M0,28 L15,24 L30,22 L45,18 L60,20 L75,12 L90,10 L105,7 L120,5 L120,36 L0,36Z" fill="url(#sg1)"/>
+            </svg>
+          </div>
+        </div>
+
+        <div class="kpi-card">
+          <div class="kpi-header">
+            <span class="kpi-label">Stock total</span>
+            <div class="kpi-icon" style="background:var(--green-dim);color:var(--green);">⊞</div>
+          </div>
+          <div class="kpi-value">14,820</div>
+          <div class="kpi-delta"><span class="delta-up">↑ 3.2%</span><span class="delta-text">vs mois dernier</span></div>
+          <div class="sparkline">
+            <svg class="spark-svg" viewBox="0 0 120 36" preserveAspectRatio="none">
+              <defs><linearGradient id="sg2" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#22C55E" stop-opacity=".3"/><stop offset="100%" stop-color="#22C55E" stop-opacity="0"/></linearGradient></defs>
+              <path d="M0,26 L15,22 L30,24 L45,18 L60,16 L75,14 L90,12 L105,10 L120,8" fill="none" stroke="#22C55E" stroke-width="1.5"/>
+              <path d="M0,26 L15,22 L30,24 L45,18 L60,16 L75,14 L90,12 L105,10 L120,8 L120,36 L0,36Z" fill="url(#sg2)"/>
+            </svg>
+          </div>
+        </div>
+
+        <div class="kpi-card">
+          <div class="kpi-header">
+            <span class="kpi-label">Stock critique</span>
+            <div class="kpi-icon" style="background:var(--amber-dim);color:var(--amber);">⚠</div>
+          </div>
+          <div class="kpi-value" style="color:var(--amber);">18</div>
+          <div class="kpi-delta"><span class="delta-down">↑ 5</span><span class="delta-text">depuis hier</span></div>
+          <div class="sparkline">
+            <svg class="spark-svg" viewBox="0 0 120 36" preserveAspectRatio="none">
+              <defs><linearGradient id="sg3" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#F59E0B" stop-opacity=".3"/><stop offset="100%" stop-color="#F59E0B" stop-opacity="0"/></linearGradient></defs>
+              <path d="M0,20 L15,18 L30,22 L45,16 L60,20 L75,14 L90,18 L105,22 L120,26" fill="none" stroke="#F59E0B" stroke-width="1.5"/>
+              <path d="M0,20 L15,18 L30,22 L45,16 L60,20 L75,14 L90,18 L105,22 L120,26 L120,36 L0,36Z" fill="url(#sg3)"/>
+            </svg>
+          </div>
+        </div>
+
+        <div class="kpi-card">
+          <div class="kpi-header">
+            <span class="kpi-label">Revenu catalogue</span>
+            <div class="kpi-icon" style="background:var(--violet-dim);color:var(--violet);">€</div>
+          </div>
+          <div class="kpi-value">€284k</div>
+          <div class="kpi-delta"><span class="delta-up">↑ 9.4%</span><span class="delta-text">vs mois dernier</span></div>
+          <div class="sparkline">
+            <svg class="spark-svg" viewBox="0 0 120 36" preserveAspectRatio="none">
+              <defs><linearGradient id="sg4" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#8B5CF6" stop-opacity=".3"/><stop offset="100%" stop-color="#8B5CF6" stop-opacity="0"/></linearGradient></defs>
+              <path d="M0,28 L15,22 L30,24 L45,16 L60,18 L75,10 L90,12 L105,7 L120,5" fill="none" stroke="#8B5CF6" stroke-width="1.5"/>
+              <path d="M0,28 L15,22 L30,24 L45,16 L60,18 L75,10 L90,12 L105,7 L120,5 L120,36 L0,36Z" fill="url(#sg4)"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+
+
+      <!-- Graphique + Catégories -->
+      <div class="mid-row">
+
+        <div class="chart-card">
+          <div class="card-header">
+            <div>
+              <p class="card-title">Ventes par période</p>
+              <p class="card-subtitle">Unités vendues — Novembre 2025</p>
+            </div>
+            <div class="chart-tabs">
+              <span class="chart-tab active">7J</span>
+              <span class="chart-tab">30J</span>
+              <span class="chart-tab">90J</span>
+            </div>
+          </div>
+          <div class="bar-chart" id="produitsChart"></div>
+          <div class="chart-legend">
+            <span class="cl-item"><span class="cl-dot" style="background:var(--blue);"></span>Ventes</span>
+            <span class="cl-item"><span class="cl-dot" style="background:rgba(59,130,246,0.3);"></span>Retours</span>
+          </div>
+        </div>
+
+        <div class="chart-card">
+          <div class="card-header">
+            <div>
+              <p class="card-title">Catégories</p>
+              <p class="card-subtitle">Répartition du catalogue</p>
+            </div>
+          </div>
+          <div class="funnel-wrap">
+            <div class="funnel-item">
+              <div class="funnel-left"><div class="funnel-dot" style="background:var(--blue);"></div><span class="funnel-label">SaaS</span></div>
+              <div class="funnel-bar-wrap"><div class="funnel-bar" style="width:100%; background:var(--blue);"></div></div>
+              <span class="funnel-val">94</span>
+            </div>
+            <div class="funnel-item">
+              <div class="funnel-left"><div class="funnel-dot" style="background:var(--violet);"></div><span class="funnel-label">API</span></div>
+              <div class="funnel-bar-wrap"><div class="funnel-bar" style="width:64%; background:var(--violet);"></div></div>
+              <span class="funnel-val">60</span>
+            </div>
+            <div class="funnel-item">
+              <div class="funnel-left"><div class="funnel-dot" style="background:var(--green);"></div><span class="funnel-label">Plugin</span></div>
+              <div class="funnel-bar-wrap"><div class="funnel-bar" style="width:48%; background:var(--green);"></div></div>
+              <span class="funnel-val">45</span>
+            </div>
+            <div class="funnel-item">
+              <div class="funnel-left"><div class="funnel-dot" style="background:var(--amber);"></div><span class="funnel-label">Formation</span></div>
+              <div class="funnel-bar-wrap"><div class="funnel-bar" style="width:32%; background:var(--amber);"></div></div>
+              <span class="funnel-val">30</span>
+            </div>
+            <div class="funnel-item">
+              <div class="funnel-left"><div class="funnel-dot" style="background:var(--cyan);"></div><span class="funnel-label">Service</span></div>
+              <div class="funnel-bar-wrap"><div class="funnel-bar" style="width:20%; background:var(--cyan);"></div></div>
+              <span class="funnel-val">19</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+
+      <!-- Tableau + Colonne droite -->
+      <div class="bot-row">
+
+        <div class="table-card">
+          <div class="tc-head card-header">
+            <div>
+              <p class="card-title">Catalogue produits</p>
+              <p class="card-subtitle">248 produits actifs</p>
+            </div>
+            <div style="display:flex;gap:8px;">
+              <div class="search-box">
+                <span class="search-icon">🔍</span>
+                <input class="search-input" id="searchInput" placeholder="Rechercher…"/>
+              </div>
+              <button class="tb-btn ghost" style="font-size:11px;">Voir tout</button>
+            </div>
+          </div>
+          <table>
+            <thead>
+              <tr>
+                <th>Produit</th>
+                <th>Catégorie</th>
+                <th>Prix</th>
+                <th>Stock</th>
+                <th>Ventes</th>
+                <th>Statut</th>
+              </tr>
+            </thead>
+            <tbody id="produitsBody">
+              <tr>
+                <td><div class="prod-cell"><div class="prod-icon" style="background:var(--blue-dim);color:var(--blue);">◧</div><div><p class="prod-name">NEXUS Dashboard Pro</p><p class="prod-sku">SKU-0041</p></div></div></td>
+                <td><span class="cat-badge cat-saas">SaaS</span></td>
+                <td class="t-val">€89/mois</td>
+                <td class="t-val">—</td>
+                <td class="t-val t-pos">2,841</td>
+                <td><span class="status-pill st-delivered">● Actif</span></td>
+              </tr>
+              <tr>
+                <td><div class="prod-cell"><div class="prod-icon" style="background:var(--violet-dim);color:var(--violet);">⚡</div><div><p class="prod-name">Analytics API v3</p><p class="prod-sku">SKU-0082</p></div></div></td>
+                <td><span class="cat-badge cat-api">API</span></td>
+                <td class="t-val">€299/mois</td>
+                <td class="t-val">—</td>
+                <td class="t-val t-pos">604</td>
+                <td><span class="status-pill st-delivered">● Actif</span></td>
+              </tr>
+              <tr>
+                <td><div class="prod-cell"><div class="prod-icon" style="background:var(--green-dim);color:var(--green);">◈</div><div><p class="prod-name">Plugin SEO Booster</p><p class="prod-sku">SKU-0117</p></div></div></td>
+                <td><span class="cat-badge cat-plugin">Plugin</span></td>
+                <td class="t-val">€49 une fois</td>
+                <td class="t-val" style="color:var(--amber);">12</td>
+                <td class="t-val t-pos">381</td>
+                <td><span class="status-pill st-prep">⚠ Stock faible</span></td>
+              </tr>
+              <tr>
+                <td><div class="prod-cell"><div class="prod-icon" style="background:var(--amber-dim);color:var(--amber);">◉</div><div><p class="prod-name">Formation Analytics Expert</p><p class="prod-sku">SKU-0203</p></div></div></td>
+                <td><span class="cat-badge cat-formation">Formation</span></td>
+                <td class="t-val">€390</td>
+                <td class="t-val">48</td>
+                <td class="t-val t-pos">218</td>
+                <td><span class="status-pill st-delivered">● Actif</span></td>
+              </tr>
+              <tr>
+                <td><div class="prod-cell"><div class="prod-icon" style="background:var(--cyan-dim);color:var(--cyan);">▤</div><div><p class="prod-name">Consulting Setup Pack</p><p class="prod-sku">SKU-0198</p></div></div></td>
+                <td><span class="cat-badge cat-service">Service</span></td>
+                <td class="t-val">€1,200</td>
+                <td class="t-val">—</td>
+                <td class="t-val t-pos">94</td>
+                <td><span class="status-pill st-delivered">● Actif</span></td>
+              </tr>
+              <tr>
+                <td><div class="prod-cell"><div class="prod-icon" style="background:var(--red-dim);color:var(--red);">◧</div><div><p class="prod-name">NEXUS Starter Pack</p><p class="prod-sku">SKU-0012</p></div></div></td>
+                <td><span class="cat-badge cat-saas">SaaS</span></td>
+                <td class="t-val">€29/mois</td>
+                <td class="t-val" style="color:var(--red);">3</td>
+                <td class="t-val t-pos">1,204</td>
+                <td><span class="status-pill st-dispute">⚠ Critique</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="right-col">
+
+          <!-- Top ventes -->
+          <div class="side-card">
+            <div class="card-header" style="margin-bottom:16px;">
+              <div>
+                <p class="card-title">Top ventes</p>
+                <p class="card-subtitle">Ce mois — revenus générés</p>
+              </div>
+            </div>
+            <div class="zone-list">
+              <div class="zone-item">
+                <span class="zone-flag">🥇</span>
+                <div class="zone-info">
+                  <div class="zone-header"><span class="zone-name">Dashboard Pro</span><span class="zone-val">€84,200</span></div>
+                  <div class="gauge-track"><div class="gauge-fill" style="width:100%; background:var(--blue);"></div></div>
+                </div>
+              </div>
+              <div class="zone-item">
+                <span class="zone-flag">🥈</span>
+                <div class="zone-info">
+                  <div class="zone-header"><span class="zone-name">Analytics API v3</span><span class="zone-val">€61,380</span></div>
+                  <div class="gauge-track"><div class="gauge-fill" style="width:73%; background:var(--violet);"></div></div>
+                </div>
+              </div>
+              <div class="zone-item">
+                <span class="zone-flag">🥉</span>
+                <div class="zone-info">
+                  <div class="zone-header"><span class="zone-name">Starter Pack</span><span class="zone-val">€49,100</span></div>
+                  <div class="gauge-track"><div class="gauge-fill" style="width:58%; background:var(--green);"></div></div>
+                </div>
+              </div>
+              <div class="zone-item">
+                <span class="zone-flag" style="color:var(--muted);font-family:'JetBrains Mono',monospace;font-size:11px;">04</span>
+                <div class="zone-info">
+                  <div class="zone-header"><span class="zone-name">Formation Expert</span><span class="zone-val">€36,200</span></div>
+                  <div class="gauge-track"><div class="gauge-fill" style="width:43%; background:var(--amber);"></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Stock critique -->
+          <div class="side-card">
+            <div class="card-header" style="margin-bottom:16px;">
+              <div>
+                <p class="card-title">Stock critique</p>
+                <p class="card-subtitle">Réapprovisionnement requis</p>
+              </div>
+              <span class="stock-badge">18</span>
+            </div>
+            <div class="carrier-list">
+              <div class="carrier-item">
+                <div class="carrier-logo" style="background:var(--red-dim);color:var(--red);font-size:10px;font-weight:700;">✕</div>
+                <div class="carrier-info">
+                  <div class="carrier-header"><span class="carrier-name">NEXUS Starter Pack</span><span class="carrier-rate" style="color:var(--red);">3 restants</span></div>
+                  <div class="gauge-track"><div class="gauge-fill" style="width:6%; background:var(--red);"></div></div>
+                  <span class="carrier-meta">SKU-0012 · Seuil : 50</span>
+                </div>
+              </div>
+              <div class="carrier-item">
+                <div class="carrier-logo" style="background:var(--amber-dim);color:var(--amber);font-size:10px;font-weight:700;">⚠</div>
+                <div class="carrier-info">
+                  <div class="carrier-header"><span class="carrier-name">Plugin SEO Booster</span><span class="carrier-rate" style="color:var(--amber);">12 restants</span></div>
+                  <div class="gauge-track"><div class="gauge-fill" style="width:24%; background:var(--amber);"></div></div>
+                  <span class="carrier-meta">SKU-0117 · Seuil : 50</span>
+                </div>
+              </div>
+              <div class="carrier-item">
+                <div class="carrier-logo" style="background:var(--amber-dim);color:var(--amber);font-size:10px;font-weight:700;">⚠</div>
+                <div class="carrier-info">
+                  <div class="carrier-header"><span class="carrier-name">Formation Avancée</span><span class="carrier-rate" style="color:var(--amber);">18 restants</span></div>
+                  <div class="gauge-track"><div class="gauge-fill" style="width:36%; background:var(--amber);"></div></div>
+                  <span class="carrier-meta">SKU-0241 · Seuil : 50</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- Date Picker -->
+  <div class="date-picker-popup" id="datePickerPopup" style="display:none;">
+    <div class="dp-header">Sélectionner une période</div>
+    <div class="dp-presets">
+      <button class="dp-preset active" data-days="30">30 derniers jours</button>
+      <button class="dp-preset" data-days="7">7 derniers jours</button>
+      <button class="dp-preset" data-days="90">90 derniers jours</button>
+      <button class="dp-preset" data-days="365">Cette année</button>
+    </div>
+    <div class="dp-custom">
+      <div class="dp-field"><label>Début</label><input type="date" id="dpStart" value="2025-11-01"/></div>
+      <div class="dp-field"><label>Fin</label><input type="date" id="dpEnd" value="2025-11-30"/></div>
+    </div>
+    <div class="dp-footer">
+      <button class="dp-cancel" id="dpCancel">Annuler</button>
+      <button class="dp-apply" id="dpApply">Appliquer</button>
+    </div>
+  </div>
+
+  <!-- Modal Nouveau produit -->
+  <div class="modal-overlay" id="produitModal" style="display:none;">
+    <div class="modal">
+      <div class="modal-header">
+        <p class="modal-title">Nouveau produit</p>
+        <button class="modal-close" id="produitClose">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="modal-field">
+          <label>Nom du produit</label>
+          <input type="text" class="modal-input" id="produitNom" placeholder="Ex : NEXUS Dashboard Pro"/>
+        </div>
+        <div class="modal-field">
+          <label>Catégorie</label>
+          <select class="modal-select" id="produitCategorie">
+            <option>SaaS</option><option>API</option><option>Plugin</option><option>Formation</option><option>Service</option>
+          </select>
+        </div>
+        <div class="modal-field">
+          <label>Prix (€)</label>
+          <input type="number" class="modal-input" id="produitPrix" placeholder="0.00" min="0" step="0.01"/>
+        </div>
+        <div class="modal-field">
+          <label>Stock initial</label>
+          <input type="number" class="modal-input" id="produitStock" placeholder="0" min="0" step="1"/>
+        </div>
+        <div class="modal-field">
+          <label>Statut</label>
+          <div class="modal-radio-group">
+            <label class="modal-radio"><input type="radio" name="produitStatut" value="Actif" checked/> Actif</label>
+            <label class="modal-radio"><input type="radio" name="produitStatut" value="Brouillon"/> Brouillon</label>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="tb-btn ghost" id="produitCancelBtn">Annuler</button>
+        <button class="tb-btn primary" id="produitCreateBtn">Créer le produit</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div class="toast-notif" id="toastNotif"></div>
+
+  <script src="app.js"></script>
+<script>
+(function () {
+  function saveProfile(data) {
+    const json = JSON.stringify(data);
+    try { localStorage.setItem('nexus_profile', json); } catch(e){}
+    try { sessionStorage.setItem('nexus_profile', json); } catch(e){}
+    try { document.cookie = 'nexus_profile=' + encodeURIComponent(json) + '; path=/; max-age=31536000'; } catch(e){}
+  }
+  function loadProfile() {
+    try { const raw = localStorage.getItem('nexus_profile'); if (raw) { const p = JSON.parse(raw); if (p && p.prenom) return p; } } catch(e){}
+    try { const raw = sessionStorage.getItem('nexus_profile'); if (raw) { const p = JSON.parse(raw); if (p && p.prenom) return p; } } catch(e){}
+    try { const match = document.cookie.match(/nexus_profile=([^;]+)/); if (match) { const p = JSON.parse(decodeURIComponent(match[1])); if (p && p.prenom) return p; } } catch(e){}
+    return { prenom: 'Jean', nom: 'Dupont', email: 'jean.dupont@nexus.io' };
+  }
+  function saveAvatar(dataUrl) {
+    try { localStorage.setItem('nexus_avatar', dataUrl); } catch(e){}
+    try { sessionStorage.setItem('nexus_avatar', dataUrl); } catch(e){}
+    try { document.cookie = 'nexus_has_avatar=1; path=/; max-age=31536000'; } catch(e){}
+  }
+  function loadAvatar() {
+    try { const v = localStorage.getItem('nexus_avatar'); if (v) return v; } catch(e){}
+    try { const v = sessionStorage.getItem('nexus_avatar'); if (v) return v; } catch(e){}
+    return null;
+  }
+  function getInitials(p) { return (((p.prenom||'').charAt(0)) + ((p.nom||'').charAt(0))).toUpperCase() || 'JD'; }
+  function getFullName(p) { return [(p.prenom||'').trim(),(p.nom||'').trim()].filter(Boolean).join(' ') || 'Utilisateur'; }
+  const PAGE_MAP = {
+    "Vue d'ensemble": "../Vue d'ensemble/index.html", "Analytique": "../Analytique/index.html",
+    "Rapports": "../Rapports/index.html", "Campagnes": "../Campagnes/index.html",
+    "Revenus": "../Revenus/index.html", "Clients": "../Clients/index.html",
+    "Produits": "../Produits/index.html", "Commandes": "../Commandes/index.html",
+    "Performance": "../Performance/index.html", "Logs": "../Logs/index.html",
+    "Param\u00e8tres": "../Param\u00e8tres/index.html",
+  };
+  const NAV = [
+    { label:'Principal', items:[{name:"Vue d'ensemble",icon:'◈'},{name:'Analytique',icon:'◫',badge:'NEW'},{name:'Rapports',icon:'◉'},{name:'Campagnes',icon:'▤'}]},
+    { label:'Commerce', items:[{name:'Revenus',icon:'◈'},{name:'Clients',icon:'⊞'},{name:'Produits',icon:'◧'},{name:'Commandes',icon:'◈'}]},
+    { label:'Syst\u00e8me', items:[{name:'Performance',icon:'◩'},{name:'Logs',icon:'◈'},{name:'Param\u00e8tres',icon:'◧'}]},
+  ];
+  function getActivePage() {
+    const parts = window.location.pathname.split('/');
+    for (let i = parts.length - 1; i >= 0; i--) { const seg = decodeURIComponent(parts[i]); if (seg && seg !== 'index.html') return seg; }
+    return document.title.replace(/^NEXUS\s*[—-]\s*/i, '').trim();
+  }
+  function buildHTML(profile) {
+    const active = getActivePage(); const ini = getInitials(profile); const name = getFullName(profile);
+    let sections = '';
+    NAV.forEach(function(sec) {
+      let items = '';
+      sec.items.forEach(function(item) {
+        const isActive = decodeURIComponent(active) === item.name || active === item.name;
+        const badge = item.badge ? '<span class="sb-badge">'+item.badge+'</span>' : '';
+        items += '<a href="'+(PAGE_MAP[item.name]||'#')+'" class="sb-item'+(isActive?' active':'')+'"><span class="sb-icon">'+item.icon+'</span> '+item.name+badge+'</a>';
+      });
+      sections += '<div class="sb-section"><p class="sb-section-label">'+sec.label+'</p>'+items+'</div>';
+    });
+    return '<div class="sb-logo"><div class="logo-icon">Nx</div><span class="logo-text">Nexus</span></div>'+sections+'<div class="sb-bottom"><div class="sb-user"><div class="user-av" id="sidebarAv">'+ini+'</div><div><p class="user-name" id="sidebarName">'+name+'</p><p class="user-plan">Pro &middot; Admin</p></div></div></div>';
+  }
+  function applyAvatar() {
+    const photo = loadAvatar(); const av = document.getElementById('sidebarAv');
+    if (!av || !photo) return;
+    av.textContent = ''; av.style.backgroundImage = 'url('+photo+')'; av.style.backgroundSize = 'cover'; av.style.backgroundPosition = 'center';
+  }
+  function inject() { const sidebar = document.querySelector('aside.sidebar'); if (!sidebar) return; sidebar.innerHTML = buildHTML(loadProfile()); applyAvatar(); }
+  if (document.readyState === 'loading') { document.addEventListener('DOMContentLoaded', inject); } else { inject(); }
+  window.NexusSidebar = {
+    updateDisplay: function(prenom, nom) { const av = document.getElementById('sidebarAv'); const nm = document.getElementById('sidebarName'); if (av && !loadAvatar()) av.textContent = getInitials({prenom,nom}); if (nm) nm.textContent = getFullName({prenom,nom}); },
+    saveProfile: function(prenom, nom, email) { saveProfile({prenom,nom,email}); this.updateDisplay(prenom, nom); },
+    saveAvatar, getProfile: loadProfile, refresh: inject,
+  };
+})();
+</script>
+</body>
+</html>

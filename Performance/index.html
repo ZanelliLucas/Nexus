@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NEXUS — Performance</title>
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500&family=Inter:wght@300;400;500;600&display=swap"
+    rel="stylesheet"
+  >
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar"></aside>
+
+  <!-- MAIN -->
+  <div class="main">
+
+    <div class="topbar">
+      <div class="tb-left">
+        <div>
+          <p class="page-title">Performance</p>
+          <p class="page-sub">Métriques système en temps réel</p>
+        </div>
+      </div>
+      <div class="tb-right">
+        <div class="live-badge" id="liveBadge"><span class="live-dot"></span>Live</div>
+        <div class="date-range" id="dateRangeBtn">📅 <span id="dateRangeLabel">Aujourd'hui</span> ▾</div>
+        <button class="tb-btn ghost" id="exportBtn">↓ Exporter</button>
+        <button class="tb-btn ghost" id="pauseBtn">⏸ Pause</button>
+      </div>
+    </div>
+
+
+    <div class="content">
+
+      <!-- KPI Cards -->
+      <div class="kpi-row">
+
+        <div class="kpi-card">
+          <div class="kpi-header">
+            <span class="kpi-label">Uptime</span>
+            <div class="kpi-icon" style="background:var(--green-dim);color:var(--green);">↑</div>
+          </div>
+          <div class="kpi-value" style="color:var(--green);">99.94%</div>
+          <div class="kpi-delta"><span class="delta-up">↑ 0.02%</span><span class="delta-text">vs mois dernier</span></div>
+        </div>
+
+        <div class="kpi-card">
+          <div class="kpi-header">
+            <span class="kpi-label">Latence P50</span>
+            <div class="kpi-icon" style="background:var(--blue-dim);color:var(--blue);">ms</div>
+          </div>
+          <div class="kpi-value">30 ms</div>
+          <div class="kpi-delta"><span class="delta-up">↓ 4ms</span><span class="delta-text">amélioration</span></div>
+        </div>
+
+        <div class="kpi-card">
+          <div class="kpi-header">
+            <span class="kpi-label">Requêtes / sec</span>
+            <div class="kpi-icon" style="background:var(--violet-dim);color:var(--violet);">rps</div>
+          </div>
+          <div class="kpi-value" id="rpsValue">2 841</div>
+          <div class="kpi-delta"><span class="delta-up">↑ 12.3%</span><span class="delta-text">vs hier</span></div>
+        </div>
+
+        <div class="kpi-card">
+          <div class="kpi-header">
+            <span class="kpi-label">Taux d'erreur</span>
+            <div class="kpi-icon" style="background:var(--red-dim);color:var(--red);">%</div>
+          </div>
+          <div class="kpi-value">0.06%</div>
+          <div class="kpi-delta"><span class="delta-up">↓ 0.01%</span><span class="delta-text">amélioration</span></div>
+        </div>
+
+      </div>
+
+
+      <!-- Gauges + Latence -->
+      <div class="mid-row">
+
+        <!-- Gauges CPU / Mémoire / Réseau -->
+        <div class="chart-card">
+          <div class="card-header">
+            <div>
+              <p class="card-title">Ressources système</p>
+              <p class="card-subtitle">Utilisation en temps réel</p>
+            </div>
+          </div>
+
+          <div class="gauges-row">
+
+            <div class="gauge-circle-wrap">
+              <svg class="gauge-svg" viewBox="0 0 80 80">
+                <circle cx="40" cy="40" r="32" fill="none" stroke="var(--surface2)" stroke-width="8"/>
+                <circle cx="40" cy="40" r="32" fill="none" stroke="var(--blue)" stroke-width="8"
+                        stroke-dasharray="201" id="cpuArc" stroke-dashoffset="76"
+                        stroke-linecap="round" transform="rotate(-90 40 40)"/>
+              </svg>
+              <div class="gauge-center-label">
+                <span class="gauge-big" id="cpuVal">62</span>
+                <span class="gauge-unit">%</span>
+              </div>
+              <p class="gauge-name">CPU</p>
+              <p class="gauge-sub" id="cpuPct">62%</p>
+            </div>
+
+            <div class="gauge-circle-wrap">
+              <svg class="gauge-svg" viewBox="0 0 80 80">
+                <circle cx="40" cy="40" r="32" fill="none" stroke="var(--surface2)" stroke-width="8"/>
+                <circle cx="40" cy="40" r="32" fill="none" stroke="var(--amber)" stroke-width="8"
+                        stroke-dasharray="201" id="memArc" stroke-dashoffset="53"
+                        stroke-linecap="round" transform="rotate(-90 40 40)"/>
+              </svg>
+              <div class="gauge-center-label">
+                <span class="gauge-big" id="memVal">74</span>
+                <span class="gauge-unit">%</span>
+              </div>
+              <p class="gauge-name">Mémoire</p>
+              <p class="gauge-sub" id="memPct">74%</p>
+            </div>
+
+            <div class="gauge-circle-wrap">
+              <svg class="gauge-svg" viewBox="0 0 80 80">
+                <circle cx="40" cy="40" r="32" fill="none" stroke="var(--surface2)" stroke-width="8"/>
+                <circle cx="40" cy="40" r="32" fill="none" stroke="var(--green)" stroke-width="8"
+                        stroke-dasharray="201" id="netArc" stroke-dashoffset="85"
+                        stroke-linecap="round" transform="rotate(-90 40 40)"/>
+              </svg>
+              <div class="gauge-center-label">
+                <span class="gauge-big" id="netVal">58</span>
+                <span class="gauge-unit">%</span>
+              </div>
+              <p class="gauge-name">Réseau</p>
+              <p class="gauge-sub" id="netPct">58%</p>
+            </div>
+
+          </div>
+
+          <div class="bw-detail">
+            <div class="bw-item">
+              <span class="bw-label">↓ Entrant</span>
+              <span class="bw-val" id="netIn">1.84 GB/s</span>
+            </div>
+            <div class="bw-item">
+              <span class="bw-label">↑ Sortant</span>
+              <span class="bw-val" id="netOut">0.92 GB/s</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Graphique latence SVG -->
+        <div class="chart-card">
+          <div class="card-header">
+            <div>
+              <p class="card-title">Latence API</p>
+              <p class="card-subtitle">P50 / P95 / P99 en millisecondes</p>
+            </div>
+            <div class="chart-tabs">
+              <span class="chart-tab active">1H</span>
+              <span class="chart-tab">6H</span>
+              <span class="chart-tab">24H</span>
+            </div>
+          </div>
+          <div class="latency-chart-wrap" id="latencyChart"></div>
+          <div class="chart-legend">
+            <span class="cl-item"><span class="cl-dot" style="background:var(--green);"></span>P50</span>
+            <span class="cl-item"><span class="cl-dot" style="background:var(--blue);"></span>P95</span>
+            <span class="cl-item"><span class="cl-dot" style="background:var(--red);"></span>P99</span>
+          </div>
+        </div>
+
+      </div>
+
+
+      <!-- Uptime + Incidents + SLA -->
+      <div class="bot-row">
+
+        <!-- Uptime 90 jours -->
+        <div class="table-card">
+          <div class="tc-head card-header">
+            <div>
+              <p class="card-title">Historique uptime — 90 jours</p>
+              <p class="card-subtitle">Chaque carré = 1 jour</p>
+            </div>
+            <span style="color:var(--green);font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:600;">99.94%</span>
+          </div>
+          <div class="uptime-grid" id="uptimeDots"></div>
+          <div class="uptime-legend">
+            <span class="upt-leg"><span class="upt-dot" style="background:var(--green);opacity:.7;"></span>OK</span>
+            <span class="upt-leg"><span class="upt-dot" style="background:var(--amber);"></span>Dégradé</span>
+            <span class="upt-leg"><span class="upt-dot" style="background:var(--red);"></span>Incident</span>
+          </div>
+        </div>
+
+        <!-- Colonne droite -->
+        <div class="right-col">
+
+          <!-- Incidents récents -->
+          <div class="side-card">
+            <div class="card-header" style="margin-bottom:16px;">
+              <div>
+                <p class="card-title">Incidents récents</p>
+                <p class="card-subtitle">90 derniers jours</p>
+              </div>
+              <span class="count-badge">9</span>
+            </div>
+            <div class="incident-list">
+
+              <div class="incident-item">
+                <div class="incident-left">
+                  <div class="incident-dot" style="background:var(--red);"></div>
+                  <div>
+                    <p class="incident-name">Latence SMS Provider élevée</p>
+                    <p class="incident-meta">28 Nov · 14h32 — 15h08 · 36 min</p>
+                  </div>
+                </div>
+                <span class="incident-badge inc-major">Majeur</span>
+              </div>
+
+              <div class="incident-item">
+                <div class="incident-left">
+                  <div class="incident-dot" style="background:var(--amber);"></div>
+                  <div>
+                    <p class="incident-name">Dégradation API Gateway</p>
+                    <p class="incident-meta">21 Nov · 09h14 — 09h41 · 27 min</p>
+                  </div>
+                </div>
+                <span class="incident-badge inc-minor">Mineur</span>
+              </div>
+
+              <div class="incident-item">
+                <div class="incident-left">
+                  <div class="incident-dot" style="background:var(--red);"></div>
+                  <div>
+                    <p class="incident-name">Base de données inaccessible</p>
+                    <p class="incident-meta">14 Nov · 02h18 — 02h52 · 34 min</p>
+                  </div>
+                </div>
+                <span class="incident-badge inc-major">Majeur</span>
+              </div>
+
+              <div class="incident-item">
+                <div class="incident-left">
+                  <div class="incident-dot" style="background:var(--amber);"></div>
+                  <div>
+                    <p class="incident-name">Reporting Worker lent</p>
+                    <p class="incident-meta">8 Nov · 11h05 — 11h22 · 17 min</p>
+                  </div>
+                </div>
+                <span class="incident-badge inc-minor">Mineur</span>
+              </div>
+
+              <div class="incident-item">
+                <div class="incident-left">
+                  <div class="incident-dot" style="background:var(--red);"></div>
+                  <div>
+                    <p class="incident-name">Auth Service — timeout 502</p>
+                    <p class="incident-meta">2 Nov · 18h44 — 18h59 · 15 min</p>
+                  </div>
+                </div>
+                <span class="incident-badge inc-major">Majeur</span>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- SLA -->
+          <div class="side-card">
+            <div class="card-header" style="margin-bottom:16px;">
+              <div>
+                <p class="card-title">SLA ce mois</p>
+                <p class="card-subtitle">Objectifs de niveau de service</p>
+              </div>
+            </div>
+            <div class="sla-list">
+
+              <div class="sla-item">
+                <div class="sla-header">
+                  <span class="sla-name">Disponibilité</span>
+                  <span class="sla-val" style="color:var(--green);">99.94% / 99.9%</span>
+                </div>
+                <div class="gauge-track"><div class="gauge-fill" style="width:100%; background:var(--green);"></div></div>
+              </div>
+
+              <div class="sla-item">
+                <div class="sla-header">
+                  <span class="sla-name">Latence P95</span>
+                  <span class="sla-val" style="color:var(--green);">84ms / &lt;200ms</span>
+                </div>
+                <div class="gauge-track"><div class="gauge-fill" style="width:100%; background:var(--green);"></div></div>
+              </div>
+
+              <div class="sla-item">
+                <div class="sla-header">
+                  <span class="sla-name">Taux d'erreur</span>
+                  <span class="sla-val" style="color:var(--green);">0.06% / &lt;0.5%</span>
+                </div>
+                <div class="gauge-track"><div class="gauge-fill" style="width:88%; background:var(--green);"></div></div>
+              </div>
+
+              <div class="sla-item">
+                <div class="sla-header">
+                  <span class="sla-name">MTTR</span>
+                  <span class="sla-val" style="color:var(--amber);">26min / &lt;15min</span>
+                </div>
+                <div class="gauge-track"><div class="gauge-fill" style="width:57%; background:var(--amber);"></div></div>
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- Date Picker -->
+  <div class="date-picker-popup" id="datePickerPopup" style="display:none;">
+    <div class="dp-header">Sélectionner une période</div>
+    <div class="dp-presets">
+      <button class="dp-preset active" data-label="Aujourd'hui" data-days="0">Aujourd'hui</button>
+      <button class="dp-preset" data-label="7 derniers jours" data-days="7">7 derniers jours</button>
+      <button class="dp-preset" data-label="30 derniers jours" data-days="30">30 derniers jours</button>
+      <button class="dp-preset" data-label="90 derniers jours" data-days="90">90 derniers jours</button>
+    </div>
+    <div class="dp-custom">
+      <div class="dp-field"><label>Début</label><input type="date" id="dpStart"/></div>
+      <div class="dp-field"><label>Fin</label><input type="date" id="dpEnd"/></div>
+    </div>
+    <div class="dp-footer">
+      <button class="dp-cancel" id="dpCancel">Annuler</button>
+      <button class="dp-apply" id="dpApply">Appliquer</button>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div class="toast-notif" id="toastNotif"></div>
+
+  <script src="app.js"></script>
+<script>
+(function () {
+
+  function saveProfile(data) {
+    const json = JSON.stringify(data);
+    try { localStorage.setItem('nexus_profile', json); } catch(e){}
+    try { sessionStorage.setItem('nexus_profile', json); } catch(e){}
+    try { document.cookie = 'nexus_profile=' + encodeURIComponent(json) + '; path=/; max-age=31536000'; } catch(e){}
+  }
+
+  function loadProfile() {
+    try { const raw = localStorage.getItem('nexus_profile'); if (raw) { const p = JSON.parse(raw); if (p && p.prenom) return p; } } catch(e){}
+    try { const raw = sessionStorage.getItem('nexus_profile'); if (raw) { const p = JSON.parse(raw); if (p && p.prenom) return p; } } catch(e){}
+    try { const match = document.cookie.match(/nexus_profile=([^;]+)/); if (match) { const p = JSON.parse(decodeURIComponent(match[1])); if (p && p.prenom) return p; } } catch(e){}
+    return { prenom: 'Jean', nom: 'Dupont', email: 'jean.dupont@nexus.io' };
+  }
+
+  function saveAvatar(dataUrl) {
+    try { localStorage.setItem('nexus_avatar', dataUrl); } catch(e){}
+    try { sessionStorage.setItem('nexus_avatar', dataUrl); } catch(e){}
+    try { document.cookie = 'nexus_has_avatar=1; path=/; max-age=31536000'; } catch(e){}
+  }
+
+  function loadAvatar() {
+    try { const v = localStorage.getItem('nexus_avatar'); if (v) return v; } catch(e){}
+    try { const v = sessionStorage.getItem('nexus_avatar'); if (v) return v; } catch(e){}
+    return null;
+  }
+
+  function getInitials(p) { return (((p.prenom||'').charAt(0)) + ((p.nom||'').charAt(0))).toUpperCase() || 'JD'; }
+  function getFullName(p) { return [(p.prenom||'').trim(),(p.nom||'').trim()].filter(Boolean).join(' ') || 'Utilisateur'; }
+
+  const PAGE_MAP = {
+    "Vue d'ensemble": "../Vue d'ensemble/index.html",
+    "Analytique":     "../Analytique/index.html",
+    "Rapports":       "../Rapports/index.html",
+    "Campagnes":      "../Campagnes/index.html",
+    "Revenus":        "../Revenus/index.html",
+    "Clients":        "../Clients/index.html",
+    "Produits":       "../Produits/index.html",
+    "Commandes":      "../Commandes/index.html",
+    "Performance":    "../Performance/index.html",
+    "Logs":           "../Logs/index.html",
+    "Param\u00e8tres":"../Param\u00e8tres/index.html",
+  };
+
+  const NAV = [
+    { label:'Principal', items:[
+      { name:"Vue d'ensemble", icon:'◈' },
+      { name:'Analytique', icon:'◫', badge:'NEW' },
+      { name:'Rapports', icon:'◉' },
+      { name:'Campagnes', icon:'▤' },
+    ]},
+    { label:'Commerce', items:[
+      { name:'Revenus', icon:'◈' },
+      { name:'Clients', icon:'⊞' },
+      { name:'Produits', icon:'◧' },
+      { name:'Commandes', icon:'◈' },
+    ]},
+    { label:'Syst\u00e8me', items:[
+      { name:'Performance', icon:'◩' },
+      { name:'Logs', icon:'◈' },
+      { name:'Param\u00e8tres', icon:'◧' },
+    ]},
+  ];
+
+  function getActivePage() {
+    const parts = window.location.pathname.split('/');
+    for (let i = parts.length - 1; i >= 0; i--) {
+      const seg = decodeURIComponent(parts[i]);
+      if (seg && seg !== 'index.html') return seg;
+    }
+    return document.title.replace(/^NEXUS\s*[—-]\s*/i, '').trim();
+  }
+
+  function buildHTML(profile) {
+    const active = getActivePage();
+    const ini = getInitials(profile);
+    const name = getFullName(profile);
+    let sections = '';
+    NAV.forEach(function(sec) {
+      let items = '';
+      sec.items.forEach(function(item) {
+        const isActive = decodeURIComponent(active) === item.name || active === item.name;
+        const badge = item.badge ? '<span class="sb-badge">'+item.badge+'</span>' : '';
+        items += '<a href="'+(PAGE_MAP[item.name]||'#')+'" class="sb-item'+(isActive?' active':'')+'"><span class="sb-icon">'+item.icon+'</span> '+item.name+badge+'</a>';
+      });
+      sections += '<div class="sb-section"><p class="sb-section-label">'+sec.label+'</p>'+items+'</div>';
+    });
+    return '<div class="sb-logo"><div class="logo-icon">Nx</div><span class="logo-text">Nexus</span></div>'
+      + sections
+      + '<div class="sb-bottom"><div class="sb-user"><div class="user-av" id="sidebarAv">'+ini+'</div><div><p class="user-name" id="sidebarName">'+name+'</p><p class="user-plan">Pro &middot; Admin</p></div></div></div>';
+  }
+
+  function applyAvatar() {
+    const photo = loadAvatar();
+    const av = document.getElementById('sidebarAv');
+    if (!av || !photo) return;
+    av.textContent = '';
+    av.style.backgroundImage = 'url('+photo+')';
+    av.style.backgroundSize = 'cover';
+    av.style.backgroundPosition = 'center';
+  }
+
+  function inject() {
+    const sidebar = document.querySelector('aside.sidebar');
+    if (!sidebar) return;
+    sidebar.innerHTML = buildHTML(loadProfile());
+    applyAvatar();
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', inject);
+  } else {
+    inject();
+  }
+
+  window.NexusSidebar = {
+    updateDisplay: function(prenom, nom) {
+      const av = document.getElementById('sidebarAv');
+      const nm = document.getElementById('sidebarName');
+      if (av && !loadAvatar()) av.textContent = getInitials({prenom:prenom,nom:nom});
+      if (nm) nm.textContent = getFullName({prenom:prenom,nom:nom});
+    },
+    saveProfile: function(prenom, nom, email) {
+      saveProfile({prenom:prenom, nom:nom, email:email});
+      this.updateDisplay(prenom, nom);
+    },
+    saveAvatar: saveAvatar,
+    getProfile: loadProfile,
+    refresh: inject,
+  };
+
+})();
+</script>
+</body>
+</html>

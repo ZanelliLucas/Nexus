@@ -1,0 +1,890 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NEXUS — Paramètres</title>
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500&family=Inter:wght@300;400;500;600&display=swap"
+    rel="stylesheet"
+  >
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar"></aside>
+
+
+  <!-- MAIN -->
+  <div class="main">
+
+    <div class="topbar">
+      <div class="tb-left">
+        <div>
+          <p class="page-title">Paramètres</p>
+          <p class="page-sub">Configuration de votre espace de travail</p>
+        </div>
+      </div>
+      <div class="tb-right">
+        <button class="tb-btn ghost" id="discardBtn">Annuler</button>
+        <button class="tb-btn primary" id="saveBtn">Enregistrer les modifications</button>
+      </div>
+    </div>
+
+
+    <div class="content">
+
+      <div class="settings-layout">
+
+        <!-- ── Nav verticale des sections ── -->
+        <nav class="settings-nav">
+          <button class="snav-item active" data-section="profil">
+            <span class="snav-icon">👤</span> Profil
+          </button>
+          <button class="snav-item" data-section="workspace">
+            <span class="snav-icon">⊞</span> Workspace
+          </button>
+          <button class="snav-item" data-section="securite">
+            <span class="snav-icon">🔒</span> Sécurité
+          </button>
+          <button class="snav-item" data-section="notifications">
+            <span class="snav-icon">🔔</span> Notifications
+          </button>
+          <button class="snav-item" data-section="integrations">
+            <span class="snav-icon">⟳</span> Intégrations
+          </button>
+          <button class="snav-item" data-section="facturation">
+            <span class="snav-icon">€</span> Facturation
+          </button>
+          <button class="snav-item" data-section="api">
+            <span class="snav-icon">◈</span> API & Webhooks
+          </button>
+          <button class="snav-item snav-danger" data-section="danger">
+            <span class="snav-icon">⚠</span> Zone dangereuse
+          </button>
+        </nav>
+
+        <!-- ── Panneaux ── -->
+        <div class="settings-panels">
+
+
+          <!-- ════ PROFIL ════ -->
+          <section class="s-panel active" id="panel-profil">
+            <div class="panel-header">
+              <p class="panel-title">Profil utilisateur</p>
+              <p class="panel-sub">Vos informations personnelles et préférences</p>
+            </div>
+
+            <!-- Avatar -->
+            <div class="avatar-section">
+              <div class="avatar-big" id="avatarInitials">JD</div>
+              <div class="avatar-info">
+                <p class="avatar-name" id="avatarName">Jean Dupont</p>
+                <p class="avatar-role">Administrateur · Plan Pro</p>
+                <button class="avatar-btn" id="changePhotoBtn">Changer la photo</button>
+                <input type="file" id="photoFileInput" accept="image/*" style="display:none"/>
+              </div>
+            </div>
+
+            <div class="field-group">
+              <div class="field-row">
+                <div class="field">
+                  <label class="field-label">Prénom</label>
+                  <input class="field-input" id="fieldPrenom" type="text" value="Jean" autocomplete="off"/>
+                </div>
+                <div class="field">
+                  <label class="field-label">Nom</label>
+                  <input class="field-input" id="fieldNom" type="text" value="Dupont" autocomplete="off"/>
+                </div>
+              </div>
+
+              <div class="field">
+                <label class="field-label">Adresse email</label>
+                <input class="field-input" id="fieldEmail" type="email" value="jean.dupont@nexus.io" autocomplete="off"/>
+              </div>
+
+              <div class="field">
+                <label class="field-label">Rôle</label>
+                <input class="field-input" type="text" value="Administrateur" readonly/>
+              </div>
+
+              <div class="field-row">
+                <div class="field">
+                  <label class="field-label">Langue</label>
+                  <select class="field-select">
+                    <option selected>Français</option>
+                    <option>English</option>
+                    <option>Deutsch</option>
+                    <option>Español</option>
+                  </select>
+                </div>
+                <div class="field">
+                  <label class="field-label">Fuseau horaire</label>
+                  <select class="field-select" id="fieldTimezone">
+                    <option>UTC (UTC+0)</option>
+                    <option selected>Europe/Paris (UTC+1)</option>
+                    <option>Europe/London (UTC+0)</option>
+                    <option>Europe/Berlin (UTC+1)</option>
+                    <option>Europe/Madrid (UTC+1)</option>
+                    <option>Europe/Rome (UTC+1)</option>
+                    <option>Europe/Amsterdam (UTC+1)</option>
+                    <option>Europe/Brussels (UTC+1)</option>
+                    <option>Europe/Zurich (UTC+1)</option>
+                    <option>Europe/Stockholm (UTC+1)</option>
+                    <option>Europe/Warsaw (UTC+1)</option>
+                    <option>Europe/Lisbon (UTC+0)</option>
+                    <option>Europe/Athens (UTC+2)</option>
+                    <option>Europe/Helsinki (UTC+2)</option>
+                    <option>Europe/Moscow (UTC+3)</option>
+                    <option>America/New_York (UTC-5)</option>
+                    <option>America/Chicago (UTC-6)</option>
+                    <option>America/Denver (UTC-7)</option>
+                    <option>America/Los_Angeles (UTC-8)</option>
+                    <option>America/Toronto (UTC-5)</option>
+                    <option>America/Vancouver (UTC-8)</option>
+                    <option>America/Mexico_City (UTC-6)</option>
+                    <option>America/Sao_Paulo (UTC-3)</option>
+                    <option>America/Buenos_Aires (UTC-3)</option>
+                    <option>America/Bogota (UTC-5)</option>
+                    <option>Asia/Dubai (UTC+4)</option>
+                    <option>Asia/Kolkata (UTC+5:30)</option>
+                    <option>Asia/Bangkok (UTC+7)</option>
+                    <option>Asia/Singapore (UTC+8)</option>
+                    <option>Asia/Shanghai (UTC+8)</option>
+                    <option>Asia/Tokyo (UTC+9)</option>
+                    <option>Asia/Seoul (UTC+9)</option>
+                    <option>Australia/Sydney (UTC+11)</option>
+                    <option>Pacific/Auckland (UTC+13)</option>
+                    <option>Africa/Cairo (UTC+2)</option>
+                    <option>Africa/Johannesburg (UTC+2)</option>
+                    <option>Africa/Casablanca (UTC+1)</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="field">
+                <label class="field-label">Bio</label>
+                <textarea class="field-textarea" rows="3" placeholder="Décrivez-vous…">Administrateur principal de la plateforme NEXUS. Responsable analytics &amp; ops.</textarea>
+              </div>
+            </div>
+          </section>
+
+
+          <!-- ════ WORKSPACE ════ -->
+          <section class="s-panel" id="panel-workspace">
+            <div class="panel-header">
+              <p class="panel-title">Workspace</p>
+              <p class="panel-sub">Paramètres de votre organisation</p>
+            </div>
+
+            <div class="field-group">
+              <div class="field">
+                <label class="field-label">Nom de l'organisation</label>
+                <input class="field-input" type="text" value="Nexus Analytics SAS"/>
+              </div>
+
+              <div class="field">
+                <label class="field-label">Slug URL</label>
+                <div class="input-prefix-wrap">
+                  <span class="input-prefix">app.nexus.io/</span>
+                  <input class="field-input no-border-left" type="text" value="nexus-analytics"/>
+                </div>
+              </div>
+
+              <div class="field-row">
+                <div class="field">
+                  <label class="field-label">Devise</label>
+                  <select class="field-select">
+                    <option selected>EUR — Euro (€)</option>
+                    <option>USD — Dollar ($)</option>
+                    <option>GBP — Pound (£)</option>
+                  </select>
+                </div>
+                <div class="field">
+                  <label class="field-label">Format de date</label>
+                  <select class="field-select">
+                    <option selected>JJ/MM/AAAA</option>
+                    <option>MM/DD/YYYY</option>
+                    <option>AAAA-MM-JJ</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="toggle-section">
+                <p class="toggle-section-title">Affichage du dashboard</p>
+                <div class="toggle-list">
+                  <div class="toggle-item">
+                    <div><p class="toggle-label">Mode sombre</p><p class="toggle-desc">Thème sombre activé par défaut</p></div>
+                    <div class="toggle active" data-id="dark" id="darkToggle"></div>
+                  </div>
+                  <div class="toggle-item">
+                    <div><p class="toggle-label">Données temps réel</p><p class="toggle-desc">Actualisation automatique toutes les 30s</p></div>
+                    <div class="toggle active" data-id="realtime"></div>
+                  </div>
+                  <div class="toggle-item">
+                    <div><p class="toggle-label">Animations</p><p class="toggle-desc">Effets de transition et animations UI</p></div>
+                    <div class="toggle active" data-id="animations"></div>
+                  </div>
+                  <div class="toggle-item">
+                    <div><p class="toggle-label">Barre latérale compacte</p><p class="toggle-desc">Réduire la sidebar aux icônes</p></div>
+                    <div class="toggle" data-id="compact"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+
+          <!-- ════ SÉCURITÉ ════ -->
+          <section class="s-panel" id="panel-securite">
+            <div class="panel-header">
+              <p class="panel-title">Sécurité</p>
+              <p class="panel-sub">Authentification et contrôle d'accès</p>
+            </div>
+
+            <div class="field-group">
+              <div class="field">
+                <label class="field-label">Mot de passe actuel</label>
+                <input class="field-input" type="password" placeholder="••••••••••••"/>
+              </div>
+              <div class="field-row">
+                <div class="field">
+                  <label class="field-label">Nouveau mot de passe</label>
+                  <input class="field-input" type="password" placeholder="••••••••••••"/>
+                </div>
+                <div class="field">
+                  <label class="field-label">Confirmer</label>
+                  <input class="field-input" type="password" placeholder="••••••••••••"/>
+                </div>
+              </div>
+
+              <div class="strength-bar-wrap">
+                <div class="strength-bar">
+                  <div class="strength-fill" style="width:80%; background:var(--green);"></div>
+                </div>
+                <span class="strength-label" style="color:var(--green);">Fort</span>
+              </div>
+
+              <div class="toggle-section">
+                <p class="toggle-section-title">Authentification à deux facteurs</p>
+                <div class="twofa-card">
+                  <div class="twofa-icon" style="background:var(--green-dim);color:var(--green);">✓</div>
+                  <div>
+                    <p class="twofa-title">2FA activée via application</p>
+                    <p class="twofa-sub">Google Authenticator · Configurée le 12 Sep 2025</p>
+                  </div>
+                  <button class="twofa-btn">Reconfigurer</button>
+                </div>
+              </div>
+
+              <div class="toggle-section">
+                <p class="toggle-section-title">Sessions actives</p>
+                <div class="session-list">
+                  <div class="session-item">
+                    <div class="session-left">
+                      <div class="session-icon">💻</div>
+                      <div>
+                        <p class="session-name">MacBook Pro · Chrome 120</p>
+                        <p class="session-meta">Paris, France · Actif maintenant</p>
+                      </div>
+                    </div>
+                    <span class="session-current">Actuelle</span>
+                  </div>
+                  <div class="session-item">
+                    <div class="session-left">
+                      <div class="session-icon">📱</div>
+                      <div>
+                        <p class="session-name">iPhone 15 · Safari</p>
+                        <p class="session-meta">Paris, France · Il y a 2h</p>
+                      </div>
+                    </div>
+                    <button class="session-revoke">Révoquer</button>
+                  </div>
+                  <div class="session-item">
+                    <div class="session-left">
+                      <div class="session-icon">💻</div>
+                      <div>
+                        <p class="session-name">PC Bureau · Firefox 121</p>
+                        <p class="session-meta">Lyon, France · Il y a 1j</p>
+                      </div>
+                    </div>
+                    <button class="session-revoke">Révoquer</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+
+          <!-- ════ NOTIFICATIONS ════ -->
+          <section class="s-panel" id="panel-notifications">
+            <div class="panel-header">
+              <p class="panel-title">Notifications</p>
+              <p class="panel-sub">Choisissez ce que vous souhaitez recevoir</p>
+            </div>
+
+            <div class="field-group">
+
+              <div class="notif-category">
+                <p class="notif-cat-title">Alertes système</p>
+                <div class="toggle-list">
+                  <div class="toggle-item">
+                    <div><p class="toggle-label">Incidents critiques</p><p class="toggle-desc">Services hors ligne ou erreurs majeures</p></div>
+                    <div class="notif-channels">
+                      <span class="notif-chip active">Email</span>
+                      <span class="notif-chip active">SMS</span>
+                      <span class="notif-chip active">Push</span>
+                    </div>
+                  </div>
+                  <div class="toggle-item">
+                    <div><p class="toggle-label">Dégradations</p><p class="toggle-desc">Services lents ou partiellement indisponibles</p></div>
+                    <div class="notif-channels">
+                      <span class="notif-chip active">Email</span>
+                      <span class="notif-chip">SMS</span>
+                      <span class="notif-chip active">Push</span>
+                    </div>
+                  </div>
+                  <div class="toggle-item">
+                    <div><p class="toggle-label">Retour à la normale</p><p class="toggle-desc">Résolution d'incident confirmée</p></div>
+                    <div class="notif-channels">
+                      <span class="notif-chip active">Email</span>
+                      <span class="notif-chip">SMS</span>
+                      <span class="notif-chip">Push</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="notif-category">
+                <p class="notif-cat-title">Rapports & Analytics</p>
+                <div class="toggle-list">
+                  <div class="toggle-item">
+                    <div><p class="toggle-label">Rapport hebdomadaire</p><p class="toggle-desc">Résumé des performances chaque lundi</p></div>
+                    <div class="notif-channels">
+                      <span class="notif-chip active">Email</span>
+                      <span class="notif-chip">SMS</span>
+                      <span class="notif-chip">Push</span>
+                    </div>
+                  </div>
+                  <div class="toggle-item">
+                    <div><p class="toggle-label">Rapport mensuel</p><p class="toggle-desc">Bilan complet en fin de mois</p></div>
+                    <div class="notif-channels">
+                      <span class="notif-chip active">Email</span>
+                      <span class="notif-chip">SMS</span>
+                      <span class="notif-chip">Push</span>
+                    </div>
+                  </div>
+                  <div class="toggle-item">
+                    <div><p class="toggle-label">Objectifs atteints</p><p class="toggle-desc">Notification quand un KPI est dépassé</p></div>
+                    <div class="notif-channels">
+                      <span class="notif-chip active">Email</span>
+                      <span class="notif-chip">SMS</span>
+                      <span class="notif-chip active">Push</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="notif-category">
+                <p class="notif-cat-title">Commerce</p>
+                <div class="toggle-list">
+                  <div class="toggle-item">
+                    <div><p class="toggle-label">Nouvelle commande</p><p class="toggle-desc">Alerte à chaque commande reçue</p></div>
+                    <div class="notif-channels">
+                      <span class="notif-chip">Email</span>
+                      <span class="notif-chip">SMS</span>
+                      <span class="notif-chip">Push</span>
+                    </div>
+                  </div>
+                  <div class="toggle-item">
+                    <div><p class="toggle-label">Stock faible</p><p class="toggle-desc">Produit sous le seuil de réapprovisionnement</p></div>
+                    <div class="notif-channels">
+                      <span class="notif-chip active">Email</span>
+                      <span class="notif-chip">SMS</span>
+                      <span class="notif-chip active">Push</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </section>
+
+
+          <!-- ════ INTÉGRATIONS ════ -->
+          <section class="s-panel" id="panel-integrations">
+            <div class="panel-header">
+              <p class="panel-title">Intégrations</p>
+              <p class="panel-sub">Connectez vos outils tiers</p>
+            </div>
+
+            <div class="integrations-grid">
+
+              <div class="integ-card connected">
+                <div class="integ-logo" style="background:#1A1A2E;">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><rect width="24" height="24" rx="4" fill="#4285F4"/><text x="4" y="17" font-size="12" fill="white" font-weight="700">G</text></svg>
+                </div>
+                <div class="integ-info">
+                  <p class="integ-name">Google Analytics</p>
+                  <p class="integ-status st-connected">● Connecté</p>
+                  <p class="integ-meta">Synchronisation toutes les 15min</p>
+                </div>
+                <button class="integ-btn integ-btn-config">Configurer</button>
+              </div>
+
+              <div class="integ-card connected">
+                <div class="integ-logo" style="background:#1A1A2E;">
+                  <svg width="24" height="24" viewBox="0 0 24 24"><rect width="24" height="24" rx="4" fill="#635BFF"/><text x="5" y="16" font-size="11" fill="white" font-weight="700">St</text></svg>
+                </div>
+                <div class="integ-info">
+                  <p class="integ-name">Stripe</p>
+                  <p class="integ-status st-connected">● Connecté</p>
+                  <p class="integ-meta">Webhooks actifs · 3 événements</p>
+                </div>
+                <button class="integ-btn integ-btn-config">Configurer</button>
+              </div>
+
+              <div class="integ-card connected">
+                <div class="integ-logo">
+                  <svg width="24" height="24" viewBox="0 0 24 24"><rect width="24" height="24" rx="4" fill="#E01E5A"/><text x="4" y="17" font-size="12" fill="white" font-weight="700">Sl</text></svg>
+                </div>
+                <div class="integ-info">
+                  <p class="integ-name">Slack</p>
+                  <p class="integ-status st-connected">● Connecté</p>
+                  <p class="integ-meta">Canal #alertes-ops actif</p>
+                </div>
+                <button class="integ-btn integ-btn-config">Configurer</button>
+              </div>
+
+              <div class="integ-card">
+                <div class="integ-logo">
+                  <svg width="24" height="24" viewBox="0 0 24 24"><rect width="24" height="24" rx="4" fill="#2684FF"/><text x="4" y="17" font-size="11" fill="white" font-weight="700">Ji</text></svg>
+                </div>
+                <div class="integ-info">
+                  <p class="integ-name">Jira</p>
+                  <p class="integ-status st-disconnected">○ Non connecté</p>
+                  <p class="integ-meta">Synchronisez vos tickets</p>
+                </div>
+                <button class="integ-btn integ-btn-connect">Connecter</button>
+              </div>
+
+              <div class="integ-card">
+                <div class="integ-logo">
+                  <svg width="24" height="24" viewBox="0 0 24 24"><rect width="24" height="24" rx="4" fill="#24292F"/><text x="5" y="17" font-size="11" fill="white" font-weight="700">GH</text></svg>
+                </div>
+                <div class="integ-info">
+                  <p class="integ-name">GitHub</p>
+                  <p class="integ-status st-disconnected">○ Non connecté</p>
+                  <p class="integ-meta">Déploiements et CI/CD</p>
+                </div>
+                <button class="integ-btn integ-btn-connect">Connecter</button>
+              </div>
+
+              <div class="integ-card">
+                <div class="integ-logo">
+                  <svg width="24" height="24" viewBox="0 0 24 24"><rect width="24" height="24" rx="4" fill="#FF6C37"/><text x="3" y="17" font-size="11" fill="white" font-weight="700">Po</text></svg>
+                </div>
+                <div class="integ-info">
+                  <p class="integ-name">Postmark</p>
+                  <p class="integ-status st-disconnected">○ Non connecté</p>
+                  <p class="integ-meta">Emails transactionnels</p>
+                </div>
+                <button class="integ-btn integ-btn-connect">Connecter</button>
+              </div>
+
+            </div>
+          </section>
+
+
+          <!-- ════ FACTURATION ════ -->
+          <section class="s-panel" id="panel-facturation">
+            <div class="panel-header">
+              <p class="panel-title">Facturation</p>
+              <p class="panel-sub">Plan, paiements et factures</p>
+            </div>
+
+            <!-- Plan actuel -->
+            <div class="plan-card">
+              <div class="plan-left">
+                <div class="plan-badge">PRO</div>
+                <div>
+                  <p class="plan-name">Plan Pro</p>
+                  <p class="plan-price">€89 / mois · Renouvellement le 1 Déc 2025</p>
+                </div>
+              </div>
+              <button class="tb-btn primary" style="font-size:12px;">Passer à Enterprise</button>
+            </div>
+
+            <!-- Usage -->
+            <div class="usage-grid">
+              <div class="usage-item">
+                <div class="usage-header"><span class="usage-label">Utilisateurs</span><span class="usage-val">3 / 10</span></div>
+                <div class="usage-track"><div class="usage-fill" style="width:30%; background:var(--blue);"></div></div>
+              </div>
+              <div class="usage-item">
+                <div class="usage-header"><span class="usage-label">API calls / mois</span><span class="usage-val">284k / 1M</span></div>
+                <div class="usage-track"><div class="usage-fill" style="width:28%; background:var(--blue);"></div></div>
+              </div>
+              <div class="usage-item">
+                <div class="usage-header"><span class="usage-label">Stockage</span><span class="usage-val">18.4 GB / 100 GB</span></div>
+                <div class="usage-track"><div class="usage-fill" style="width:18%; background:var(--green);"></div></div>
+              </div>
+              <div class="usage-item">
+                <div class="usage-header"><span class="usage-label">Rapports / mois</span><span class="usage-val">1,284 / 5,000</span></div>
+                <div class="usage-track"><div class="usage-fill" style="width:26%; background:var(--violet);"></div></div>
+              </div>
+            </div>
+
+            <!-- Moyens de paiement -->
+            <div class="toggle-section">
+              <p class="toggle-section-title">Moyen de paiement</p>
+              <div class="card-payment">
+                <div class="card-icon">💳</div>
+                <div>
+                  <p class="card-name">Visa •••• •••• •••• 4242</p>
+                  <p class="card-exp">Expire 12/2027</p>
+                </div>
+                <button class="session-revoke" style="margin-left:auto;">Modifier</button>
+              </div>
+            </div>
+
+            <!-- Factures -->
+            <div class="toggle-section">
+              <p class="toggle-section-title">Factures récentes</p>
+              <div class="invoice-list">
+                <div class="invoice-item">
+                  <span class="inv-date">Nov 2025</span>
+                  <span class="inv-desc">Plan Pro · 1 mois</span>
+                  <span class="inv-amount">€89.00</span>
+                  <span class="inv-status st-paid">Payé</span>
+                  <button class="inv-dl">↓ PDF</button>
+                </div>
+                <div class="invoice-item">
+                  <span class="inv-date">Oct 2025</span>
+                  <span class="inv-desc">Plan Pro · 1 mois</span>
+                  <span class="inv-amount">€89.00</span>
+                  <span class="inv-status st-paid">Payé</span>
+                  <button class="inv-dl">↓ PDF</button>
+                </div>
+                <div class="invoice-item">
+                  <span class="inv-date">Sep 2025</span>
+                  <span class="inv-desc">Plan Pro · 1 mois</span>
+                  <span class="inv-amount">€89.00</span>
+                  <span class="inv-status st-paid">Payé</span>
+                  <button class="inv-dl">↓ PDF</button>
+                </div>
+              </div>
+            </div>
+          </section>
+
+
+          <!-- ════ API ════ -->
+          <section class="s-panel" id="panel-api">
+            <div class="panel-header">
+              <p class="panel-title">API & Webhooks</p>
+              <p class="panel-sub">Clés d'accès et points de terminaison</p>
+            </div>
+
+            <div class="field-group">
+              <div class="field">
+                <label class="field-label">Clé API publique</label>
+                <div class="api-key-wrap">
+                  <input class="field-input mono" type="text" value="pk_live_nexus_4xK8mQ2pL9vR7nY3" readonly id="pubKey"/>
+                  <button class="key-copy-btn" onclick="copyKey('pubKey')">Copier</button>
+                </div>
+              </div>
+
+              <div class="field">
+                <label class="field-label">Clé API secrète</label>
+                <div class="api-key-wrap">
+                  <input class="field-input mono" type="password" value="sk_live_nexus_9zJ5wT1qH6cN4bX8" readonly id="secKey"/>
+                  <button class="key-copy-btn" id="revealBtn">Afficher</button>
+                  <button class="key-copy-btn" onclick="copyKey('secKey')">Copier</button>
+                </div>
+                <p class="field-hint">⚠ Ne partagez jamais votre clé secrète. Traitez-la comme un mot de passe.</p>
+              </div>
+
+              <div class="toggle-section">
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+                  <p class="toggle-section-title" style="margin:0;">Webhooks</p>
+                  <button class="tb-btn primary" style="font-size:11px;">+ Ajouter un endpoint</button>
+                </div>
+                <div class="webhook-list">
+
+                  <div class="webhook-item">
+                    <div class="wh-left">
+                      <div class="wh-dot" style="background:var(--green);"></div>
+                      <div>
+                        <p class="wh-url">https://api.myapp.io/webhooks/nexus</p>
+                        <p class="wh-events">charge.succeeded · order.created · report.ready</p>
+                      </div>
+                    </div>
+                    <div class="wh-right">
+                      <span class="wh-rate">100%</span>
+                      <button class="session-revoke">Modifier</button>
+                    </div>
+                  </div>
+
+                  <div class="webhook-item">
+                    <div class="wh-left">
+                      <div class="wh-dot" style="background:var(--amber);"></div>
+                      <div>
+                        <p class="wh-url">https://hooks.slack.com/services/T0x…</p>
+                        <p class="wh-events">alert.critical · incident.created</p>
+                      </div>
+                    </div>
+                    <div class="wh-right">
+                      <span class="wh-rate" style="color:var(--amber);">94%</span>
+                      <button class="session-revoke">Modifier</button>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+          </section>
+
+
+          <!-- ════ ZONE DANGEREUSE ════ -->
+          <section class="s-panel" id="panel-danger">
+            <div class="panel-header">
+              <p class="panel-title">Zone dangereuse</p>
+              <p class="panel-sub">Actions irréversibles — procédez avec précaution</p>
+            </div>
+
+            <div class="danger-list">
+
+              <div class="danger-item">
+                <div class="danger-left">
+                  <p class="danger-title">Exporter toutes les données</p>
+                  <p class="danger-desc">Téléchargez une archive complète de vos données (JSON + CSV). Délai de traitement estimé : 10–15 minutes.</p>
+                </div>
+                <button class="danger-btn danger-btn-soft">↓ Exporter</button>
+              </div>
+
+              <div class="danger-item">
+                <div class="danger-left">
+                  <p class="danger-title">Réinitialiser les données analytiques</p>
+                  <p class="danger-desc">Efface toutes les données d'analytique. Les commandes et clients ne seront pas affectés. Cette action est irréversible.</p>
+                </div>
+                <button class="danger-btn danger-btn-warn" id="resetAnalyticsBtn">Réinitialiser</button>
+              </div>
+
+              <div class="danger-item danger-item-critical">
+                <div class="danger-left">
+                  <p class="danger-title" style="color:var(--red);">Supprimer le workspace</p>
+                  <p class="danger-desc">Supprime définitivement l'intégralité du workspace, de ses données et de ses membres. Cette action est <strong>permanente et irréversible</strong>.</p>
+                </div>
+                <button class="danger-btn danger-btn-critical" id="deleteWorkspaceBtn">Supprimer le workspace</button>
+              </div>
+
+            </div>
+          </section>
+
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Toast notification -->
+  <div class="toast" id="toast"></div>
+
+  <script src="app.js"></script>
+<script>
+/* ============================================
+   NEXUS — sidebar.js  v4
+   Compatible file:// — pas de localStorage cross-dossier
+   Stratégie : cookie-like via document.cookie (partagé par domaine/chemin)
+   + fallback paramètre URL
+   ============================================ */
+
+(function () {
+
+  /* ════════════════════════════════════════
+     PROFIL — stockage via cookie (fonctionne en file://)
+     ════════════════════════════════════════ */
+
+  function saveProfile(data) {
+    // Stocker dans TOUS les localStorage possibles + cookie
+    const json = JSON.stringify(data);
+    try { localStorage.setItem('nexus_profile', json); } catch(e){}
+    try { sessionStorage.setItem('nexus_profile', json); } catch(e){}
+    // Cookie lisible par tous les sous-dossiers du même domaine
+    try {
+      document.cookie = 'nexus_profile=' + encodeURIComponent(json) + '; path=/; max-age=31536000';
+    } catch(e){}
+  }
+
+  function loadProfile() {
+    // 1. Essayer localStorage
+    try {
+      const raw = localStorage.getItem('nexus_profile');
+      if (raw) { const p = JSON.parse(raw); if (p && p.prenom) return p; }
+    } catch(e){}
+
+    // 2. Essayer sessionStorage
+    try {
+      const raw = sessionStorage.getItem('nexus_profile');
+      if (raw) { const p = JSON.parse(raw); if (p && p.prenom) return p; }
+    } catch(e){}
+
+    // 3. Essayer cookie
+    try {
+      const match = document.cookie.match(/nexus_profile=([^;]+)/);
+      if (match) {
+        const p = JSON.parse(decodeURIComponent(match[1]));
+        if (p && p.prenom) return p;
+      }
+    } catch(e){}
+
+    // 4. Défauts
+    return { prenom: 'Jean', nom: 'Dupont', email: 'jean.dupont@nexus.io' };
+  }
+
+  function saveAvatar(dataUrl) {
+    try { localStorage.setItem('nexus_avatar', dataUrl); } catch(e){}
+    try { sessionStorage.setItem('nexus_avatar', dataUrl); } catch(e){}
+    // Cookie trop grand pour une image — on garde juste un flag
+    try { document.cookie = 'nexus_has_avatar=1; path=/; max-age=31536000'; } catch(e){}
+  }
+
+  function loadAvatar() {
+    try {
+      const v = localStorage.getItem('nexus_avatar');
+      if (v) return v;
+    } catch(e){}
+    try {
+      const v = sessionStorage.getItem('nexus_avatar');
+      if (v) return v;
+    } catch(e){}
+    return null;
+  }
+
+  function getInitials(p) {
+    return (((p.prenom||'').charAt(0)) + ((p.nom||'').charAt(0))).toUpperCase() || 'JD';
+  }
+
+  function getFullName(p) {
+    return [(p.prenom||'').trim(),(p.nom||'').trim()].filter(Boolean).join(' ') || 'Utilisateur';
+  }
+
+  /* ════════════════════════════════════════
+     NAVIGATION
+     ════════════════════════════════════════ */
+  const PAGE_MAP = {
+    "Vue d'ensemble": "../Vue d'ensemble/index.html",
+    "Analytique":     "../Analytique/index.html",
+    "Rapports":       "../Rapports/index.html",
+    "Campagnes":      "../Campagnes/index.html",
+    "Revenus":        "../Revenus/index.html",
+    "Clients":        "../Clients/index.html",
+    "Produits":       "../Produits/index.html",
+    "Commandes":      "../Commandes/index.html",
+    "Performance":    "../Performance/index.html",
+    "Logs":           "../Logs/index.html",
+    "Param\u00e8tres":"../Param\u00e8tres/index.html",
+  };
+
+  const NAV = [
+    { label:'Principal', items:[
+      { name:"Vue d'ensemble", icon:'◈' },
+      { name:'Analytique', icon:'◫', badge:'NEW' },
+      { name:'Rapports', icon:'◉' },
+      { name:'Campagnes', icon:'▤' },
+    ]},
+    { label:'Commerce', items:[
+      { name:'Revenus', icon:'◈' },
+      { name:'Clients', icon:'⊞' },
+      { name:'Produits', icon:'◧' },
+      { name:'Commandes', icon:'◈' },
+    ]},
+    { label:'Syst\u00e8me', items:[
+      { name:'Performance', icon:'◩' },
+      { name:'Logs', icon:'◈' },
+      { name:'Param\u00e8tres', icon:'◧' },
+    ]},
+  ];
+
+  function getActivePage() {
+    const parts = window.location.pathname.split('/');
+    for (let i = parts.length - 1; i >= 0; i--) {
+      const seg = decodeURIComponent(parts[i]);
+      if (seg && seg !== 'index.html') return seg;
+    }
+    // Fallback sur le titre de la page (utile en file://)
+    return document.title.replace(/^NEXUS\s*[—-]\s*/i, '').trim();
+  }
+
+  /* ════════════════════════════════════════
+     BUILD + INJECT
+     ════════════════════════════════════════ */
+  function buildHTML(profile) {
+    const active = getActivePage();
+    const ini  = getInitials(profile);
+    const name = getFullName(profile);
+    let sections = '';
+    NAV.forEach(function(sec) {
+      let items = '';
+      sec.items.forEach(function(item) {
+        const isActive = decodeURIComponent(active) === item.name || active === item.name;
+        const badge = item.badge ? '<span class="sb-badge">'+item.badge+'</span>' : '';
+        items += '<a href="'+(PAGE_MAP[item.name]||'#')+'" class="sb-item'+(isActive?' active':'')+'"><span class="sb-icon">'+item.icon+'</span> '+item.name+badge+'</a>';
+      });
+      sections += '<div class="sb-section"><p class="sb-section-label">'+sec.label+'</p>'+items+'</div>';
+    });
+    return '<div class="sb-logo"><div class="logo-icon">Nx</div><span class="logo-text">Nexus</span></div>'
+      + sections
+      + '<div class="sb-bottom"><div class="sb-user"><div class="user-av" id="sidebarAv">'+ini+'</div><div><p class="user-name" id="sidebarName">'+name+'</p><p class="user-plan">Pro &middot; Admin</p></div></div></div>';
+  }
+
+  function applyAvatar() {
+    const photo = loadAvatar();
+    const av = document.getElementById('sidebarAv');
+    if (!av || !photo) return;
+    av.textContent = '';
+    av.style.backgroundImage = 'url('+photo+')';
+    av.style.backgroundSize = 'cover';
+    av.style.backgroundPosition = 'center';
+  }
+
+  function inject() {
+    const sidebar = document.querySelector('aside.sidebar');
+    if (!sidebar) return;
+    sidebar.innerHTML = buildHTML(loadProfile());
+    applyAvatar();
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', inject);
+  } else {
+    inject();
+  }
+
+  /* ════════════════════════════════════════
+     API PUBLIQUE
+     ════════════════════════════════════════ */
+  window.NexusSidebar = {
+    updateDisplay: function(prenom, nom) {
+      const av = document.getElementById('sidebarAv');
+      const nm = document.getElementById('sidebarName');
+      if (av && !loadAvatar()) av.textContent = getInitials({prenom:prenom,nom:nom});
+      if (nm) nm.textContent = getFullName({prenom:prenom,nom:nom});
+    },
+    saveProfile: function(prenom, nom, email) {
+      saveProfile({prenom:prenom, nom:nom, email:email});
+      this.updateDisplay(prenom, nom);
+    },
+    saveAvatar: saveAvatar,
+    getProfile: loadProfile,
+    refresh: inject,
+  };
+
+})();
+
+</script>
+</body>
+</html>
