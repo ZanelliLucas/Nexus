@@ -3,10 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>NEXUS — Accueil</title>
-
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
-
+  <title>NEXUS</title>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -14,492 +12,737 @@
       --bg:         #09090B;
       --surface:    #111113;
       --surface2:   #18181B;
-      --border:     rgba(255, 255, 255, 0.06);
-      --border2:    rgba(255, 255, 255, 0.1);
+      --border:     rgba(255,255,255,0.06);
+      --border2:    rgba(255,255,255,0.10);
       --text:       #FAFAFA;
-      --muted:      #71717A;
-      --green:      #22C55E;
-      --green-dim:  rgba(34, 197, 94, 0.12);
-      --red:        #EF4444;
-      --red-dim:    rgba(239, 68, 68, 0.12);
+      --muted:      #52525B;
       --blue:       #3B82F6;
-      --blue-dim:   rgba(59, 130, 246, 0.12);
+      --blue-dim:   rgba(59,130,246,0.10);
+      --blue-glow:  rgba(59,130,246,0.20);
       --violet:     #8B5CF6;
-      --violet-dim: rgba(139, 92, 246, 0.12);
+      --violet-dim: rgba(139,92,246,0.10);
+      --green:      #22C55E;
+      --green-dim:  rgba(34,197,94,0.10);
       --amber:      #F59E0B;
-      --amber-dim:  rgba(245, 158, 11, 0.12);
-      --cyan:       #06B6D4;
+      --amber-dim:  rgba(245,158,11,0.10);
+      --red:        #EF4444;
     }
 
-    html, body { height: 100%; }
-
-    body {
+    html, body {
+      height: 100%;
       background: var(--bg);
       color: var(--text);
       font-family: 'Inter', sans-serif;
-      font-weight: 400;
-      display: flex;
-      overflow: hidden;
+      overflow-x: hidden;
     }
 
-    ::-webkit-scrollbar        { width: 4px; height: 4px; }
-    ::-webkit-scrollbar-track  { background: transparent; }
-    ::-webkit-scrollbar-thumb  { background: var(--border2); border-radius: 2px; }
+    /* ══════════════════════════════
+       BACKGROUND LAYERS
+    ══════════════════════════════ */
 
-    /* ═══════ SIDEBAR ═══════ */
-    .sidebar {
-      width: 220px; flex-shrink: 0;
-      background: var(--surface);
-      border-right: 1px solid var(--border);
+    /* Grid */
+    .bg-grid {
+      position: fixed; inset: 0; z-index: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.028) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.028) 1px, transparent 1px);
+      background-size: 52px 52px;
+      pointer-events: none;
+    }
+
+    /* Orbs */
+    .bg-orb {
+      position: fixed; z-index: 0;
+      border-radius: 50%;
+      filter: blur(80px);
+      pointer-events: none;
+      animation: orbFloat 12s ease-in-out infinite alternate;
+    }
+    .bg-orb-1 {
+      width: 500px; height: 500px;
+      top: -140px; left: -100px;
+      background: radial-gradient(circle, rgba(59,130,246,0.14) 0%, transparent 70%);
+      animation-duration: 14s;
+    }
+    .bg-orb-2 {
+      width: 420px; height: 420px;
+      bottom: -100px; right: -80px;
+      background: radial-gradient(circle, rgba(139,92,246,0.12) 0%, transparent 70%);
+      animation-duration: 18s;
+      animation-delay: -6s;
+    }
+    .bg-orb-3 {
+      width: 300px; height: 300px;
+      top: 40%; left: 50%;
+      transform: translateX(-50%);
+      background: radial-gradient(circle, rgba(34,197,94,0.06) 0%, transparent 70%);
+      animation-duration: 20s;
+      animation-delay: -3s;
+    }
+
+    @keyframes orbFloat {
+      from { transform: translate(0, 0) scale(1); }
+      to   { transform: translate(30px, 20px) scale(1.08); }
+    }
+
+    /* Noise overlay */
+    .bg-noise {
+      position: fixed; inset: 0; z-index: 0;
+      opacity: 0.025;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+      background-size: 180px 180px;
+      pointer-events: none;
+    }
+
+    /* ══════════════════════════════
+       LAYOUT
+    ══════════════════════════════ */
+    .page {
+      position: relative; z-index: 1;
+      min-height: 100vh;
       display: flex; flex-direction: column;
-      height: 100vh; overflow-y: auto;
+      align-items: center; justify-content: center;
+      padding: 48px 24px;
     }
-    .sb-logo {
-      padding: 20px 16px;
-      border-bottom: 1px solid var(--border);
-      display: flex; align-items: center; gap: 10px;
-    }
-    .logo-icon {
-      width: 28px; height: 28px;
-      background: linear-gradient(135deg, var(--blue), var(--violet));
-      border-radius: 6px;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 12px; font-weight: 600;
-      font-family: 'JetBrains Mono', monospace; color: white;
-    }
-    .logo-text { font-size: 14px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; }
-    .sb-section { padding: 12px 8px 4px; }
-    .sb-section-label {
-      font-size: 9px; font-weight: 500; letter-spacing: 2px;
-      text-transform: uppercase; color: var(--muted);
-      padding: 0 8px; margin-bottom: 4px;
-    }
-    .sb-item {
-      display: flex; align-items: center; gap: 10px;
-      padding: 8px 10px; border-radius: 6px;
-      cursor: pointer; transition: background 0.15s;
-      text-decoration: none; color: var(--muted);
-      font-size: 13px; font-weight: 400; margin-bottom: 1px;
-    }
-    .sb-item:hover            { background: var(--surface2); color: var(--text); }
-    .sb-item.active           { background: var(--surface2); color: var(--text); }
-    .sb-item.active .sb-icon  { color: var(--blue); }
-    .sb-icon { font-size: 14px; width: 16px; text-align: center; }
-    .sb-badge {
-      margin-left: auto;
-      background: var(--blue-dim); color: var(--blue);
-      font-size: 9px; font-weight: 600; padding: 2px 6px; border-radius: 10px;
-    }
-    .sb-bottom { margin-top: auto; padding: 12px 8px; border-top: 1px solid var(--border); }
-    .sb-user { display: flex; align-items: center; gap: 10px; padding: 8px 10px; border-radius: 6px; cursor: pointer; }
-    .user-av {
-      width: 28px; height: 28px; border-radius: 50%;
-      background: linear-gradient(135deg, var(--violet), var(--blue));
-      display: flex; align-items: center; justify-content: center;
-      font-size: 11px; font-weight: 600; flex-shrink: 0;
-    }
-    .user-name { font-size: 12px; font-weight: 500; }
-    .user-plan { font-size: 10px; color: var(--muted); }
 
-    /* ═══════ MAIN ═══════ */
-    .main { flex: 1; overflow-y: auto; display: flex; flex-direction: column; }
+    .wrapper {
+      width: 100%;
+      max-width: 900px;
+      display: flex; flex-direction: column;
+      gap: 40px;
+    }
 
-    .topbar {
-      height: 52px; border-bottom: 1px solid var(--border);
-      padding: 0 24px;
+    /* ══════════════════════════════
+       HEADER
+    ══════════════════════════════ */
+    .header {
       display: flex; align-items: center; justify-content: space-between;
-      flex-shrink: 0; background: var(--surface);
-      position: sticky; top: 0; z-index: 10;
-    }
-    .tb-left  { display: flex; align-items: center; gap: 16px; }
-    .tb-right { display: flex; align-items: center; gap: 8px; }
-    .page-title { font-size: 15px; font-weight: 600; }
-    .page-sub   { font-size: 12px; color: var(--muted); }
-    .live-badge { display: flex; align-items: center; gap: 5px; font-size: 10px; color: var(--green); font-weight: 500; }
-    .live-dot { width: 6px; height: 6px; background: var(--green); border-radius: 50%; animation: pulse 2s infinite; }
-
-    .clock-badge {
-      font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--muted);
-      padding: 5px 12px; background: var(--surface2);
-      border: 1px solid var(--border); border-radius: 6px;
+      animation: fadeUp 0.5s ease both 0.05s;
     }
 
-    /* ═══════ CONTENT ═══════ */
-    .content { padding: 28px 24px; display: flex; flex-direction: column; gap: 22px; overflow-y: auto; }
+    .logo { display: flex; align-items: center; gap: 12px; }
 
-    /* Hero */
-    .hero { display: flex; align-items: flex-end; justify-content: space-between; }
-    .hero-title { font-size: 20px; font-weight: 600; letter-spacing: -0.3px; margin-bottom: 4px; }
-    .hero-sub   { font-size: 12px; color: var(--muted); }
-    .hero-stats { display: flex; gap: 24px; }
-    .hero-stat  { text-align: right; }
-    .hero-stat-val { font-family: 'JetBrains Mono', monospace; font-size: 16px; font-weight: 500; }
-    .hero-stat-lbl { font-size: 10px; color: var(--muted); margin-top: 2px; }
-
-    /* Section label */
-    .section-label {
-      font-size: 9px; font-weight: 500; letter-spacing: 2px;
-      text-transform: uppercase; color: var(--muted); margin-bottom: 10px;
+    .logo-icon {
+      width: 38px; height: 38px;
+      background: linear-gradient(135deg, var(--blue), var(--violet));
+      border-radius: 9px;
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px; font-weight: 500; color: #fff;
+      box-shadow: 0 0 24px rgba(59,130,246,0.35);
     }
 
-    /* Module grid */
-    .modules-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
-
-    .module-card {
-      background: var(--surface); border: 1px solid var(--border);
-      border-radius: 10px; padding: 16px;
-      text-decoration: none; color: var(--text);
-      display: flex; flex-direction: column; gap: 10px;
-      transition: border-color 0.2s, background 0.2s;
-      cursor: pointer;
+    .logo-text {
+      font-size: 15px; font-weight: 600;
+      letter-spacing: 3px; text-transform: uppercase;
     }
-    .module-card:hover { border-color: var(--border2); background: var(--surface2); }
-    .module-card:hover .module-arrow { opacity: 1; transform: translateX(0); }
 
-    .module-card-top { display: flex; align-items: center; justify-content: space-between; }
-    .module-icon {
-      width: 32px; height: 32px; border-radius: 7px;
-      display: flex; align-items: center; justify-content: center; font-size: 14px;
+    .header-right {
+      display: flex; align-items: center; gap: 10px;
     }
-    .module-arrow { font-size: 11px; color: var(--muted); opacity: 0; transform: translateX(-4px); transition: opacity 0.2s, transform 0.2s; }
-    .module-name  { font-size: 13px; font-weight: 600; margin-bottom: 2px; display: flex; align-items: center; gap: 6px; }
-    .module-desc  { font-size: 11px; color: var(--muted); line-height: 1.5; }
-    .module-footer {
+
+    .live-pill {
       display: flex; align-items: center; gap: 6px;
-      padding-top: 10px; border-top: 1px solid var(--border); margin-top: auto;
+      padding: 5px 12px;
+      background: var(--green-dim);
+      border: 1px solid rgba(34,197,94,0.2);
+      border-radius: 20px;
+      font-size: 11px; color: var(--green); font-weight: 500;
     }
-    .module-stat-dot { width: 5px; height: 5px; border-radius: 50%; }
-    .module-stat-txt { font-size: 10px; color: var(--muted); font-family: 'JetBrains Mono', monospace; }
+    .live-dot {
+      width: 6px; height: 6px;
+      background: var(--green); border-radius: 50%;
+      animation: pulse 2s infinite;
+    }
 
-    /* Bottom row */
-    .bottom-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .clock {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px; color: var(--muted);
+      padding: 5px 12px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+    }
 
-    /* Activity card */
-    .activity-card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
-    .ac-head { padding: 14px 18px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
-    .card-title    { font-size: 14px; font-weight: 600; }
-    .card-subtitle { font-size: 11px; color: var(--muted); margin-top: 2px; }
-    .ac-item { display: flex; align-items: flex-start; gap: 12px; padding: 12px 18px; border-bottom: 1px solid var(--border); transition: background 0.15s; }
-    .ac-item:last-child { border-bottom: none; }
-    .ac-item:hover      { background: var(--surface2); }
-    .ac-dot  { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; margin-top: 4px; }
-    .ac-msg  { font-size: 12px; line-height: 1.5; }
-    .ac-msg strong { font-weight: 500; }
-    .ac-time { font-size: 10px; color: var(--muted); margin-top: 2px; font-family: 'JetBrains Mono', monospace; }
+    /* ══════════════════════════════
+       HERO
+    ══════════════════════════════ */
+    .hero {
+      text-align: center;
+      display: flex; flex-direction: column; align-items: center; gap: 12px;
+      animation: fadeUp 0.5s ease both 0.12s;
+    }
 
-    /* Quick card */
-    .quick-card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
-    .qc-head    { padding: 14px 18px; border-bottom: 1px solid var(--border); }
-    .qc-row     { display: flex; align-items: center; justify-content: space-between; padding: 12px 18px; border-bottom: 1px solid var(--border); transition: background 0.15s; text-decoration: none; color: inherit; }
-    .qc-row:last-child { border-bottom: none; }
-    .qc-row:hover      { background: var(--surface2); }
-    .qc-left    { display: flex; align-items: center; gap: 10px; }
-    .qc-icon    { width: 28px; height: 28px; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 12px; }
-    .qc-label   { font-size: 12px; font-weight: 500; }
-    .qc-sub     { font-size: 10px; color: var(--muted); margin-top: 1px; }
-    .qc-right   { text-align: right; }
-    .qc-val     { font-family: 'JetBrains Mono', monospace; font-size: 13px; font-weight: 500; }
-    .qc-delta   { font-size: 10px; margin-top: 1px; }
-    .delta-up   { color: var(--green); }
-    .delta-down { color: var(--red); }
+    .hero-eyebrow {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px; font-weight: 400;
+      letter-spacing: 3px; text-transform: uppercase;
+      color: var(--blue);
+      padding: 4px 14px;
+      background: var(--blue-dim);
+      border: 1px solid rgba(59,130,246,0.15);
+      border-radius: 20px;
+      display: inline-block;
+    }
+
+    .hero-title {
+      font-size: clamp(28px, 5vw, 42px);
+      font-weight: 700;
+      letter-spacing: -0.04em;
+      line-height: 1.1;
+      background: linear-gradient(160deg, #FAFAFA 30%, #52525B 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero-sub {
+      font-size: 13px; color: var(--muted);
+      max-width: 360px; line-height: 1.6;
+    }
+
+    /* ══════════════════════════════
+       KPI STRIP
+    ══════════════════════════════ */
+    .kpi-strip {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+      animation: fadeUp 0.5s ease both 0.18s;
+    }
+
+    .kpi-cell {
+      background: var(--surface);
+      padding: 14px 20px;
+      display: flex; align-items: center; gap: 14px;
+      transition: background 0.15s;
+    }
+    .kpi-cell:hover { background: var(--surface2); }
+
+    .kpi-dot {
+      width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0;
+    }
+
+    .kpi-val {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 15px; font-weight: 500;
+    }
+
+    .kpi-lbl { font-size: 10px; color: var(--muted); margin-top: 1px; }
+
+    .kpi-delta {
+      margin-left: auto;
+      font-size: 10px; font-weight: 500;
+      font-family: 'JetBrains Mono', monospace;
+    }
+    .up   { color: var(--green); }
+    .down { color: var(--red); }
+
+    /* ══════════════════════════════
+       SECTION LABEL
+    ══════════════════════════════ */
+    .section-label {
+      font-size: 9px; font-weight: 500;
+      letter-spacing: 2px; text-transform: uppercase;
+      color: var(--muted); margin-bottom: 10px;
+    }
+
+    /* ══════════════════════════════
+       MODULE GRID
+    ══════════════════════════════ */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+      animation: fadeUp 0.5s ease both 0.24s;
+    }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 16px;
+      text-decoration: none;
+      color: var(--text);
+      display: flex; flex-direction: column; gap: 10px;
+      transition: border-color 0.2s, background 0.2s, transform 0.2s, box-shadow 0.2s;
+      position: relative; overflow: hidden;
+    }
+
+    /* Card inner glow on hover */
+    .card::before {
+      content: '';
+      position: absolute; inset: 0;
+      opacity: 0;
+      transition: opacity 0.3s;
+      pointer-events: none;
+    }
+    .card:hover { border-color: var(--border2); background: var(--surface2); transform: translateY(-2px); }
+    .card:hover::before { opacity: 1; }
+    .card:hover .card-arrow { opacity: 1; transform: translateX(0); }
+
+    /* Per-card accent glows */
+    .card[data-color="blue"]::before   { background: radial-gradient(ellipse at top left, rgba(59,130,246,0.07) 0%, transparent 60%); }
+    .card[data-color="violet"]::before { background: radial-gradient(ellipse at top left, rgba(139,92,246,0.07) 0%, transparent 60%); }
+    .card[data-color="amber"]::before  { background: radial-gradient(ellipse at top left, rgba(245,158,11,0.07) 0%, transparent 60%); }
+    .card[data-color="green"]::before  { background: radial-gradient(ellipse at top left, rgba(34,197,94,0.07) 0%, transparent 60%); }
+
+    .card-top { display: flex; align-items: center; justify-content: space-between; }
+
+    .card-icon {
+      width: 32px; height: 32px; border-radius: 7px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 13px;
+    }
+
+    .card-arrow {
+      font-size: 11px; color: var(--muted);
+      opacity: 0; transform: translateX(-5px);
+      transition: opacity 0.2s, transform 0.2s;
+    }
+
+    .card-name {
+      font-size: 13px; font-weight: 600;
+      display: flex; align-items: center; gap: 6px;
+      margin-bottom: 3px;
+    }
+
+    .card-desc { font-size: 11px; color: var(--muted); line-height: 1.5; }
+
+    .card-footer {
+      display: flex; align-items: center; gap: 6px;
+      padding-top: 10px; border-top: 1px solid var(--border);
+      margin-top: auto;
+    }
+    .card-dot { width: 5px; height: 5px; border-radius: 50%; flex-shrink: 0; }
+    .card-stat { font-size: 10px; color: var(--muted); font-family: 'JetBrains Mono', monospace; }
+
+    .badge {
+      background: var(--blue-dim); color: var(--blue);
+      font-size: 8px; font-weight: 600;
+      padding: 1px 5px; border-radius: 10px;
+    }
+
+    /* Staggered card animation */
+    .card { animation: fadeUp 0.4s ease both; }
+    .card:nth-child(1) { animation-delay: 0.26s; }
+    .card:nth-child(2) { animation-delay: 0.30s; }
+    .card:nth-child(3) { animation-delay: 0.34s; }
+    .card:nth-child(4) { animation-delay: 0.38s; }
+    .card:nth-child(5) { animation-delay: 0.42s; }
+    .card:nth-child(6) { animation-delay: 0.46s; }
+    .card:nth-child(7) { animation-delay: 0.50s; }
+    .card:nth-child(8) { animation-delay: 0.54s; }
+
+    /* ══════════════════════════════
+       BOTTOM ROW
+    ══════════════════════════════ */
+    .bottom-row {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      animation: fadeUp 0.5s ease both 0.46s;
+    }
+
+    /* System links */
+    .sys-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px; overflow: hidden;
+    }
+
+    .sys-head {
+      padding: 13px 16px;
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between;
+    }
+
+    .sys-title    { font-size: 12px; font-weight: 600; }
+    .sys-subtitle { font-size: 10px; color: var(--muted); margin-top: 1px; }
+
+    .sys-row {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 11px 16px;
+      border-bottom: 1px solid var(--border);
+      text-decoration: none; color: inherit;
+      transition: background 0.15s;
+    }
+    .sys-row:last-child { border-bottom: none; }
+    .sys-row:hover      { background: var(--surface2); }
+
+    .sys-left { display: flex; align-items: center; gap: 10px; }
+    .sys-icon {
+      width: 26px; height: 26px; border-radius: 6px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 11px;
+    }
+    .sys-name { font-size: 12px; font-weight: 500; }
+    .sys-desc { font-size: 10px; color: var(--muted); margin-top: 1px; }
+
+    .sys-right { text-align: right; }
+    .sys-val   { font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 500; }
+    .sys-delta { font-size: 10px; margin-top: 1px; }
+
+    /* Activity */
+    .act-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px; overflow: hidden;
+    }
+    .act-head {
+      padding: 13px 16px; border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .act-item {
+      display: flex; align-items: flex-start; gap: 10px;
+      padding: 11px 16px; border-bottom: 1px solid var(--border);
+      transition: background 0.15s;
+    }
+    .act-item:last-child { border-bottom: none; }
+    .act-item:hover      { background: var(--surface2); }
+    .act-dot  { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; margin-top: 5px; }
+    .act-msg  { font-size: 12px; line-height: 1.5; }
+    .act-msg strong { font-weight: 500; }
+    .act-time { font-size: 10px; color: var(--muted); margin-top: 2px; font-family: 'JetBrains Mono', monospace; }
+
+    /* ══════════════════════════════
+       FOOTER
+    ══════════════════════════════ */
+    .footer {
+      display: flex; align-items: center; justify-content: space-between;
+      padding-top: 4px;
+      border-top: 1px solid var(--border);
+      animation: fadeUp 0.5s ease both 0.52s;
+    }
+    .footer-text {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px; color: var(--muted);
+    }
+    .footer-links { display: flex; gap: 16px; }
+    .footer-link  {
+      font-size: 11px; color: var(--muted); text-decoration: none;
+      transition: color 0.15s;
+    }
+    .footer-link:hover { color: var(--text); }
+
+    /* ══════════════════════════════
+       ANIMATIONS
+    ══════════════════════════════ */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(12px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
 
     @keyframes pulse {
       0%, 100% { opacity: 1; transform: scale(1); }
       50%       { opacity: 0.5; transform: scale(1.3); }
     }
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(10px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-    .content > * { animation: fadeUp 0.4s ease both; }
-    .content > *:nth-child(1) { animation-delay: 0.05s; }
-    .content > *:nth-child(2) { animation-delay: 0.10s; }
-    .content > *:nth-child(3) { animation-delay: 0.15s; }
-    .content > *:nth-child(4) { animation-delay: 0.20s; }
   </style>
 </head>
 <body>
 
-  <aside class="sidebar"></aside>
+  <!-- Background layers -->
+  <div class="bg-grid"></div>
+  <div class="bg-orb bg-orb-1"></div>
+  <div class="bg-orb bg-orb-2"></div>
+  <div class="bg-orb bg-orb-3"></div>
+  <div class="bg-noise"></div>
 
-  <div class="main">
+  <div class="page">
+    <div class="wrapper">
 
-    <div class="topbar">
-      <div class="tb-left">
-        <div>
-          <p class="page-title">Accueil</p>
-          <p class="page-sub">Bienvenue sur NEXUS</p>
+      <!-- ── Header ── -->
+      <div class="header">
+        <div class="logo">
+          <div class="logo-icon">Nx</div>
+          <span class="logo-text">Nexus</span>
         </div>
-        <div class="live-badge"><div class="live-dot"></div> Live</div>
+        <div class="header-right">
+          <div class="live-pill"><div class="live-dot"></div> Live</div>
+          <div class="clock" id="clock">--:--:--</div>
+        </div>
       </div>
-      <div class="tb-right">
-        <div class="clock-badge" id="clock">--:--:--</div>
-      </div>
-    </div>
 
-    <div class="content">
-
-      <!-- Hero -->
+      <!-- ── Hero ── -->
       <div class="hero">
-        <div>
-          <p class="hero-title" id="greetingText">Bonjour 👋</p>
-          <p class="hero-sub">Voici un aperçu de l'activité. Sélectionnez un module pour commencer.</p>
+        <span class="hero-eyebrow">// Système de gestion interne</span>
+        <h1 class="hero-title">Bienvenue sur NEXUS</h1>
+        <p class="hero-sub">Sélectionnez un module ci-dessous pour accéder à votre tableau de bord.</p>
+      </div>
+
+      <!-- ── KPI strip ── -->
+      <div class="kpi-strip">
+        <div class="kpi-cell">
+          <div class="kpi-dot" style="background:var(--green);"></div>
+          <div>
+            <div class="kpi-val">€284,591</div>
+            <div class="kpi-lbl">Revenu ce mois</div>
+          </div>
+          <div class="kpi-delta up">↑ 12.4%</div>
         </div>
-        <div class="hero-stats">
-          <div class="hero-stat">
-            <div class="hero-stat-val">€284,591</div>
-            <div class="hero-stat-lbl">Revenu ce mois</div>
+        <div class="kpi-cell">
+          <div class="kpi-dot" style="background:var(--blue);"></div>
+          <div>
+            <div class="kpi-val">48,291</div>
+            <div class="kpi-lbl">Utilisateurs actifs</div>
           </div>
-          <div class="hero-stat">
-            <div class="hero-stat-val">48,291</div>
-            <div class="hero-stat-lbl">Utilisateurs actifs</div>
+          <div class="kpi-delta up">↑ 8.1%</div>
+        </div>
+        <div class="kpi-cell">
+          <div class="kpi-dot" style="background:var(--violet);"></div>
+          <div>
+            <div class="kpi-val">3.82%</div>
+            <div class="kpi-lbl">Taux de conversion</div>
           </div>
-          <div class="hero-stat">
-            <div class="hero-stat-val">3.82%</div>
-            <div class="hero-stat-lbl">Taux de conversion</div>
-          </div>
+          <div class="kpi-delta down">↓ 0.3%</div>
         </div>
       </div>
 
-      <!-- Modules -->
+      <!-- ── Modules ── -->
       <div>
         <p class="section-label">Modules</p>
-        <div class="modules-grid">
+        <div class="grid">
 
-          <a class="module-card" href="./Vue d'ensemble/index.html">
-            <div class="module-card-top">
-              <div class="module-icon" style="background:var(--blue-dim);color:var(--blue);">◈</div>
-              <span class="module-arrow">→</span>
+          <a class="card" data-color="blue" href="./Vue d'ensemble/index.html">
+            <div class="card-top">
+              <div class="card-icon" style="background:var(--blue-dim);color:var(--blue);">◈</div>
+              <span class="card-arrow">→</span>
             </div>
             <div>
-              <p class="module-name">Vue d'ensemble</p>
-              <p class="module-desc">Tableau de bord principal et KPIs globaux.</p>
+              <p class="card-name">Vue d'ensemble</p>
+              <p class="card-desc">Tableau de bord principal et KPIs globaux.</p>
             </div>
-            <div class="module-footer">
-              <div class="module-stat-dot" style="background:var(--green);"></div>
-              <span class="module-stat-txt">En temps réel</span>
+            <div class="card-footer">
+              <div class="card-dot" style="background:var(--green);"></div>
+              <span class="card-stat">En temps réel</span>
             </div>
           </a>
 
-          <a class="module-card" href="./Analytique/index.html">
-            <div class="module-card-top">
-              <div class="module-icon" style="background:var(--violet-dim);color:var(--violet);">◉</div>
-              <span class="module-arrow">→</span>
+          <a class="card" data-color="violet" href="./Analytique/index.html">
+            <div class="card-top">
+              <div class="card-icon" style="background:var(--violet-dim);color:var(--violet);">◉</div>
+              <span class="card-arrow">→</span>
             </div>
             <div>
-              <p class="module-name">Analytique <span class="sb-badge" style="font-size:8px;padding:1px 5px;">NEW</span></p>
-              <p class="module-desc">Analyse des données et visualisations avancées.</p>
+              <p class="card-name">Analytique <span class="badge">NEW</span></p>
+              <p class="card-desc">Analyse des données et visualisations avancées.</p>
             </div>
-            <div class="module-footer">
-              <div class="module-stat-dot" style="background:var(--violet);"></div>
-              <span class="module-stat-txt">Mis à jour aujourd'hui</span>
+            <div class="card-footer">
+              <div class="card-dot" style="background:var(--violet);"></div>
+              <span class="card-stat">Mis à jour aujourd'hui</span>
             </div>
           </a>
 
-          <a class="module-card" href="./Rapports/index.html">
-            <div class="module-card-top">
-              <div class="module-icon" style="background:var(--amber-dim);color:var(--amber);">◫</div>
-              <span class="module-arrow">→</span>
+          <a class="card" data-color="amber" href="./Rapports/index.html">
+            <div class="card-top">
+              <div class="card-icon" style="background:var(--amber-dim);color:var(--amber);">◫</div>
+              <span class="card-arrow">→</span>
             </div>
             <div>
-              <p class="module-name">Rapports</p>
-              <p class="module-desc">Génération et export de rapports personnalisés.</p>
+              <p class="card-name">Rapports</p>
+              <p class="card-desc">Génération et export de rapports personnalisés.</p>
             </div>
-            <div class="module-footer">
-              <div class="module-stat-dot" style="background:var(--amber);"></div>
-              <span class="module-stat-txt">3 rapports ce mois</span>
+            <div class="card-footer">
+              <div class="card-dot" style="background:var(--amber);"></div>
+              <span class="card-stat">3 rapports ce mois</span>
             </div>
           </a>
 
-          <a class="module-card" href="./Campagnes/index.html">
-            <div class="module-card-top">
-              <div class="module-icon" style="background:var(--green-dim);color:var(--green);">▤</div>
-              <span class="module-arrow">→</span>
+          <a class="card" data-color="green" href="./Campagnes/index.html">
+            <div class="card-top">
+              <div class="card-icon" style="background:var(--green-dim);color:var(--green);">▤</div>
+              <span class="card-arrow">→</span>
             </div>
             <div>
-              <p class="module-name">Campagnes</p>
-              <p class="module-desc">Gestion et suivi des campagnes marketing.</p>
+              <p class="card-name">Campagnes</p>
+              <p class="card-desc">Gestion et suivi des campagnes marketing.</p>
             </div>
-            <div class="module-footer">
-              <div class="module-stat-dot" style="background:var(--green);"></div>
-              <span class="module-stat-txt">2 actives</span>
+            <div class="card-footer">
+              <div class="card-dot" style="background:var(--green);"></div>
+              <span class="card-stat">2 actives</span>
             </div>
           </a>
 
-          <a class="module-card" href="./Revenus/index.html">
-            <div class="module-card-top">
-              <div class="module-icon" style="background:var(--green-dim);color:var(--green);">€</div>
-              <span class="module-arrow">→</span>
+          <a class="card" data-color="green" href="./Revenus/index.html">
+            <div class="card-top">
+              <div class="card-icon" style="background:var(--green-dim);color:var(--green);">€</div>
+              <span class="card-arrow">→</span>
             </div>
             <div>
-              <p class="module-name">Revenus</p>
-              <p class="module-desc">Suivi financier et indicateurs économiques.</p>
+              <p class="card-name">Revenus</p>
+              <p class="card-desc">Suivi financier et indicateurs économiques.</p>
             </div>
-            <div class="module-footer">
-              <div class="module-stat-dot" style="background:var(--green);"></div>
-              <span class="module-stat-txt">↑ 12.4% ce mois</span>
+            <div class="card-footer">
+              <div class="card-dot" style="background:var(--green);"></div>
+              <span class="card-stat">↑ 12.4% ce mois</span>
             </div>
           </a>
 
-          <a class="module-card" href="./Clients/index.html">
-            <div class="module-card-top">
-              <div class="module-icon" style="background:var(--blue-dim);color:var(--blue);">⊞</div>
-              <span class="module-arrow">→</span>
+          <a class="card" data-color="blue" href="./Clients/index.html">
+            <div class="card-top">
+              <div class="card-icon" style="background:var(--blue-dim);color:var(--blue);">⊞</div>
+              <span class="card-arrow">→</span>
             </div>
             <div>
-              <p class="module-name">Clients</p>
-              <p class="module-desc">Base de données clients et gestion des comptes.</p>
+              <p class="card-name">Clients</p>
+              <p class="card-desc">Base de données clients et gestion des comptes.</p>
             </div>
-            <div class="module-footer">
-              <div class="module-stat-dot" style="background:var(--blue);"></div>
-              <span class="module-stat-txt">48,291 actifs</span>
+            <div class="card-footer">
+              <div class="card-dot" style="background:var(--blue);"></div>
+              <span class="card-stat">48,291 actifs</span>
             </div>
           </a>
 
-          <a class="module-card" href="./Produits/index.html">
-            <div class="module-card-top">
-              <div class="module-icon" style="background:var(--violet-dim);color:var(--violet);">◧</div>
-              <span class="module-arrow">→</span>
+          <a class="card" data-color="violet" href="./Produits/index.html">
+            <div class="card-top">
+              <div class="card-icon" style="background:var(--violet-dim);color:var(--violet);">◧</div>
+              <span class="card-arrow">→</span>
             </div>
             <div>
-              <p class="module-name">Produits</p>
-              <p class="module-desc">Catalogue produits, stocks et références.</p>
+              <p class="card-name">Produits</p>
+              <p class="card-desc">Catalogue produits, stocks et références.</p>
             </div>
-            <div class="module-footer">
-              <div class="module-stat-dot" style="background:var(--amber);"></div>
-              <span class="module-stat-txt">1 alerte stock</span>
+            <div class="card-footer">
+              <div class="card-dot" style="background:var(--amber);"></div>
+              <span class="card-stat">1 alerte stock</span>
             </div>
           </a>
 
-          <a class="module-card" href="./Commandes/index.html">
-            <div class="module-card-top">
-              <div class="module-icon" style="background:var(--amber-dim);color:var(--amber);">◈</div>
-              <span class="module-arrow">→</span>
+          <a class="card" data-color="amber" href="./Commandes/index.html">
+            <div class="card-top">
+              <div class="card-icon" style="background:var(--amber-dim);color:var(--amber);">◈</div>
+              <span class="card-arrow">→</span>
             </div>
             <div>
-              <p class="module-name">Commandes</p>
-              <p class="module-desc">Traitement et suivi des commandes en cours.</p>
+              <p class="card-name">Commandes</p>
+              <p class="card-desc">Traitement et suivi des commandes en cours.</p>
             </div>
-            <div class="module-footer">
-              <div class="module-stat-dot" style="background:var(--green);"></div>
-              <span class="module-stat-txt">12 nouvelles</span>
+            <div class="card-footer">
+              <div class="card-dot" style="background:var(--green);"></div>
+              <span class="card-stat">12 nouvelles</span>
             </div>
           </a>
 
         </div>
       </div>
 
-      <!-- Bottom row -->
+      <!-- ── Bottom row ── -->
       <div class="bottom-row">
 
-        <div class="activity-card">
-          <div class="ac-head">
+        <!-- Activité -->
+        <div class="act-card">
+          <div class="act-head">
             <div>
-              <p class="card-title">Activité récente</p>
-              <p class="card-subtitle">Dernières 24 heures</p>
+              <p class="sys-title">Activité récente</p>
+              <p class="sys-subtitle">Dernières 24 heures</p>
             </div>
-            <div class="live-badge"><div class="live-dot"></div> Live</div>
+            <div class="live-pill" style="font-size:10px;padding:3px 10px;"><div class="live-dot"></div> Live</div>
           </div>
-          <div id="activityList">
-            <div class="ac-item">
-              <div class="ac-dot" style="background:var(--green);"></div>
+          <div id="actList">
+            <div class="act-item">
+              <div class="act-dot" style="background:var(--green);"></div>
               <div>
-                <p class="ac-msg"><strong>Paiement reçu</strong> — Abonnement Enterprise €299</p>
-                <p class="ac-time">à l'instant</p>
+                <p class="act-msg"><strong>Paiement reçu</strong> — Abonnement Enterprise €299</p>
+                <p class="act-time">à l'instant</p>
               </div>
             </div>
-            <div class="ac-item">
-              <div class="ac-dot" style="background:var(--blue);"></div>
+            <div class="act-item">
+              <div class="act-dot" style="background:var(--blue);"></div>
               <div>
-                <p class="ac-msg"><strong>Nouvel utilisateur</strong> inscrit depuis Berlin</p>
-                <p class="ac-time">il y a 5 min</p>
+                <p class="act-msg"><strong>Nouvel utilisateur</strong> inscrit depuis Berlin</p>
+                <p class="act-time">il y a 5 min</p>
               </div>
             </div>
-            <div class="ac-item">
-              <div class="ac-dot" style="background:var(--amber);"></div>
+            <div class="act-item">
+              <div class="act-dot" style="background:var(--amber);"></div>
               <div>
-                <p class="ac-msg"><strong>Alerte seuil</strong> — Stock produit #A291 faible</p>
-                <p class="ac-time">il y a 10 min</p>
+                <p class="act-msg"><strong>Alerte seuil</strong> — Stock produit #A291 faible</p>
+                <p class="act-time">il y a 10 min</p>
               </div>
             </div>
-            <div class="ac-item">
-              <div class="ac-dot" style="background:var(--violet);"></div>
+            <div class="act-item">
+              <div class="act-dot" style="background:var(--violet);"></div>
               <div>
-                <p class="ac-msg"><strong>Rapport</strong> généré automatiquement</p>
-                <p class="ac-time">il y a 22 min</p>
-              </div>
-            </div>
-            <div class="ac-item">
-              <div class="ac-dot" style="background:var(--green);"></div>
-              <div>
-                <p class="ac-msg"><strong>Commande</strong> #9034 — €189 de Pierre M.</p>
-                <p class="ac-time">il y a 38 min</p>
+                <p class="act-msg"><strong>Rapport</strong> généré automatiquement</p>
+                <p class="act-time">il y a 22 min</p>
               </div>
             </div>
           </div>
         </div>
 
-        <div class="quick-card">
-          <div class="qc-head">
-            <p class="card-title">Système</p>
-            <p class="card-subtitle">Accès rapides</p>
+        <!-- Système -->
+        <div class="sys-card">
+          <div class="sys-head">
+            <div>
+              <p class="sys-title">Système</p>
+              <p class="sys-subtitle">Accès rapides</p>
+            </div>
           </div>
-          <div>
-            <a class="qc-row" href="./Performance/index.html">
-              <div class="qc-left">
-                <div class="qc-icon" style="background:var(--green-dim);color:var(--green);">◩</div>
-                <div>
-                  <p class="qc-label">Performance</p>
-                  <p class="qc-sub">CPU, mémoire, uptime</p>
-                </div>
+          <a class="sys-row" href="./Performance/index.html">
+            <div class="sys-left">
+              <div class="sys-icon" style="background:var(--green-dim);color:var(--green);">◩</div>
+              <div>
+                <p class="sys-name">Performance</p>
+                <p class="sys-desc">CPU, mémoire, uptime</p>
               </div>
-              <div class="qc-right">
-                <p class="qc-val">99.9%</p>
-                <p class="qc-delta delta-up">↑ Opérationnel</p>
+            </div>
+            <div class="sys-right">
+              <p class="sys-val">99.9%</p>
+              <p class="sys-delta up">↑ Opérationnel</p>
+            </div>
+          </a>
+          <a class="sys-row" href="./Logs/index.html">
+            <div class="sys-left">
+              <div class="sys-icon" style="background:var(--blue-dim);color:var(--blue);">◈</div>
+              <div>
+                <p class="sys-name">Logs</p>
+                <p class="sys-desc">Événements système</p>
               </div>
-            </a>
-            <a class="qc-row" href="./Logs/index.html">
-              <div class="qc-left">
-                <div class="qc-icon" style="background:var(--blue-dim);color:var(--blue);">◈</div>
-                <div>
-                  <p class="qc-label">Logs</p>
-                  <p class="qc-sub">Événements système</p>
-                </div>
+            </div>
+            <div class="sys-right">
+              <p class="sys-val">1,248</p>
+              <p class="sys-delta" style="color:var(--muted);">entrées aujourd'hui</p>
+            </div>
+          </a>
+          <a class="sys-row" href="./Paramètres/index.html">
+            <div class="sys-left">
+              <div class="sys-icon" style="background:var(--violet-dim);color:var(--violet);">◧</div>
+              <div>
+                <p class="sys-name">Paramètres</p>
+                <p class="sys-desc">Configuration & préférences</p>
               </div>
-              <div class="qc-right">
-                <p class="qc-val">1,248</p>
-                <p class="qc-delta" style="color:var(--muted);">entrées aujourd'hui</p>
+            </div>
+            <div class="sys-right">
+              <p class="sys-val">—</p>
+              <p class="sys-delta" style="color:var(--muted);">Configurer</p>
+            </div>
+          </a>
+          <a class="sys-row" href="./Vue d'ensemble/index.html">
+            <div class="sys-left">
+              <div class="sys-icon" style="background:var(--blue-dim);color:var(--blue);">◈</div>
+              <div>
+                <p class="sys-name">Vue d'ensemble</p>
+                <p class="sys-desc">Dashboard principal</p>
               </div>
-            </a>
-            <a class="qc-row" href="./Paramètres/index.html">
-              <div class="qc-left">
-                <div class="qc-icon" style="background:var(--violet-dim);color:var(--violet);">◧</div>
-                <div>
-                  <p class="qc-label">Paramètres</p>
-                  <p class="qc-sub">Configuration & préférences</p>
-                </div>
-              </div>
-              <div class="qc-right">
-                <p class="qc-val">—</p>
-                <p class="qc-delta" style="color:var(--muted);">Configurer</p>
-              </div>
-            </a>
-            <a class="qc-row" href="./Vue d'ensemble/index.html">
-              <div class="qc-left">
-                <div class="qc-icon" style="background:var(--amber-dim);color:var(--amber);">◈</div>
-                <div>
-                  <p class="qc-label">Vue d'ensemble</p>
-                  <p class="qc-sub">Dashboard principal</p>
-                </div>
-              </div>
-              <div class="qc-right">
-                <p class="qc-val">Live</p>
-                <p class="qc-delta delta-up">↑ Ouvert</p>
-              </div>
-            </a>
-          </div>
+            </div>
+            <div class="sys-right">
+              <p class="sys-val" style="color:var(--green);">Live</p>
+              <p class="sys-delta up">↑ Ouvert</p>
+            </div>
+          </a>
         </div>
 
+      </div>
+
+      <!-- ── Footer ── -->
+      <div class="footer">
+        <span class="footer-text">NEXUS v1.0 — © 2025 Système de gestion interne</span>
+        <div class="footer-links">
+          <a class="footer-link" href="./Vue d'ensemble/index.html">Dashboard</a>
+          <a class="footer-link" href="./Paramètres/index.html">Paramètres</a>
+        </div>
       </div>
 
     </div>
@@ -507,126 +750,32 @@
 
   <script>
     /* Horloge */
-    const clockEl = document.getElementById('clock');
-    const tick = () => { clockEl.textContent = new Date().toLocaleTimeString('fr-FR', { hour12:false }); };
+    const cl = document.getElementById('clock');
+    const tick = () => { cl.textContent = new Date().toLocaleTimeString('fr-FR',{hour12:false}); };
     tick(); setInterval(tick, 1000);
 
-    /* Greeting */
-    const h = new Date().getHours();
-    document.getElementById('greetingText').textContent =
-      (h < 12 ? 'Bonjour' : h < 18 ? 'Bon après-midi' : 'Bonsoir') + ' 👋';
-
     /* Live activity */
-    const activities = [
-      { color:'var(--green)',  msg:'<strong>Commande</strong> — €189 de Pierre M.',               time:"à l'instant" },
-      { color:'var(--blue)',   msg:'<strong>Nouvel utilisateur</strong> depuis Lyon',              time:"à l'instant" },
-      { color:'var(--violet)', msg:'<strong>Rapport</strong> généré automatiquement',              time:"à l'instant" },
-      { color:'var(--amber)',  msg:'<strong>Alerte stock</strong> — Produit #B104 critique',       time:"à l'instant" },
-      { color:'var(--green)',  msg:'<strong>Paiement reçu</strong> — Abonnement Enterprise €299',  time:"à l'instant" },
-      { color:'var(--red)',    msg:'<strong>Échec paiement</strong> — Commande #9012 refusée',     time:"à l'instant" },
+    const acts = [
+      { c:'var(--green)',  m:'<strong>Commande</strong> — €189 de Pierre M.',                t:"à l'instant" },
+      { c:'var(--blue)',   m:'<strong>Nouvel utilisateur</strong> depuis Lyon',               t:"à l'instant" },
+      { c:'var(--violet)', m:'<strong>Rapport</strong> généré automatiquement',               t:"à l'instant" },
+      { c:'var(--amber)',  m:'<strong>Alerte stock</strong> — Produit #B104 critique',        t:"à l'instant" },
+      { c:'var(--green)',  m:'<strong>Paiement reçu</strong> — Abonnement Enterprise €299',   t:"à l'instant" },
     ];
-    const timeLabels = ['il y a 5 min','il y a 10 min','il y a 15 min','il y a 22 min'];
-    let idx = 0;
+    const tl = ['il y a 5 min','il y a 10 min','il y a 15 min'];
+    let ai = 0;
     setInterval(() => {
-      const items = document.querySelectorAll('#activityList .ac-item');
+      const items = document.querySelectorAll('#actList .act-item');
       if (!items.length) return;
-      const d = activities[idx % activities.length];
-      items[0].querySelector('.ac-dot').style.background = d.color;
-      items[0].querySelector('.ac-msg').innerHTML = d.msg;
-      items[0].querySelector('.ac-time').textContent = d.time;
-      items[0].style.background = 'rgba(59,130,246,0.07)';
-      setTimeout(() => { items[0].style.background = ''; }, 1200);
-      items.forEach((item, i) => {
-        if (i === 0) return;
-        const t = item.querySelector('.ac-time');
-        if (t && timeLabels[i-1]) t.textContent = timeLabels[i-1];
-      });
-      idx++;
+      const d = acts[ai % acts.length];
+      items[0].querySelector('.act-dot').style.background = d.c;
+      items[0].querySelector('.act-msg').innerHTML = d.m;
+      items[0].querySelector('.act-time').textContent = d.t;
+      items[0].style.background = 'rgba(59,130,246,0.06)';
+      setTimeout(() => { items[0].style.background=''; }, 1200);
+      items.forEach((item,i) => { if(i===0) return; const t=item.querySelector('.act-time'); if(t&&tl[i-1]) t.textContent=tl[i-1]; });
+      ai++;
     }, 5000);
-  </script>
-
-  <script>
-    /* Sidebar — même logique que sidebar.js existant */
-    (function () {
-      function loadProfile() {
-        try { const r=localStorage.getItem('nexus_profile'); if(r){const p=JSON.parse(r);if(p&&p.prenom)return p;} } catch(e){}
-        try { const r=sessionStorage.getItem('nexus_profile'); if(r){const p=JSON.parse(r);if(p&&p.prenom)return p;} } catch(e){}
-        try { const m=document.cookie.match(/nexus_profile=([^;]+)/); if(m){const p=JSON.parse(decodeURIComponent(m[1]));if(p&&p.prenom)return p;} } catch(e){}
-        return { prenom:'Lucas', nom:'Zanelli', email:'lucas@nexus.io' };
-      }
-      function loadAvatar() {
-        try { const v=localStorage.getItem('nexus_avatar'); if(v) return v; } catch(e){}
-        try { const v=sessionStorage.getItem('nexus_avatar'); if(v) return v; } catch(e){}
-        return null;
-      }
-      function getInitials(p){ return (((p.prenom||'').charAt(0))+((p.nom||'').charAt(0))).toUpperCase()||'LZ'; }
-      function getFullName(p){ return [(p.prenom||'').trim(),(p.nom||'').trim()].filter(Boolean).join(' ')||'Utilisateur'; }
-
-      const PAGE_MAP = {
-        "Accueil":           "#",
-        "Vue d'ensemble":    "./Vue d'ensemble/index.html",
-        "Analytique":        "./Analytique/index.html",
-        "Rapports":          "./Rapports/index.html",
-        "Campagnes":         "./Campagnes/index.html",
-        "Revenus":           "./Revenus/index.html",
-        "Clients":           "./Clients/index.html",
-        "Produits":          "./Produits/index.html",
-        "Commandes":         "./Commandes/index.html",
-        "Performance":       "./Performance/index.html",
-        "Logs":              "./Logs/index.html",
-        "Param\u00e8tres":   "./Param\u00e8tres/index.html",
-      };
-
-      const NAV = [
-        { label:'Principal', items:[
-          { name:'Accueil',          icon:'⌂' },
-          { name:"Vue d'ensemble",   icon:'◈' },
-          { name:'Analytique',       icon:'◫', badge:'NEW' },
-          { name:'Rapports',         icon:'◉' },
-          { name:'Campagnes',        icon:'▤' },
-        ]},
-        { label:'Commerce', items:[
-          { name:'Revenus',   icon:'◈' },
-          { name:'Clients',   icon:'⊞' },
-          { name:'Produits',  icon:'◧' },
-          { name:'Commandes', icon:'◈' },
-        ]},
-        { label:'Syst\u00e8me', items:[
-          { name:'Performance',       icon:'◩' },
-          { name:'Logs',              icon:'◈' },
-          { name:'Param\u00e8tres',   icon:'◧' },
-        ]},
-      ];
-
-      function buildHTML(profile) {
-        const ini = getInitials(profile), name = getFullName(profile);
-        let sections = '';
-        NAV.forEach(function(sec) {
-          let items = '';
-          sec.items.forEach(function(item) {
-            const isActive = item.name === 'Accueil';
-            const badge = item.badge ? '<span class="sb-badge">'+item.badge+'</span>' : '';
-            items += '<a href="'+(PAGE_MAP[item.name]||'#')+'" class="sb-item'+(isActive?' active':'')+'"><span class="sb-icon">'+item.icon+'</span> '+item.name+badge+'</a>';
-          });
-          sections += '<div class="sb-section"><p class="sb-section-label">'+sec.label+'</p>'+items+'</div>';
-        });
-        return '<div class="sb-logo"><div class="logo-icon">Nx</div><span class="logo-text">Nexus</span></div>'
-          + sections
-          + '<div class="sb-bottom"><div class="sb-user"><div class="user-av" id="sidebarAv">'+ini+'</div><div><p class="user-name" id="sidebarName">'+name+'</p><p class="user-plan">Pro &middot; Admin</p></div></div></div>';
-      }
-
-      function inject() {
-        const sidebar = document.querySelector('aside.sidebar');
-        if (!sidebar) return;
-        sidebar.innerHTML = buildHTML(loadProfile());
-        const photo = loadAvatar(), av = document.getElementById('sidebarAv');
-        if (av && photo) { av.textContent=''; av.style.backgroundImage='url('+photo+')'; av.style.backgroundSize='cover'; av.style.backgroundPosition='center'; }
-      }
-
-      document.readyState === 'loading' ? document.addEventListener('DOMContentLoaded', inject) : inject();
-
-      window.NexusSidebar = { getProfile: loadProfile, refresh: inject };
-    })();
   </script>
 
 </body>
