@@ -1,782 +1,750 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>NEXUS</title>
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <style>
-    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-
-    :root {
-      --bg:         #09090B;
-      --surface:    #111113;
-      --surface2:   #18181B;
-      --border:     rgba(255,255,255,0.06);
-      --border2:    rgba(255,255,255,0.10);
-      --text:       #FAFAFA;
-      --muted:      #52525B;
-      --blue:       #3B82F6;
-      --blue-dim:   rgba(59,130,246,0.10);
-      --blue-glow:  rgba(59,130,246,0.20);
-      --violet:     #8B5CF6;
-      --violet-dim: rgba(139,92,246,0.10);
-      --green:      #22C55E;
-      --green-dim:  rgba(34,197,94,0.10);
-      --amber:      #F59E0B;
-      --amber-dim:  rgba(245,158,11,0.10);
-      --red:        #EF4444;
-    }
-
-    html, body {
-      height: 100%;
-      background: var(--bg);
-      color: var(--text);
-      font-family: 'Inter', sans-serif;
-      overflow-x: hidden;
-    }
-
-    /* ══════════════════════════════
-       BACKGROUND LAYERS
-    ══════════════════════════════ */
-
-    /* Grid */
-    .bg-grid {
-      position: fixed; inset: 0; z-index: 0;
-      background-image:
-        linear-gradient(rgba(255,255,255,0.028) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255,255,255,0.028) 1px, transparent 1px);
-      background-size: 52px 52px;
-      pointer-events: none;
-    }
-
-    /* Orbs */
-    .bg-orb {
-      position: fixed; z-index: 0;
-      border-radius: 50%;
-      filter: blur(80px);
-      pointer-events: none;
-      animation: orbFloat 12s ease-in-out infinite alternate;
-    }
-    .bg-orb-1 {
-      width: 500px; height: 500px;
-      top: -140px; left: -100px;
-      background: radial-gradient(circle, rgba(59,130,246,0.14) 0%, transparent 70%);
-      animation-duration: 14s;
-    }
-    .bg-orb-2 {
-      width: 420px; height: 420px;
-      bottom: -100px; right: -80px;
-      background: radial-gradient(circle, rgba(139,92,246,0.12) 0%, transparent 70%);
-      animation-duration: 18s;
-      animation-delay: -6s;
-    }
-    .bg-orb-3 {
-      width: 300px; height: 300px;
-      top: 40%; left: 50%;
-      transform: translateX(-50%);
-      background: radial-gradient(circle, rgba(34,197,94,0.06) 0%, transparent 70%);
-      animation-duration: 20s;
-      animation-delay: -3s;
-    }
-
-    @keyframes orbFloat {
-      from { transform: translate(0, 0) scale(1); }
-      to   { transform: translate(30px, 20px) scale(1.08); }
-    }
-
-    /* Noise overlay */
-    .bg-noise {
-      position: fixed; inset: 0; z-index: 0;
-      opacity: 0.025;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
-      background-size: 180px 180px;
-      pointer-events: none;
-    }
-
-    /* ══════════════════════════════
-       LAYOUT
-    ══════════════════════════════ */
-    .page {
-      position: relative; z-index: 1;
-      min-height: 100vh;
-      display: flex; flex-direction: column;
-      align-items: center; justify-content: center;
-      padding: 48px 24px;
-    }
-
-    .wrapper {
-      width: 100%;
-      max-width: 900px;
-      display: flex; flex-direction: column;
-      gap: 40px;
-    }
-
-    /* ══════════════════════════════
-       HEADER
-    ══════════════════════════════ */
-    .header {
-      display: flex; align-items: center; justify-content: space-between;
-      animation: fadeUp 0.5s ease both 0.05s;
-    }
-
-    .logo { display: flex; align-items: center; gap: 12px; }
-
-    .logo-icon {
-      width: 38px; height: 38px;
-      background: linear-gradient(135deg, var(--blue), var(--violet));
-      border-radius: 9px;
-      display: flex; align-items: center; justify-content: center;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 13px; font-weight: 500; color: #fff;
-      box-shadow: 0 0 24px rgba(59,130,246,0.35);
-    }
-
-    .logo-text {
-      font-size: 15px; font-weight: 600;
-      letter-spacing: 3px; text-transform: uppercase;
-    }
-
-    .header-right {
-      display: flex; align-items: center; gap: 10px;
-    }
-
-    .live-pill {
-      display: flex; align-items: center; gap: 6px;
-      padding: 5px 12px;
-      background: var(--green-dim);
-      border: 1px solid rgba(34,197,94,0.2);
-      border-radius: 20px;
-      font-size: 11px; color: var(--green); font-weight: 500;
-    }
-    .live-dot {
-      width: 6px; height: 6px;
-      background: var(--green); border-radius: 50%;
-      animation: pulse 2s infinite;
-    }
-
-    .clock {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 11px; color: var(--muted);
-      padding: 5px 12px;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 6px;
-    }
-
-    /* ══════════════════════════════
-       HERO
-    ══════════════════════════════ */
-    .hero {
-      text-align: center;
-      display: flex; flex-direction: column; align-items: center; gap: 12px;
-      animation: fadeUp 0.5s ease both 0.12s;
-    }
-
-    .hero-eyebrow {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 10px; font-weight: 400;
-      letter-spacing: 3px; text-transform: uppercase;
-      color: var(--blue);
-      padding: 4px 14px;
-      background: var(--blue-dim);
-      border: 1px solid rgba(59,130,246,0.15);
-      border-radius: 20px;
-      display: inline-block;
-    }
-
-    .hero-title {
-      font-size: clamp(28px, 5vw, 42px);
-      font-weight: 700;
-      letter-spacing: -0.04em;
-      line-height: 1.1;
-      background: linear-gradient(160deg, #FAFAFA 30%, #52525B 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-
-    .hero-sub {
-      font-size: 13px; color: var(--muted);
-      max-width: 360px; line-height: 1.6;
-    }
-
-    /* ══════════════════════════════
-       KPI STRIP
-    ══════════════════════════════ */
-    .kpi-strip {
-      display: grid; grid-template-columns: repeat(3, 1fr);
-      gap: 1px;
-      background: var(--border);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      overflow: hidden;
-      animation: fadeUp 0.5s ease both 0.18s;
-    }
-
-    .kpi-cell {
-      background: var(--surface);
-      padding: 14px 20px;
-      display: flex; align-items: center; gap: 14px;
-      transition: background 0.15s;
-    }
-    .kpi-cell:hover { background: var(--surface2); }
-
-    .kpi-dot {
-      width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0;
-    }
-
-    .kpi-val {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 15px; font-weight: 500;
-    }
-
-    .kpi-lbl { font-size: 10px; color: var(--muted); margin-top: 1px; }
-
-    .kpi-delta {
-      margin-left: auto;
-      font-size: 10px; font-weight: 500;
-      font-family: 'JetBrains Mono', monospace;
-    }
-    .up   { color: var(--green); }
-    .down { color: var(--red); }
-
-    /* ══════════════════════════════
-       SECTION LABEL
-    ══════════════════════════════ */
-    .section-label {
-      font-size: 9px; font-weight: 500;
-      letter-spacing: 2px; text-transform: uppercase;
-      color: var(--muted); margin-bottom: 10px;
-    }
-
-    /* ══════════════════════════════
-       MODULE GRID
-    ══════════════════════════════ */
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 8px;
-      animation: fadeUp 0.5s ease both 0.24s;
-    }
-
-    .card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 16px;
-      text-decoration: none;
-      color: var(--text);
-      display: flex; flex-direction: column; gap: 10px;
-      transition: border-color 0.2s, background 0.2s, transform 0.2s, box-shadow 0.2s;
-      position: relative; overflow: hidden;
-    }
-
-    /* Card inner glow on hover */
-    .card::before {
-      content: '';
-      position: absolute; inset: 0;
-      opacity: 0;
-      transition: opacity 0.3s;
-      pointer-events: none;
-    }
-    .card:hover { border-color: var(--border2); background: var(--surface2); transform: translateY(-2px); }
-    .card:hover::before { opacity: 1; }
-    .card:hover .card-arrow { opacity: 1; transform: translateX(0); }
-
-    /* Per-card accent glows */
-    .card[data-color="blue"]::before   { background: radial-gradient(ellipse at top left, rgba(59,130,246,0.07) 0%, transparent 60%); }
-    .card[data-color="violet"]::before { background: radial-gradient(ellipse at top left, rgba(139,92,246,0.07) 0%, transparent 60%); }
-    .card[data-color="amber"]::before  { background: radial-gradient(ellipse at top left, rgba(245,158,11,0.07) 0%, transparent 60%); }
-    .card[data-color="green"]::before  { background: radial-gradient(ellipse at top left, rgba(34,197,94,0.07) 0%, transparent 60%); }
-
-    .card-top { display: flex; align-items: center; justify-content: space-between; }
-
-    .card-icon {
-      width: 32px; height: 32px; border-radius: 7px;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 13px;
-    }
-
-    .card-arrow {
-      font-size: 11px; color: var(--muted);
-      opacity: 0; transform: translateX(-5px);
-      transition: opacity 0.2s, transform 0.2s;
-    }
-
-    .card-name {
-      font-size: 13px; font-weight: 600;
-      display: flex; align-items: center; gap: 6px;
-      margin-bottom: 3px;
-    }
-
-    .card-desc { font-size: 11px; color: var(--muted); line-height: 1.5; }
-
-    .card-footer {
-      display: flex; align-items: center; gap: 6px;
-      padding-top: 10px; border-top: 1px solid var(--border);
-      margin-top: auto;
-    }
-    .card-dot { width: 5px; height: 5px; border-radius: 50%; flex-shrink: 0; }
-    .card-stat { font-size: 10px; color: var(--muted); font-family: 'JetBrains Mono', monospace; }
-
-    .badge {
-      background: var(--blue-dim); color: var(--blue);
-      font-size: 8px; font-weight: 600;
-      padding: 1px 5px; border-radius: 10px;
-    }
-
-    /* Staggered card animation */
-    .card { animation: fadeUp 0.4s ease both; }
-    .card:nth-child(1) { animation-delay: 0.26s; }
-    .card:nth-child(2) { animation-delay: 0.30s; }
-    .card:nth-child(3) { animation-delay: 0.34s; }
-    .card:nth-child(4) { animation-delay: 0.38s; }
-    .card:nth-child(5) { animation-delay: 0.42s; }
-    .card:nth-child(6) { animation-delay: 0.46s; }
-    .card:nth-child(7) { animation-delay: 0.50s; }
-    .card:nth-child(8) { animation-delay: 0.54s; }
-
-    /* ══════════════════════════════
-       BOTTOM ROW
-    ══════════════════════════════ */
-    .bottom-row {
-      display: grid; grid-template-columns: 1fr 1fr;
-      gap: 8px;
-      animation: fadeUp 0.5s ease both 0.46s;
-    }
-
-    /* System links */
-    .sys-card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 10px; overflow: hidden;
-    }
-
-    .sys-head {
-      padding: 13px 16px;
-      border-bottom: 1px solid var(--border);
-      display: flex; align-items: center; justify-content: space-between;
-    }
-
-    .sys-title    { font-size: 12px; font-weight: 600; }
-    .sys-subtitle { font-size: 10px; color: var(--muted); margin-top: 1px; }
-
-    .sys-row {
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 11px 16px;
-      border-bottom: 1px solid var(--border);
-      text-decoration: none; color: inherit;
-      transition: background 0.15s;
-    }
-    .sys-row:last-child { border-bottom: none; }
-    .sys-row:hover      { background: var(--surface2); }
-
-    .sys-left { display: flex; align-items: center; gap: 10px; }
-    .sys-icon {
-      width: 26px; height: 26px; border-radius: 6px;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 11px;
-    }
-    .sys-name { font-size: 12px; font-weight: 500; }
-    .sys-desc { font-size: 10px; color: var(--muted); margin-top: 1px; }
-
-    .sys-right { text-align: right; }
-    .sys-val   { font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 500; }
-    .sys-delta { font-size: 10px; margin-top: 1px; }
-
-    /* Activity */
-    .act-card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 10px; overflow: hidden;
-    }
-    .act-head {
-      padding: 13px 16px; border-bottom: 1px solid var(--border);
-      display: flex; align-items: center; justify-content: space-between;
-    }
-    .act-item {
-      display: flex; align-items: flex-start; gap: 10px;
-      padding: 11px 16px; border-bottom: 1px solid var(--border);
-      transition: background 0.15s;
-    }
-    .act-item:last-child { border-bottom: none; }
-    .act-item:hover      { background: var(--surface2); }
-    .act-dot  { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; margin-top: 5px; }
-    .act-msg  { font-size: 12px; line-height: 1.5; }
-    .act-msg strong { font-weight: 500; }
-    .act-time { font-size: 10px; color: var(--muted); margin-top: 2px; font-family: 'JetBrains Mono', monospace; }
-
-    /* ══════════════════════════════
-       FOOTER
-    ══════════════════════════════ */
-    .footer {
-      display: flex; align-items: center; justify-content: space-between;
-      padding-top: 4px;
-      border-top: 1px solid var(--border);
-      animation: fadeUp 0.5s ease both 0.52s;
-    }
-    .footer-text {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 10px; color: var(--muted);
-    }
-    .footer-links { display: flex; gap: 16px; }
-    .footer-link  {
-      font-size: 11px; color: var(--muted); text-decoration: none;
-      transition: color 0.15s;
-    }
-    .footer-link:hover { color: var(--text); }
-
-    /* ══════════════════════════════
-       ANIMATIONS
-    ══════════════════════════════ */
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(12px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-
-    @keyframes pulse {
-      0%, 100% { opacity: 1; transform: scale(1); }
-      50%       { opacity: 0.5; transform: scale(1.3); }
-    }
-  </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lucas Zanelli — Portfolio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Syne:wght@300;400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-  <!-- Background layers -->
-  <div class="bg-grid"></div>
-  <div class="bg-orb bg-orb-1"></div>
-  <div class="bg-orb bg-orb-2"></div>
-  <div class="bg-orb bg-orb-3"></div>
-  <div class="bg-noise"></div>
+  <!-- ── NAV ── -->
+  <nav>
+    <div class="nav-logo">L<span>Z</span></div>
+    <ul class="nav-links">
+      <li><a href="#about"><span class="fr">À Propos</span><span class="en">About</span></a></li>
+      <li><a href="#skills"><span class="fr">Compétences</span><span class="en">Skills</span></a></li>
+      <li><a href="#projects"><span class="fr">Projets</span><span class="en">Projects</span></a></li>
+      <li><a href="#experience"><span class="fr">Parcours</span><span class="en">Journey</span></a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <div class="nav-right">
+      <button class="lang-btn active" id="btnFr" onclick="setLang('fr')">FR</button>
+      <button class="lang-btn" id="btnEn" onclick="setLang('en')">EN</button>
+    </div>
+  </nav>
 
-  <div class="page">
-    <div class="wrapper">
+  <!-- ── HERO ── -->
+  <section id="hero">
+    <div class="orb1 hero-bg-orb"></div>
+    <div class="orb2 hero-bg-orb"></div>
+    <div class="hero-content">
+      <div class="hero-tag">
+        <span class="fr">Portfolio &amp; Curriculum Vitae</span>
+        <span class="en">Portfolio &amp; Curriculum Vitae</span>
+      </div>
+      <h1 class="hero-name">LUCAS <span class="last">ZANELLI</span></h1>
+      <div class="hero-pseudo">Luc</div>
+      <p class="hero-desc fr">
+        Créateur de sites web passionné par la programmation de jeux vidéo, la modélisation 3D,
+        le graphisme et le montage vidéo. Je transforme les idées en expériences visuelles mémorables.
+      </p>
+      <p class="hero-desc en">
+        Web creator passionate about game development, 3D modeling, graphic design and video editing.
+        I turn ideas into memorable visual experiences.
+      </p>
+      <div class="hero-skills-pills">
+        <span class="pill accent">Game Dev</span>
+        <span class="pill">Web Design</span>
+        <span class="pill">3D Modeling</span>
+        <span class="pill">Graphic Design</span>
+        <span class="pill">Video Editing</span>
+      </div>
+      <div class="hero-cta">
+        <a href="#projects" class="btn btn-primary">
+          <span class="fr">Voir mes projets</span>
+          <span class="en">View my projects</span>
+        </a>
+        <a href="#contact" class="btn btn-outline">
+          <span class="fr">Me contacter</span>
+          <span class="en">Contact me</span>
+        </a>
+      </div>
+    </div>
+  </section>
 
-      <!-- ── Header ── -->
-      <div class="header">
-        <div class="logo">
-          <div class="logo-icon">Nx</div>
-          <span class="logo-text">Nexus</span>
+  <!-- ── ABOUT ── -->
+  <section id="about">
+    <div class="section-header reveal">
+      <span class="section-num">01</span>
+      <h2 class="section-title fr">À Propos</h2>
+      <h2 class="section-title en">About</h2>
+      <div class="section-line"></div>
+    </div>
+    <div class="about-grid reveal">
+      <div class="about-text">
+        <p class="fr">
+          Bonjour ! Je suis <strong>Lucas Zanelli</strong>, alias <strong>Luc</strong> — un créatif
+          passionné par le numérique sous toutes ses formes. Actuellement spécialisé dans la
+          <strong>création de sites web</strong>, mon ambition est de m'orienter vers la
+          <strong>programmation de jeux vidéo</strong>.
+        </p>
+        <p class="en">
+          Hello! I'm <strong>Lucas Zanelli</strong>, aka <strong>Luc</strong> — a creative passionate
+          about digital in all its forms. Currently specialized in <strong>web development</strong>,
+          my ambition is to move towards <strong>game programming</strong>.
+        </p>
+        <p class="fr">
+          Ma palette de compétences va au-delà du code : je maîtrise la <strong>modélisation 3D</strong>,
+          le <strong>graphisme</strong> et le <strong>montage vidéo</strong>, ce qui me permet d'aborder
+          les projets avec une vision complète, alliant technique et créativité.
+        </p>
+        <p class="en">
+          My skillset goes beyond code: I master <strong>3D modeling</strong>, <strong>graphic design</strong>
+          and <strong>video editing</strong>, which allows me to approach projects with a complete vision,
+          combining technical skills and creativity.
+        </p>
+        <p class="fr">
+          Je recherche une opportunité (école ou entreprise) qui me permettra de grandir, apprendre
+          et contribuer à des projets ambitieux.
+        </p>
+        <p class="en">
+          I'm looking for an opportunity (school or company) that will allow me to grow, learn
+          and contribute to ambitious projects.
+        </p>
+      </div>
+      <div class="about-card">
+        <div class="about-card-title">
+          <span class="fr">Informations</span>
+          <span class="en">Information</span>
         </div>
-        <div class="header-right">
-          <div class="live-pill"><div class="live-dot"></div> Live</div>
-          <div class="clock" id="clock">--:--:--</div>
+        <div class="about-info-row">
+          <span class="about-info-label fr">Nom</span>
+          <span class="about-info-label en">Name</span>
+          <span class="about-info-value">Lucas Zanelli</span>
+        </div>
+        <div class="about-info-row">
+          <span class="about-info-label">Pseudo</span>
+          <span class="about-info-value">Luc</span>
+        </div>
+        <div class="about-info-row">
+          <span class="about-info-label fr">Domaine</span>
+          <span class="about-info-label en">Field</span>
+          <span class="about-info-value">Web & Game Dev</span>
+        </div>
+        <div class="about-info-row">
+          <span class="about-info-label fr">Objectif</span>
+          <span class="about-info-label en">Goal</span>
+          <span class="about-info-value fr">Prog. Jeux Vidéo</span>
+          <span class="about-info-value en">Game Programming</span>
+        </div>
+        <div class="about-info-row">
+          <span class="about-info-label fr">Disponibilité</span>
+          <span class="about-info-label en">Availability</span>
+          <span class="about-info-value fr">À préciser</span>
+          <span class="about-info-value en">To be confirmed</span>
+        </div>
+        <div class="about-info-row">
+          <span class="about-info-label fr">Langue</span>
+          <span class="about-info-label en">Language</span>
+          <span class="about-info-value">FR / EN</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── SKILLS ── -->
+  <section id="skills">
+    <div class="section-header reveal">
+      <span class="section-num">02</span>
+      <h2 class="section-title fr">Compétences</h2>
+      <h2 class="section-title en">Skills</h2>
+      <div class="section-line"></div>
+    </div>
+    <div class="skills-grid">
+
+      <div class="skill-category reveal">
+        <div class="sk-icon">🌐</div>
+        <div class="sk-title">
+          <span class="fr">Développement Web</span>
+          <span class="en">Web Development</span>
+        </div>
+        <div class="sk-item">
+          <span class="sk-name">HTML / CSS</span>
+          <div class="sk-bar-wrap"><div class="sk-bar" style="width:0%" data-width="90%"></div></div>
+        </div>
+        <div class="sk-item">
+          <span class="sk-name">JavaScript</span>
+          <div class="sk-bar-wrap"><div class="sk-bar" style="width:0%" data-width="75%"></div></div>
+        </div>
+        <div class="sk-item">
+          <span class="sk-name">PHP</span>
+          <div class="sk-bar-wrap"><div class="sk-bar" style="width:0%" data-width="70%"></div></div>
+        </div>
+        <div class="sk-item">
+          <span class="sk-name">Java</span>
+          <div class="sk-bar-wrap"><div class="sk-bar" style="width:0%" data-width="60%"></div></div>
+        </div>
+        <div class="sk-item">
+          <span class="sk-name">Python</span>
+          <div class="sk-bar-wrap"><div class="sk-bar" style="width:0%" data-width="65%"></div></div>
+        </div>
+        <div class="sk-item">
+          <span class="sk-name">C#</span>
+          <div class="sk-bar-wrap"><div class="sk-bar" style="width:0%" data-width="70%"></div></div>
         </div>
       </div>
 
-      <!-- ── Hero ── -->
-      <div class="hero">
-        <span class="hero-eyebrow">// Système de gestion interne</span>
-        <h1 class="hero-title">Bienvenue sur NEXUS</h1>
-        <p class="hero-sub">Sélectionnez un module ci-dessous pour accéder à votre tableau de bord.</p>
-      </div>
-
-      <!-- ── KPI strip ── -->
-      <div class="kpi-strip">
-        <div class="kpi-cell">
-          <div class="kpi-dot" style="background:var(--green);"></div>
-          <div>
-            <div class="kpi-val">€284,591</div>
-            <div class="kpi-lbl">Revenu ce mois</div>
-          </div>
-          <div class="kpi-delta up">↑ 12.4%</div>
+      <div class="skill-category reveal">
+        <div class="sk-icon">🎮</div>
+        <div class="sk-title">
+          <span class="fr">Jeux Vidéo</span>
+          <span class="en">Game Development</span>
         </div>
-        <div class="kpi-cell">
-          <div class="kpi-dot" style="background:var(--blue);"></div>
-          <div>
-            <div class="kpi-val">48,291</div>
-            <div class="kpi-lbl">Utilisateurs actifs</div>
-          </div>
-          <div class="kpi-delta up">↑ 8.1%</div>
-        </div>
-        <div class="kpi-cell">
-          <div class="kpi-dot" style="background:var(--violet);"></div>
-          <div>
-            <div class="kpi-val">3.82%</div>
-            <div class="kpi-lbl">Taux de conversion</div>
-          </div>
-          <div class="kpi-delta down">↓ 0.3%</div>
+        <div class="sk-tags">
+          <span class="sk-tag">Unity</span>
+          <span class="sk-tag">Unreal Engine</span>
+          <span class="sk-tag">Game Design</span>
+          <span class="sk-tag">C#</span>
+          <span class="sk-tag">Scripting</span>
         </div>
       </div>
 
-      <!-- ── Modules ── -->
-      <div>
-        <p class="section-label">Modules</p>
-        <div class="grid">
-
-          <a class="card" data-color="blue" href="./Vue d'ensemble/index.html">
-            <div class="card-top">
-              <div class="card-icon" style="background:var(--blue-dim);color:var(--blue);">◈</div>
-              <span class="card-arrow">→</span>
-            </div>
-            <div>
-              <p class="card-name">Vue d'ensemble</p>
-              <p class="card-desc">Tableau de bord principal et KPIs globaux.</p>
-            </div>
-            <div class="card-footer">
-              <div class="card-dot" style="background:var(--green);"></div>
-              <span class="card-stat">En temps réel</span>
-            </div>
-          </a>
-
-          <a class="card" data-color="violet" href="./Analytique/index.html">
-            <div class="card-top">
-              <div class="card-icon" style="background:var(--violet-dim);color:var(--violet);">◉</div>
-              <span class="card-arrow">→</span>
-            </div>
-            <div>
-              <p class="card-name">Analytique <span class="badge">NEW</span></p>
-              <p class="card-desc">Analyse des données et visualisations avancées.</p>
-            </div>
-            <div class="card-footer">
-              <div class="card-dot" style="background:var(--violet);"></div>
-              <span class="card-stat">Mis à jour aujourd'hui</span>
-            </div>
-          </a>
-
-          <a class="card" data-color="amber" href="./Rapports/index.html">
-            <div class="card-top">
-              <div class="card-icon" style="background:var(--amber-dim);color:var(--amber);">◫</div>
-              <span class="card-arrow">→</span>
-            </div>
-            <div>
-              <p class="card-name">Rapports</p>
-              <p class="card-desc">Génération et export de rapports personnalisés.</p>
-            </div>
-            <div class="card-footer">
-              <div class="card-dot" style="background:var(--amber);"></div>
-              <span class="card-stat">3 rapports ce mois</span>
-            </div>
-          </a>
-
-          <a class="card" data-color="green" href="./Campagnes/index.html">
-            <div class="card-top">
-              <div class="card-icon" style="background:var(--green-dim);color:var(--green);">▤</div>
-              <span class="card-arrow">→</span>
-            </div>
-            <div>
-              <p class="card-name">Campagnes</p>
-              <p class="card-desc">Gestion et suivi des campagnes marketing.</p>
-            </div>
-            <div class="card-footer">
-              <div class="card-dot" style="background:var(--green);"></div>
-              <span class="card-stat">2 actives</span>
-            </div>
-          </a>
-
-          <a class="card" data-color="green" href="./Revenus/index.html">
-            <div class="card-top">
-              <div class="card-icon" style="background:var(--green-dim);color:var(--green);">€</div>
-              <span class="card-arrow">→</span>
-            </div>
-            <div>
-              <p class="card-name">Revenus</p>
-              <p class="card-desc">Suivi financier et indicateurs économiques.</p>
-            </div>
-            <div class="card-footer">
-              <div class="card-dot" style="background:var(--green);"></div>
-              <span class="card-stat">↑ 12.4% ce mois</span>
-            </div>
-          </a>
-
-          <a class="card" data-color="blue" href="./Clients/index.html">
-            <div class="card-top">
-              <div class="card-icon" style="background:var(--blue-dim);color:var(--blue);">⊞</div>
-              <span class="card-arrow">→</span>
-            </div>
-            <div>
-              <p class="card-name">Clients</p>
-              <p class="card-desc">Base de données clients et gestion des comptes.</p>
-            </div>
-            <div class="card-footer">
-              <div class="card-dot" style="background:var(--blue);"></div>
-              <span class="card-stat">48,291 actifs</span>
-            </div>
-          </a>
-
-          <a class="card" data-color="violet" href="./Produits/index.html">
-            <div class="card-top">
-              <div class="card-icon" style="background:var(--violet-dim);color:var(--violet);">◧</div>
-              <span class="card-arrow">→</span>
-            </div>
-            <div>
-              <p class="card-name">Produits</p>
-              <p class="card-desc">Catalogue produits, stocks et références.</p>
-            </div>
-            <div class="card-footer">
-              <div class="card-dot" style="background:var(--amber);"></div>
-              <span class="card-stat">1 alerte stock</span>
-            </div>
-          </a>
-
-          <a class="card" data-color="amber" href="./Commandes/index.html">
-            <div class="card-top">
-              <div class="card-icon" style="background:var(--amber-dim);color:var(--amber);">◈</div>
-              <span class="card-arrow">→</span>
-            </div>
-            <div>
-              <p class="card-name">Commandes</p>
-              <p class="card-desc">Traitement et suivi des commandes en cours.</p>
-            </div>
-            <div class="card-footer">
-              <div class="card-dot" style="background:var(--green);"></div>
-              <span class="card-stat">12 nouvelles</span>
-            </div>
-          </a>
-
+      <div class="skill-category reveal">
+        <div class="sk-icon">🎨</div>
+        <div class="sk-title">
+          <span class="fr">Graphisme & 3D</span>
+          <span class="en">Design & 3D</span>
+        </div>
+        <div class="sk-item">
+          <span class="sk-name fr">Modélisation 3D</span>
+          <span class="sk-name en">3D Modeling</span>
+          <div class="sk-bar-wrap"><div class="sk-bar" style="width:0%" data-width="75%"></div></div>
+        </div>
+        <div class="sk-item">
+          <span class="sk-name fr">Graphisme</span>
+          <span class="sk-name en">Graphic Design</span>
+          <div class="sk-bar-wrap"><div class="sk-bar" style="width:0%" data-width="80%"></div></div>
+        </div>
+        <div class="sk-item">
+          <span class="sk-name">UI / Visual</span>
+          <div class="sk-bar-wrap"><div class="sk-bar" style="width:0%" data-width="70%"></div></div>
         </div>
       </div>
 
-      <!-- ── Bottom row ── -->
-      <div class="bottom-row">
-
-        <!-- Activité -->
-        <div class="act-card">
-          <div class="act-head">
-            <div>
-              <p class="sys-title">Activité récente</p>
-              <p class="sys-subtitle">Dernières 24 heures</p>
-            </div>
-            <div class="live-pill" style="font-size:10px;padding:3px 10px;"><div class="live-dot"></div> Live</div>
-          </div>
-          <div id="actList">
-            <div class="act-item">
-              <div class="act-dot" style="background:var(--green);"></div>
-              <div>
-                <p class="act-msg"><strong>Paiement reçu</strong> — Abonnement Enterprise €299</p>
-                <p class="act-time">à l'instant</p>
-              </div>
-            </div>
-            <div class="act-item">
-              <div class="act-dot" style="background:var(--blue);"></div>
-              <div>
-                <p class="act-msg"><strong>Nouvel utilisateur</strong> inscrit depuis Berlin</p>
-                <p class="act-time">il y a 5 min</p>
-              </div>
-            </div>
-            <div class="act-item">
-              <div class="act-dot" style="background:var(--amber);"></div>
-              <div>
-                <p class="act-msg"><strong>Alerte seuil</strong> — Stock produit #A291 faible</p>
-                <p class="act-time">il y a 10 min</p>
-              </div>
-            </div>
-            <div class="act-item">
-              <div class="act-dot" style="background:var(--violet);"></div>
-              <div>
-                <p class="act-msg"><strong>Rapport</strong> généré automatiquement</p>
-                <p class="act-time">il y a 22 min</p>
-              </div>
-            </div>
-          </div>
+      <div class="skill-category reveal">
+        <div class="sk-icon">🎬</div>
+        <div class="sk-title">
+          <span class="fr">Montage Vidéo</span>
+          <span class="en">Video Editing</span>
         </div>
-
-        <!-- Système -->
-        <div class="sys-card">
-          <div class="sys-head">
-            <div>
-              <p class="sys-title">Système</p>
-              <p class="sys-subtitle">Accès rapides</p>
-            </div>
-          </div>
-          <a class="sys-row" href="./Performance/index.html">
-            <div class="sys-left">
-              <div class="sys-icon" style="background:var(--green-dim);color:var(--green);">◩</div>
-              <div>
-                <p class="sys-name">Performance</p>
-                <p class="sys-desc">CPU, mémoire, uptime</p>
-              </div>
-            </div>
-            <div class="sys-right">
-              <p class="sys-val">99.9%</p>
-              <p class="sys-delta up">↑ Opérationnel</p>
-            </div>
-          </a>
-          <a class="sys-row" href="./Logs/index.html">
-            <div class="sys-left">
-              <div class="sys-icon" style="background:var(--blue-dim);color:var(--blue);">◈</div>
-              <div>
-                <p class="sys-name">Logs</p>
-                <p class="sys-desc">Événements système</p>
-              </div>
-            </div>
-            <div class="sys-right">
-              <p class="sys-val">1,248</p>
-              <p class="sys-delta" style="color:var(--muted);">entrées aujourd'hui</p>
-            </div>
-          </a>
-          <a class="sys-row" href="./Paramètres/index.html">
-            <div class="sys-left">
-              <div class="sys-icon" style="background:var(--violet-dim);color:var(--violet);">◧</div>
-              <div>
-                <p class="sys-name">Paramètres</p>
-                <p class="sys-desc">Configuration & préférences</p>
-              </div>
-            </div>
-            <div class="sys-right">
-              <p class="sys-val">—</p>
-              <p class="sys-delta" style="color:var(--muted);">Configurer</p>
-            </div>
-          </a>
-          <a class="sys-row" href="./Vue d'ensemble/index.html">
-            <div class="sys-left">
-              <div class="sys-icon" style="background:var(--blue-dim);color:var(--blue);">◈</div>
-              <div>
-                <p class="sys-name">Vue d'ensemble</p>
-                <p class="sys-desc">Dashboard principal</p>
-              </div>
-            </div>
-            <div class="sys-right">
-              <p class="sys-val" style="color:var(--green);">Live</p>
-              <p class="sys-delta up">↑ Ouvert</p>
-            </div>
-          </a>
-        </div>
-
-      </div>
-
-      <!-- ── Footer ── -->
-      <div class="footer">
-        <span class="footer-text">NEXUS v1.0 — © 2025 Système de gestion interne</span>
-        <div class="footer-links">
-          <a class="footer-link" href="./Vue d'ensemble/index.html">Dashboard</a>
-          <a class="footer-link" href="./Paramètres/index.html">Paramètres</a>
+        <div class="sk-tags">
+          <span class="sk-tag">Premiere Pro</span>
+          <span class="sk-tag">After Effects</span>
+          <span class="sk-tag">Motion Design</span>
+          <span class="sk-tag">Color Grading</span>
         </div>
       </div>
 
     </div>
-  </div>
+  </section>
 
-  <script>
-    /* Horloge */
-    const cl = document.getElementById('clock');
-    const tick = () => { cl.textContent = new Date().toLocaleTimeString('fr-FR',{hour12:false}); };
-    tick(); setInterval(tick, 1000);
+  <!-- ── PROJECTS ── -->
+  <section id="projects">
+    <div class="section-header reveal">
+      <span class="section-num">03</span>
+      <h2 class="section-title fr">Projets</h2>
+      <h2 class="section-title en">Projects</h2>
+      <div class="section-line"></div>
+    </div>
 
-    /* Live activity */
-    const acts = [
-      { c:'var(--green)',  m:'<strong>Commande</strong> — €189 de Pierre M.',                t:"à l'instant" },
-      { c:'var(--blue)',   m:'<strong>Nouvel utilisateur</strong> depuis Lyon',               t:"à l'instant" },
-      { c:'var(--violet)', m:'<strong>Rapport</strong> généré automatiquement',               t:"à l'instant" },
-      { c:'var(--amber)',  m:'<strong>Alerte stock</strong> — Produit #B104 critique',        t:"à l'instant" },
-      { c:'var(--green)',  m:'<strong>Paiement reçu</strong> — Abonnement Enterprise €299',   t:"à l'instant" },
-    ];
-    const tl = ['il y a 5 min','il y a 10 min','il y a 15 min'];
-    let ai = 0;
-    setInterval(() => {
-      const items = document.querySelectorAll('#actList .act-item');
-      if (!items.length) return;
-      const d = acts[ai % acts.length];
-      items[0].querySelector('.act-dot').style.background = d.c;
-      items[0].querySelector('.act-msg').innerHTML = d.m;
-      items[0].querySelector('.act-time').textContent = d.t;
-      items[0].style.background = 'rgba(59,130,246,0.06)';
-      setTimeout(() => { items[0].style.background=''; }, 1200);
-      items.forEach((item,i) => { if(i===0) return; const t=item.querySelector('.act-time'); if(t&&tl[i-1]) t.textContent=tl[i-1]; });
-      ai++;
-    }, 5000);
-  </script>
+    <!-- Onglets -->
+    <div class="project-tabs reveal">
+      <button class="project-tab active" data-tab="siteweb">
+        <span class="tab-icon">🌐</span>
+        <span class="fr">Site Web</span><span class="en">Web</span>
+      </button>
+      <button class="project-tab" data-tab="graphisme">
+        <span class="tab-icon">🎨</span>
+        <span class="fr">Graphisme</span><span class="en">Design</span>
+      </button>
+      <button class="project-tab" data-tab="3d">
+        <span class="tab-icon">🧊</span>
+        <span>3D</span>
+      </button>
+      <button class="project-tab" data-tab="jeux">
+        <span class="tab-icon">🎮</span>
+        <span class="fr">Jeux Vidéo</span><span class="en">Games</span>
+      </button>
+      <button class="project-tab" data-tab="video">
+        <span class="tab-icon">🎬</span>
+        <span class="fr">Montage Vidéo</span><span class="en">Video</span>
+      </button>
+    </div>
 
+    <!-- Contenu : Site Web -->
+    <div class="project-panel active" data-panel="siteweb">
+      <div class="flex-cards-container">
+        <input type="radio" name="slide-siteweb" id="sw1" checked>
+        <label for="sw1" class="flex-card flex-card-iframe">
+          <!-- Aperçu live du site -->
+          <div class="flex-card-preview">
+            <iframe
+              src="https://maison-noire-indol.vercel.app/"
+              class="flex-card-iframe-el"
+              loading="lazy"
+              scrolling="no"
+              tabindex="-1"
+              title="Maison Noire preview">
+            </iframe>
+            <div class="flex-card-preview-overlay"></div>
+          </div>
+          <!-- Infos en bas -->
+          <div class="flex-card-row">
+            <div class="flex-card-icon">🌐</div>
+            <div class="flex-card-desc">
+              <div class="flex-card-desc-text">
+                <h4>Maison Noire</h4>
+                <p class="fr">Site e-commerce Haute Couture — HTML, CSS, JS</p>
+                <p class="en">Haute Couture e-commerce website — HTML, CSS, JS</p>
+              </div>
+              <a href="https://maison-noire-indol.vercel.app/" target="_blank" rel="noopener" class="flex-card-btn fr">Voir le projet <i class="btn-arrow">→</i></a>
+              <a href="https://maison-noire-indol.vercel.app/" target="_blank" rel="noopener" class="flex-card-btn en">View project <i class="btn-arrow">→</i></a>
+            </div>
+          </div>
+        </label>
+        <input type="radio" name="slide-siteweb" id="sw2">
+        <label for="sw2" class="flex-card flex-card-iframe">
+          <div class="flex-card-preview">
+            <iframe
+              src="https://forma-lilac.vercel.app/"
+              class="flex-card-iframe-el"
+              loading="lazy"
+              scrolling="no"
+              tabindex="-1"
+              title="Forma preview">
+            </iframe>
+            <div class="flex-card-preview-overlay"></div>
+          </div>
+          <div class="flex-card-row">
+            <div class="flex-card-icon">🌐</div>
+            <div class="flex-card-desc">
+              <div class="flex-card-desc-text">
+                <h4>Forma</h4>
+                <p class="fr">Site vitrine moderne — HTML, CSS, JS</p>
+                <p class="en">Modern showcase website — HTML, CSS, JS</p>
+              </div>
+              <a href="https://forma-lilac.vercel.app/" target="_blank" rel="noopener" class="flex-card-btn fr">Voir le projet <i class="btn-arrow">→</i></a>
+              <a href="https://forma-lilac.vercel.app/" target="_blank" rel="noopener" class="flex-card-btn en">View project <i class="btn-arrow">→</i></a>
+            </div>
+          </div>
+        </label>
+        <input type="radio" name="slide-siteweb" id="sw3">
+        <label for="sw3" class="flex-card flex-card-iframe">
+          <div class="flex-card-preview">
+            <iframe
+              src="https://nexus-sigma-pearl.vercel.app/"
+              class="flex-card-iframe-el"
+              loading="lazy"
+              scrolling="no"
+              tabindex="-1"
+              sandbox="allow-scripts allow-same-origin"
+              title="Nexus preview">
+            </iframe>
+            <div class="flex-card-preview-overlay"></div>
+          </div>
+          <div class="flex-card-row">
+            <div class="flex-card-icon">🌐</div>
+            <div class="flex-card-desc">
+              <div class="flex-card-desc-text">
+                <h4>Nexus</h4>
+                <p class="fr">Site de gestion interne — HTML, CSS, JS</p>
+                <p class="en">Internal management platform — HTML, CSS, JS</p>
+              </div>
+              <a href="https://nexus-sigma-pearl.vercel.app/" target="_blank" rel="noopener" class="flex-card-btn fr">Voir le projet <i class="btn-arrow">→</i></a>
+              <a href="https://nexus-sigma-pearl.vercel.app/" target="_blank" rel="noopener" class="flex-card-btn en">View project <i class="btn-arrow">→</i></a>
+            </div>
+          </div>
+        </label>
+      </div>
+    </div>
+
+    <!-- Contenu : Graphisme -->
+    <div class="project-panel" data-panel="graphisme">
+      <div class="flex-cards-container">
+        <input type="radio" name="slide-graphisme" id="gr1" checked>
+        <label for="gr1" class="flex-card flex-card-empty">
+          <div class="flex-card-row">
+            <div class="flex-card-icon">🎨</div>
+            <div class="flex-card-desc">
+              <h4 class="fr">Projet Graphisme 1</h4>
+              <h4 class="en">Design Project 1</h4>
+              <p class="fr">Logo, affiche, identité visuelle...</p>
+              <p class="en">Logo, poster, visual identity...</p>
+            </div>
+          </div>
+        </label>
+        <input type="radio" name="slide-graphisme" id="gr2">
+        <label for="gr2" class="flex-card flex-card-empty">
+          <div class="flex-card-row">
+            <div class="flex-card-icon">🎨</div>
+            <div class="flex-card-desc">
+              <h4 class="fr">Projet Graphisme 2</h4>
+              <h4 class="en">Design Project 2</h4>
+              <p class="fr">Ajoute une image et une description.</p>
+              <p class="en">Add an image and description.</p>
+            </div>
+          </div>
+        </label>
+        <input type="radio" name="slide-graphisme" id="gr3">
+        <label for="gr3" class="flex-card flex-card-empty">
+          <div class="flex-card-row">
+            <div class="flex-card-icon">🎨</div>
+            <div class="flex-card-desc">
+              <h4 class="fr">Projet Graphisme 3</h4>
+              <h4 class="en">Design Project 3</h4>
+              <p class="fr">Montre tes créations visuelles !</p>
+              <p class="en">Show your visual creations!</p>
+            </div>
+          </div>
+        </label>
+      </div>
+    </div>
+
+    <!-- Contenu : 3D -->
+    <div class="project-panel" data-panel="3d">
+      <div class="flex-cards-container">
+        <input type="radio" name="slide-3d" id="td1" checked>
+        <label for="td1" class="flex-card flex-card-empty">
+          <div class="flex-card-row">
+            <div class="flex-card-icon">🧊</div>
+            <div class="flex-card-desc">
+              <h4 class="fr">Projet 3D 1</h4>
+              <h4 class="en">3D Project 1</h4>
+              <p class="fr">Modélisation, rendu, animation 3D...</p>
+              <p class="en">Modeling, rendering, 3D animation...</p>
+            </div>
+          </div>
+        </label>
+        <input type="radio" name="slide-3d" id="td2">
+        <label for="td2" class="flex-card flex-card-empty">
+          <div class="flex-card-row">
+            <div class="flex-card-icon">🧊</div>
+            <div class="flex-card-desc">
+              <h4 class="fr">Projet 3D 2</h4>
+              <h4 class="en">3D Project 2</h4>
+              <p class="fr">Ajoute ton rendu et les outils utilisés.</p>
+              <p class="en">Add your render and tools used.</p>
+            </div>
+          </div>
+        </label>
+        <input type="radio" name="slide-3d" id="td3">
+        <label for="td3" class="flex-card flex-card-empty">
+          <div class="flex-card-row">
+            <div class="flex-card-icon">🧊</div>
+            <div class="flex-card-desc">
+              <h4 class="fr">Projet 3D 3</h4>
+              <h4 class="en">3D Project 3</h4>
+              <p class="fr">Blender, Cinema 4D, Maya...</p>
+              <p class="en">Blender, Cinema 4D, Maya...</p>
+            </div>
+          </div>
+        </label>
+      </div>
+    </div>
+
+    <!-- Contenu : Jeux Vidéo -->
+    <div class="project-panel" data-panel="jeux">
+      <div class="flex-cards-container">
+        <input type="radio" name="slide-jeux" id="jv1" checked>
+        <label for="jv1" class="flex-card flex-card-empty">
+          <div class="flex-card-row">
+            <div class="flex-card-icon">🎮</div>
+            <div class="flex-card-desc">
+              <h4 class="fr">Projet Jeu Vidéo 1</h4>
+              <h4 class="en">Game Project 1</h4>
+              <p class="fr">Prototype, game jam, jeu complet...</p>
+              <p class="en">Prototype, game jam, full game...</p>
+            </div>
+          </div>
+        </label>
+        <input type="radio" name="slide-jeux" id="jv2">
+        <label for="jv2" class="flex-card flex-card-empty">
+          <div class="flex-card-row">
+            <div class="flex-card-icon">🎮</div>
+            <div class="flex-card-desc">
+              <h4 class="fr">Projet Jeu Vidéo 2</h4>
+              <h4 class="en">Game Project 2</h4>
+              <p class="fr">Ajoute moteur, genre et screenshots.</p>
+              <p class="en">Add engine, genre and screenshots.</p>
+            </div>
+          </div>
+        </label>
+        <input type="radio" name="slide-jeux" id="jv3">
+        <label for="jv3" class="flex-card flex-card-empty">
+          <div class="flex-card-row">
+            <div class="flex-card-icon">🎮</div>
+            <div class="flex-card-desc">
+              <h4 class="fr">Projet Jeu Vidéo 3</h4>
+              <h4 class="en">Game Project 3</h4>
+              <p class="fr">Unity, Unreal, Godot...</p>
+              <p class="en">Unity, Unreal, Godot...</p>
+            </div>
+          </div>
+        </label>
+      </div>
+    </div>
+
+    <!-- Contenu : Montage Vidéo -->
+    <div class="project-panel" data-panel="video">
+      <div class="flex-cards-container">
+        <input type="radio" name="slide-video" id="vi1" checked>
+        <label for="vi1" class="flex-card flex-card-empty">
+          <div class="flex-card-row">
+            <div class="flex-card-icon">🎬</div>
+            <div class="flex-card-desc">
+              <h4 class="fr">Projet Vidéo 1</h4>
+              <h4 class="en">Video Project 1</h4>
+              <p class="fr">Court-métrage, clip, motion design...</p>
+              <p class="en">Short film, clip, motion design...</p>
+            </div>
+          </div>
+        </label>
+        <input type="radio" name="slide-video" id="vi2">
+        <label for="vi2" class="flex-card flex-card-empty">
+          <div class="flex-card-row">
+            <div class="flex-card-icon">🎬</div>
+            <div class="flex-card-desc">
+              <h4 class="fr">Projet Vidéo 2</h4>
+              <h4 class="en">Video Project 2</h4>
+              <p class="fr">Ajoute une miniature et une description.</p>
+              <p class="en">Add a thumbnail and description.</p>
+            </div>
+          </div>
+        </label>
+        <input type="radio" name="slide-video" id="vi3">
+        <label for="vi3" class="flex-card flex-card-empty">
+          <div class="flex-card-row">
+            <div class="flex-card-icon">🎬</div>
+            <div class="flex-card-desc">
+              <h4 class="fr">Projet Vidéo 3</h4>
+              <h4 class="en">Video Project 3</h4>
+              <p class="fr">Premiere Pro, After Effects...</p>
+              <p class="en">Premiere Pro, After Effects...</p>
+            </div>
+          </div>
+        </label>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ── PARCOURS ── -->
+  <section id="experience">
+    <div class="section-header reveal">
+      <span class="section-num">04</span>
+      <h2 class="section-title fr">Parcours</h2>
+      <h2 class="section-title en">Journey</h2>
+      <div class="section-line"></div>
+    </div>
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:5rem;">
+
+      <!-- FORMATION -->
+      <div>
+        <h3 style="font-family:'Orbitron',monospace;font-size:0.8rem;letter-spacing:0.2em;color:var(--accent2);margin-bottom:2rem;text-transform:uppercase;" class="reveal">
+          <span class="fr">🎓 Formation</span>
+          <span class="en">🎓 Education</span>
+        </h3>
+        <div class="timeline">
+
+          <div class="timeline-item reveal">
+            <div class="timeline-dot"></div>
+            <div class="timeline-date">2022 — 2024</div>
+            <div class="timeline-title fr">BTS SIO — Option SLAM</div>
+            <div class="timeline-title en">BTS SIO — SLAM Option</div>
+            <div class="timeline-org fr">Lycée Joinville-le-Pont</div>
+            <div class="timeline-org en">Lycée Joinville-le-Pont</div>
+            <div class="timeline-desc fr">BTS Services Informatiques aux Organisations, spécialité Solutions Logicielles et Applications Métiers. Développement web, bases de données, programmation orientée objet.</div>
+            <div class="timeline-desc en">IT Services for Organizations degree, Software Solutions specialization. Web development, databases, object-oriented programming.</div>
+          </div>
+
+          <div class="timeline-item reveal">
+            <div class="timeline-dot"></div>
+            <div class="timeline-date">2019 — 2022</div>
+            <div class="timeline-title fr">Bac Pro M.E.L.E.C</div>
+            <div class="timeline-title en">Vocational Bac M.E.L.E.C</div>
+            <div class="timeline-org fr">Lycée Maurice Rondeau</div>
+            <div class="timeline-org en">Lycée Maurice Rondeau</div>
+            <div class="timeline-desc fr">Baccalauréat Professionnel Métiers de l'Électricité et de ses Environnements Connectés. Électricité, systèmes automatisés, courants forts et courants faibles.</div>
+            <div class="timeline-desc en">Professional Baccalaureate in Electrical Trades and Connected Environments. Electricity, automated systems, high and low current installations.</div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- EXPÉRIENCES -->
+      <div>
+        <h3 style="font-family:'Orbitron',monospace;font-size:0.8rem;letter-spacing:0.2em;color:var(--accent);margin-bottom:2rem;text-transform:uppercase;" class="reveal">
+          <span class="fr">💼 Expériences</span>
+          <span class="en">💼 Experience</span>
+        </h3>
+        <div class="timeline">
+
+          <div class="timeline-item reveal">
+            <div class="timeline-dot" style="background:var(--accent2);box-shadow:0 0 12px var(--glow2);"></div>
+            <div class="timeline-date fr">2025 — 6 semaines</div>
+            <div class="timeline-date en">2025 — 6 weeks</div>
+            <div class="timeline-title fr">Technicien Aéronautique</div>
+            <div class="timeline-title en">Aeronautics Technician</div>
+            <div class="timeline-org">UUDS Aero Service Électricité</div>
+            <div class="timeline-desc fr">Travaux en aéronautique dans la continuité des missions précédentes.</div>
+            <div class="timeline-desc en">Aeronautics work continuing previous missions.</div>
+          </div>
+
+          <div class="timeline-item reveal">
+            <div class="timeline-dot" style="background:var(--accent2);box-shadow:0 0 12px var(--glow2);"></div>
+            <div class="timeline-date fr">2024 — 6 semaines</div>
+            <div class="timeline-date en">2024 — 6 weeks</div>
+            <div class="timeline-title fr">Technicien Aéronautique</div>
+            <div class="timeline-title en">Aeronautics Technician</div>
+            <div class="timeline-org">UUDS Aero Service Électricité</div>
+            <div class="timeline-desc fr">Fabrication de harnais, vérification des boutons de sièges, inventaire, encadrement d'une personne en situation de handicap.</div>
+            <div class="timeline-desc en">Harness manufacturing, seat button checks, inventory management, supervision of a person with disability.</div>
+          </div>
+
+          <div class="timeline-item reveal">
+            <div class="timeline-dot" style="background:var(--accent);box-shadow:0 0 12px var(--glow);"></div>
+            <div class="timeline-date fr">2024 — Stage 6 semaines</div>
+            <div class="timeline-date en">2024 — Internship 6 weeks</div>
+            <div class="timeline-title fr">Développeur Web</div>
+            <div class="timeline-title en">Web Developer</div>
+            <div class="timeline-org">Agefiph</div>
+            <div class="timeline-desc fr">Vérification des règles Opquast sur le site web et création d'une page de maintenance.</div>
+            <div class="timeline-desc en">Verification of Opquast accessibility rules on the website and creation of a maintenance page.</div>
+          </div>
+
+          <div class="timeline-item reveal">
+            <div class="timeline-dot" style="background:var(--accent);box-shadow:0 0 12px var(--glow);"></div>
+            <div class="timeline-date fr">2024 — Stage 6 semaines</div>
+            <div class="timeline-date en">2024 — Internship 6 weeks</div>
+            <div class="timeline-title fr">Développeur Web</div>
+            <div class="timeline-title en">Web Developer</div>
+            <div class="timeline-org">UUDS Aero</div>
+            <div class="timeline-desc fr">Conception d'un site internet interne à l'entreprise.</div>
+            <div class="timeline-desc en">Design and development of an internal company website.</div>
+          </div>
+
+          <div class="timeline-item reveal">
+            <div class="timeline-dot" style="background:var(--accent2);box-shadow:0 0 12px var(--glow2);"></div>
+            <div class="timeline-date fr">2023 — 6 semaines</div>
+            <div class="timeline-date en">2023 — 6 weeks</div>
+            <div class="timeline-title fr">Technicien Aéronautique</div>
+            <div class="timeline-title en">Aeronautics Technician</div>
+            <div class="timeline-org">UUDS Aero Service Électricité</div>
+            <div class="timeline-desc fr">Conception de harnais électriques pour l'aéronautique.</div>
+            <div class="timeline-desc en">Design and manufacturing of electrical harnesses for aeronautics.</div>
+          </div>
+
+          <div class="timeline-item reveal">
+            <div class="timeline-dot" style="background:var(--accent2);box-shadow:0 0 12px var(--glow2);"></div>
+            <div class="timeline-date fr">2023 — Stage 8 semaines</div>
+            <div class="timeline-date en">2023 — Internship 8 weeks</div>
+            <div class="timeline-title fr">Technicien Aéronautique</div>
+            <div class="timeline-title en">Aeronautics Technician</div>
+            <div class="timeline-org">UUDS Aero Service Électricité</div>
+            <div class="timeline-desc fr">Découverte de l'entreprise et apprentissage du fonctionnement des machines aéronautiques.</div>
+            <div class="timeline-desc en">Company discovery and learning of aeronautical machine operations.</div>
+          </div>
+
+          <div class="timeline-item reveal">
+            <div class="timeline-dot" style="background:var(--accent2);box-shadow:0 0 12px var(--glow2);"></div>
+            <div class="timeline-date fr">2022 — Stage 8 semaines</div>
+            <div class="timeline-date en">2022 — Internship 8 weeks</div>
+            <div class="timeline-title fr">Électricien Industriel</div>
+            <div class="timeline-title en">Industrial Electrician</div>
+            <div class="timeline-org">Air Concept Industrie</div>
+            <div class="timeline-desc fr">Découverte de l'entreprise et participation au changement d'une baie électrique industrielle.</div>
+            <div class="timeline-desc en">Company discovery and participation in the replacement of an industrial electrical bay.</div>
+          </div>
+
+          <div class="timeline-item reveal">
+            <div class="timeline-dot" style="background:var(--accent2);box-shadow:0 0 12px var(--glow2);"></div>
+            <div class="timeline-date fr">2022 — 3 semaines</div>
+            <div class="timeline-date en">2022 — 3 weeks</div>
+            <div class="timeline-title fr">Électricien Aéronautique</div>
+            <div class="timeline-title en">Aeronautical Electrician</div>
+            <div class="timeline-org">UUDS Aero Service Électricité</div>
+            <div class="timeline-desc fr">Tests de boutons pour sièges d'avion.</div>
+            <div class="timeline-desc en">Testing of buttons for aircraft seats.</div>
+          </div>
+
+          <div class="timeline-item reveal">
+            <div class="timeline-dot" style="background:var(--muted);box-shadow:none;"></div>
+            <div class="timeline-date fr">2021 — Stage 6 semaines</div>
+            <div class="timeline-date en">2021 — Internship 6 weeks</div>
+            <div class="timeline-title fr">Électricien</div>
+            <div class="timeline-title en">Electrician</div>
+            <div class="timeline-org">Antenne Service</div>
+            <div class="timeline-desc fr">Maintenance d'alarmes en entreprise et chez les particuliers.</div>
+            <div class="timeline-desc en">Alarm maintenance for businesses and private clients.</div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ── CONTACT ── -->
+  <section id="contact">
+    <div class="section-header reveal">
+      <span class="section-num">05</span>
+      <h2 class="section-title">Contact</h2>
+      <div class="section-line"></div>
+    </div>
+    <div class="contact-grid">
+      <div class="contact-text reveal">
+        <h3 class="fr">Travaillons ensemble</h3>
+        <h3 class="en">Let's work together</h3>
+        <p class="fr">Tu as un projet, une opportunité ou tu veux juste discuter ? Je suis disponible et toujours ouvert à de nouvelles collaborations. N'hésite pas à me contacter !</p>
+        <p class="en">You have a project, an opportunity, or just want to chat? I'm available and always open to new collaborations. Feel free to reach out!</p>
+        <div class="contact-links">
+          <a href="/cdn-cgi/l/email-protection#59352c3a382a19353c2a742377362b3e" class="contact-link"><span class="contact-link-icon">✉️</span><span><span class="__cf_email__" data-cfemail="b8d4cddbd9cbf8d4ddcb95c296d7cadf">[email&#160;protected]</span></span></a>
+          <a href="https://www.linkedin.com/in/lucas-zanelli-a742363b3/" target="_blank" rel="noopener" class="contact-link">
+            <span class="contact-link-icon">💼</span>
+            <span>linkedin.com/in/lucas-zanelli</span>
+          </a>
+          <a href="https://github.com/ZanelliLucas" target="_blank" rel="noopener" class="contact-link">
+            <span class="contact-link-icon">🐙</span>
+            <span>github.com/ZanelliLucas</span>
+          </a>
+        </div>
+      </div>
+      <div class="reveal">
+        <form class="contact-form" onsubmit="return false;">
+          <div class="form-group">
+            <label class="form-label fr">Votre nom</label>
+            <label class="form-label en">Your name</label>
+            <input type="text" class="form-input" placeholder="Lucas Zanelli">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Email</label>
+            <input type="email" class="form-input" placeholder="contact@example.com">
+          </div>
+          <div class="form-group">
+            <label class="form-label fr">Message</label>
+            <label class="form-label en">Message</label>
+            <textarea class="form-textarea fr" placeholder="Bonjour Lucas, je vous contacte au sujet de..."></textarea>
+            <textarea class="form-textarea en" placeholder="Hello Lucas, I'm reaching out about..."></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary" style="align-self:flex-start;">
+            <span class="fr">Envoyer</span>
+            <span class="en">Send</span>
+          </button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── FOOTER ── -->
+  <footer>
+    <div class="footer-copy fr">© 2025 Lucas Zanelli — Tous droits réservés</div>
+    <div class="footer-copy en">© 2025 Lucas Zanelli — All rights reserved</div>
+    <div class="footer-logo">LZ</div>
+  </footer>
+
+  <script src="script.js"></script>
 </body>
 </html>
