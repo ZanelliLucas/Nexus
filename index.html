@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NEXUS — Accueil</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg:         #09090B;
+      --surface:    #111113;
+      --surface2:   #18181B;
+      --border:     rgba(255, 255, 255, 0.06);
+      --border2:    rgba(255, 255, 255, 0.1);
+      --text:       #FAFAFA;
+      --muted:      #71717A;
+      --green:      #22C55E;
+      --green-dim:  rgba(34, 197, 94, 0.12);
+      --red:        #EF4444;
+      --red-dim:    rgba(239, 68, 68, 0.12);
+      --blue:       #3B82F6;
+      --blue-dim:   rgba(59, 130, 246, 0.12);
+      --violet:     #8B5CF6;
+      --violet-dim: rgba(139, 92, 246, 0.12);
+      --amber:      #F59E0B;
+      --amber-dim:  rgba(245, 158, 11, 0.12);
+      --cyan:       #06B6D4;
+    }
+
+    html, body { height: 100%; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      font-weight: 400;
+      display: flex;
+      overflow: hidden;
+    }
+
+    ::-webkit-scrollbar        { width: 4px; height: 4px; }
+    ::-webkit-scrollbar-track  { background: transparent; }
+    ::-webkit-scrollbar-thumb  { background: var(--border2); border-radius: 2px; }
+
+    /* ═══════ SIDEBAR ═══════ */
+    .sidebar {
+      width: 220px; flex-shrink: 0;
+      background: var(--surface);
+      border-right: 1px solid var(--border);
+      display: flex; flex-direction: column;
+      height: 100vh; overflow-y: auto;
+    }
+    .sb-logo {
+      padding: 20px 16px;
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; gap: 10px;
+    }
+    .logo-icon {
+      width: 28px; height: 28px;
+      background: linear-gradient(135deg, var(--blue), var(--violet));
+      border-radius: 6px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 12px; font-weight: 600;
+      font-family: 'JetBrains Mono', monospace; color: white;
+    }
+    .logo-text { font-size: 14px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; }
+    .sb-section { padding: 12px 8px 4px; }
+    .sb-section-label {
+      font-size: 9px; font-weight: 500; letter-spacing: 2px;
+      text-transform: uppercase; color: var(--muted);
+      padding: 0 8px; margin-bottom: 4px;
+    }
+    .sb-item {
+      display: flex; align-items: center; gap: 10px;
+      padding: 8px 10px; border-radius: 6px;
+      cursor: pointer; transition: background 0.15s;
+      text-decoration: none; color: var(--muted);
+      font-size: 13px; font-weight: 400; margin-bottom: 1px;
+    }
+    .sb-item:hover            { background: var(--surface2); color: var(--text); }
+    .sb-item.active           { background: var(--surface2); color: var(--text); }
+    .sb-item.active .sb-icon  { color: var(--blue); }
+    .sb-icon { font-size: 14px; width: 16px; text-align: center; }
+    .sb-badge {
+      margin-left: auto;
+      background: var(--blue-dim); color: var(--blue);
+      font-size: 9px; font-weight: 600; padding: 2px 6px; border-radius: 10px;
+    }
+    .sb-bottom { margin-top: auto; padding: 12px 8px; border-top: 1px solid var(--border); }
+    .sb-user { display: flex; align-items: center; gap: 10px; padding: 8px 10px; border-radius: 6px; cursor: pointer; }
+    .user-av {
+      width: 28px; height: 28px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--violet), var(--blue));
+      display: flex; align-items: center; justify-content: center;
+      font-size: 11px; font-weight: 600; flex-shrink: 0;
+    }
+    .user-name { font-size: 12px; font-weight: 500; }
+    .user-plan { font-size: 10px; color: var(--muted); }
+
+    /* ═══════ MAIN ═══════ */
+    .main { flex: 1; overflow-y: auto; display: flex; flex-direction: column; }
+
+    .topbar {
+      height: 52px; border-bottom: 1px solid var(--border);
+      padding: 0 24px;
+      display: flex; align-items: center; justify-content: space-between;
+      flex-shrink: 0; background: var(--surface);
+      position: sticky; top: 0; z-index: 10;
+    }
+    .tb-left  { display: flex; align-items: center; gap: 16px; }
+    .tb-right { display: flex; align-items: center; gap: 8px; }
+    .page-title { font-size: 15px; font-weight: 600; }
+    .page-sub   { font-size: 12px; color: var(--muted); }
+    .live-badge { display: flex; align-items: center; gap: 5px; font-size: 10px; color: var(--green); font-weight: 500; }
+    .live-dot { width: 6px; height: 6px; background: var(--green); border-radius: 50%; animation: pulse 2s infinite; }
+
+    .clock-badge {
+      font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--muted);
+      padding: 5px 12px; background: var(--surface2);
+      border: 1px solid var(--border); border-radius: 6px;
+    }
+
+    /* ═══════ CONTENT ═══════ */
+    .content { padding: 28px 24px; display: flex; flex-direction: column; gap: 22px; overflow-y: auto; }
+
+    /* Hero */
+    .hero { display: flex; align-items: flex-end; justify-content: space-between; }
+    .hero-title { font-size: 20px; font-weight: 600; letter-spacing: -0.3px; margin-bottom: 4px; }
+    .hero-sub   { font-size: 12px; color: var(--muted); }
+    .hero-stats { display: flex; gap: 24px; }
+    .hero-stat  { text-align: right; }
+    .hero-stat-val { font-family: 'JetBrains Mono', monospace; font-size: 16px; font-weight: 500; }
+    .hero-stat-lbl { font-size: 10px; color: var(--muted); margin-top: 2px; }
+
+    /* Section label */
+    .section-label {
+      font-size: 9px; font-weight: 500; letter-spacing: 2px;
+      text-transform: uppercase; color: var(--muted); margin-bottom: 10px;
+    }
+
+    /* Module grid */
+    .modules-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+
+    .module-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 10px; padding: 16px;
+      text-decoration: none; color: var(--text);
+      display: flex; flex-direction: column; gap: 10px;
+      transition: border-color 0.2s, background 0.2s;
+      cursor: pointer;
+    }
+    .module-card:hover { border-color: var(--border2); background: var(--surface2); }
+    .module-card:hover .module-arrow { opacity: 1; transform: translateX(0); }
+
+    .module-card-top { display: flex; align-items: center; justify-content: space-between; }
+    .module-icon {
+      width: 32px; height: 32px; border-radius: 7px;
+      display: flex; align-items: center; justify-content: center; font-size: 14px;
+    }
+    .module-arrow { font-size: 11px; color: var(--muted); opacity: 0; transform: translateX(-4px); transition: opacity 0.2s, transform 0.2s; }
+    .module-name  { font-size: 13px; font-weight: 600; margin-bottom: 2px; display: flex; align-items: center; gap: 6px; }
+    .module-desc  { font-size: 11px; color: var(--muted); line-height: 1.5; }
+    .module-footer {
+      display: flex; align-items: center; gap: 6px;
+      padding-top: 10px; border-top: 1px solid var(--border); margin-top: auto;
+    }
+    .module-stat-dot { width: 5px; height: 5px; border-radius: 50%; }
+    .module-stat-txt { font-size: 10px; color: var(--muted); font-family: 'JetBrains Mono', monospace; }
+
+    /* Bottom row */
+    .bottom-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+
+    /* Activity card */
+    .activity-card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
+    .ac-head { padding: 14px 18px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
+    .card-title    { font-size: 14px; font-weight: 600; }
+    .card-subtitle { font-size: 11px; color: var(--muted); margin-top: 2px; }
+    .ac-item { display: flex; align-items: flex-start; gap: 12px; padding: 12px 18px; border-bottom: 1px solid var(--border); transition: background 0.15s; }
+    .ac-item:last-child { border-bottom: none; }
+    .ac-item:hover      { background: var(--surface2); }
+    .ac-dot  { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; margin-top: 4px; }
+    .ac-msg  { font-size: 12px; line-height: 1.5; }
+    .ac-msg strong { font-weight: 500; }
+    .ac-time { font-size: 10px; color: var(--muted); margin-top: 2px; font-family: 'JetBrains Mono', monospace; }
+
+    /* Quick card */
+    .quick-card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
+    .qc-head    { padding: 14px 18px; border-bottom: 1px solid var(--border); }
+    .qc-row     { display: flex; align-items: center; justify-content: space-between; padding: 12px 18px; border-bottom: 1px solid var(--border); transition: background 0.15s; text-decoration: none; color: inherit; }
+    .qc-row:last-child { border-bottom: none; }
+    .qc-row:hover      { background: var(--surface2); }
+    .qc-left    { display: flex; align-items: center; gap: 10px; }
+    .qc-icon    { width: 28px; height: 28px; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 12px; }
+    .qc-label   { font-size: 12px; font-weight: 500; }
+    .qc-sub     { font-size: 10px; color: var(--muted); margin-top: 1px; }
+    .qc-right   { text-align: right; }
+    .qc-val     { font-family: 'JetBrains Mono', monospace; font-size: 13px; font-weight: 500; }
+    .qc-delta   { font-size: 10px; margin-top: 1px; }
+    .delta-up   { color: var(--green); }
+    .delta-down { color: var(--red); }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50%       { opacity: 0.5; transform: scale(1.3); }
+    }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(10px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .content > * { animation: fadeUp 0.4s ease both; }
+    .content > *:nth-child(1) { animation-delay: 0.05s; }
+    .content > *:nth-child(2) { animation-delay: 0.10s; }
+    .content > *:nth-child(3) { animation-delay: 0.15s; }
+    .content > *:nth-child(4) { animation-delay: 0.20s; }
+  </style>
+</head>
+<body>
+
+  <aside class="sidebar"></aside>
+
+  <div class="main">
+
+    <div class="topbar">
+      <div class="tb-left">
+        <div>
+          <p class="page-title">Accueil</p>
+          <p class="page-sub">Bienvenue sur NEXUS</p>
+        </div>
+        <div class="live-badge"><div class="live-dot"></div> Live</div>
+      </div>
+      <div class="tb-right">
+        <div class="clock-badge" id="clock">--:--:--</div>
+      </div>
+    </div>
+
+    <div class="content">
+
+      <!-- Hero -->
+      <div class="hero">
+        <div>
+          <p class="hero-title" id="greetingText">Bonjour 👋</p>
+          <p class="hero-sub">Voici un aperçu de l'activité. Sélectionnez un module pour commencer.</p>
+        </div>
+        <div class="hero-stats">
+          <div class="hero-stat">
+            <div class="hero-stat-val">€284,591</div>
+            <div class="hero-stat-lbl">Revenu ce mois</div>
+          </div>
+          <div class="hero-stat">
+            <div class="hero-stat-val">48,291</div>
+            <div class="hero-stat-lbl">Utilisateurs actifs</div>
+          </div>
+          <div class="hero-stat">
+            <div class="hero-stat-val">3.82%</div>
+            <div class="hero-stat-lbl">Taux de conversion</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Modules -->
+      <div>
+        <p class="section-label">Modules</p>
+        <div class="modules-grid">
+
+          <a class="module-card" href="./Vue d'ensemble/index.html">
+            <div class="module-card-top">
+              <div class="module-icon" style="background:var(--blue-dim);color:var(--blue);">◈</div>
+              <span class="module-arrow">→</span>
+            </div>
+            <div>
+              <p class="module-name">Vue d'ensemble</p>
+              <p class="module-desc">Tableau de bord principal et KPIs globaux.</p>
+            </div>
+            <div class="module-footer">
+              <div class="module-stat-dot" style="background:var(--green);"></div>
+              <span class="module-stat-txt">En temps réel</span>
+            </div>
+          </a>
+
+          <a class="module-card" href="./Analytique/index.html">
+            <div class="module-card-top">
+              <div class="module-icon" style="background:var(--violet-dim);color:var(--violet);">◉</div>
+              <span class="module-arrow">→</span>
+            </div>
+            <div>
+              <p class="module-name">Analytique <span class="sb-badge" style="font-size:8px;padding:1px 5px;">NEW</span></p>
+              <p class="module-desc">Analyse des données et visualisations avancées.</p>
+            </div>
+            <div class="module-footer">
+              <div class="module-stat-dot" style="background:var(--violet);"></div>
+              <span class="module-stat-txt">Mis à jour aujourd'hui</span>
+            </div>
+          </a>
+
+          <a class="module-card" href="./Rapports/index.html">
+            <div class="module-card-top">
+              <div class="module-icon" style="background:var(--amber-dim);color:var(--amber);">◫</div>
+              <span class="module-arrow">→</span>
+            </div>
+            <div>
+              <p class="module-name">Rapports</p>
+              <p class="module-desc">Génération et export de rapports personnalisés.</p>
+            </div>
+            <div class="module-footer">
+              <div class="module-stat-dot" style="background:var(--amber);"></div>
+              <span class="module-stat-txt">3 rapports ce mois</span>
+            </div>
+          </a>
+
+          <a class="module-card" href="./Campagnes/index.html">
+            <div class="module-card-top">
+              <div class="module-icon" style="background:var(--green-dim);color:var(--green);">▤</div>
+              <span class="module-arrow">→</span>
+            </div>
+            <div>
+              <p class="module-name">Campagnes</p>
+              <p class="module-desc">Gestion et suivi des campagnes marketing.</p>
+            </div>
+            <div class="module-footer">
+              <div class="module-stat-dot" style="background:var(--green);"></div>
+              <span class="module-stat-txt">2 actives</span>
+            </div>
+          </a>
+
+          <a class="module-card" href="./Revenus/index.html">
+            <div class="module-card-top">
+              <div class="module-icon" style="background:var(--green-dim);color:var(--green);">€</div>
+              <span class="module-arrow">→</span>
+            </div>
+            <div>
+              <p class="module-name">Revenus</p>
+              <p class="module-desc">Suivi financier et indicateurs économiques.</p>
+            </div>
+            <div class="module-footer">
+              <div class="module-stat-dot" style="background:var(--green);"></div>
+              <span class="module-stat-txt">↑ 12.4% ce mois</span>
+            </div>
+          </a>
+
+          <a class="module-card" href="./Clients/index.html">
+            <div class="module-card-top">
+              <div class="module-icon" style="background:var(--blue-dim);color:var(--blue);">⊞</div>
+              <span class="module-arrow">→</span>
+            </div>
+            <div>
+              <p class="module-name">Clients</p>
+              <p class="module-desc">Base de données clients et gestion des comptes.</p>
+            </div>
+            <div class="module-footer">
+              <div class="module-stat-dot" style="background:var(--blue);"></div>
+              <span class="module-stat-txt">48,291 actifs</span>
+            </div>
+          </a>
+
+          <a class="module-card" href="./Produits/index.html">
+            <div class="module-card-top">
+              <div class="module-icon" style="background:var(--violet-dim);color:var(--violet);">◧</div>
+              <span class="module-arrow">→</span>
+            </div>
+            <div>
+              <p class="module-name">Produits</p>
+              <p class="module-desc">Catalogue produits, stocks et références.</p>
+            </div>
+            <div class="module-footer">
+              <div class="module-stat-dot" style="background:var(--amber);"></div>
+              <span class="module-stat-txt">1 alerte stock</span>
+            </div>
+          </a>
+
+          <a class="module-card" href="./Commandes/index.html">
+            <div class="module-card-top">
+              <div class="module-icon" style="background:var(--amber-dim);color:var(--amber);">◈</div>
+              <span class="module-arrow">→</span>
+            </div>
+            <div>
+              <p class="module-name">Commandes</p>
+              <p class="module-desc">Traitement et suivi des commandes en cours.</p>
+            </div>
+            <div class="module-footer">
+              <div class="module-stat-dot" style="background:var(--green);"></div>
+              <span class="module-stat-txt">12 nouvelles</span>
+            </div>
+          </a>
+
+        </div>
+      </div>
+
+      <!-- Bottom row -->
+      <div class="bottom-row">
+
+        <div class="activity-card">
+          <div class="ac-head">
+            <div>
+              <p class="card-title">Activité récente</p>
+              <p class="card-subtitle">Dernières 24 heures</p>
+            </div>
+            <div class="live-badge"><div class="live-dot"></div> Live</div>
+          </div>
+          <div id="activityList">
+            <div class="ac-item">
+              <div class="ac-dot" style="background:var(--green);"></div>
+              <div>
+                <p class="ac-msg"><strong>Paiement reçu</strong> — Abonnement Enterprise €299</p>
+                <p class="ac-time">à l'instant</p>
+              </div>
+            </div>
+            <div class="ac-item">
+              <div class="ac-dot" style="background:var(--blue);"></div>
+              <div>
+                <p class="ac-msg"><strong>Nouvel utilisateur</strong> inscrit depuis Berlin</p>
+                <p class="ac-time">il y a 5 min</p>
+              </div>
+            </div>
+            <div class="ac-item">
+              <div class="ac-dot" style="background:var(--amber);"></div>
+              <div>
+                <p class="ac-msg"><strong>Alerte seuil</strong> — Stock produit #A291 faible</p>
+                <p class="ac-time">il y a 10 min</p>
+              </div>
+            </div>
+            <div class="ac-item">
+              <div class="ac-dot" style="background:var(--violet);"></div>
+              <div>
+                <p class="ac-msg"><strong>Rapport</strong> généré automatiquement</p>
+                <p class="ac-time">il y a 22 min</p>
+              </div>
+            </div>
+            <div class="ac-item">
+              <div class="ac-dot" style="background:var(--green);"></div>
+              <div>
+                <p class="ac-msg"><strong>Commande</strong> #9034 — €189 de Pierre M.</p>
+                <p class="ac-time">il y a 38 min</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="quick-card">
+          <div class="qc-head">
+            <p class="card-title">Système</p>
+            <p class="card-subtitle">Accès rapides</p>
+          </div>
+          <div>
+            <a class="qc-row" href="./Performance/index.html">
+              <div class="qc-left">
+                <div class="qc-icon" style="background:var(--green-dim);color:var(--green);">◩</div>
+                <div>
+                  <p class="qc-label">Performance</p>
+                  <p class="qc-sub">CPU, mémoire, uptime</p>
+                </div>
+              </div>
+              <div class="qc-right">
+                <p class="qc-val">99.9%</p>
+                <p class="qc-delta delta-up">↑ Opérationnel</p>
+              </div>
+            </a>
+            <a class="qc-row" href="./Logs/index.html">
+              <div class="qc-left">
+                <div class="qc-icon" style="background:var(--blue-dim);color:var(--blue);">◈</div>
+                <div>
+                  <p class="qc-label">Logs</p>
+                  <p class="qc-sub">Événements système</p>
+                </div>
+              </div>
+              <div class="qc-right">
+                <p class="qc-val">1,248</p>
+                <p class="qc-delta" style="color:var(--muted);">entrées aujourd'hui</p>
+              </div>
+            </a>
+            <a class="qc-row" href="./Paramètres/index.html">
+              <div class="qc-left">
+                <div class="qc-icon" style="background:var(--violet-dim);color:var(--violet);">◧</div>
+                <div>
+                  <p class="qc-label">Paramètres</p>
+                  <p class="qc-sub">Configuration & préférences</p>
+                </div>
+              </div>
+              <div class="qc-right">
+                <p class="qc-val">—</p>
+                <p class="qc-delta" style="color:var(--muted);">Configurer</p>
+              </div>
+            </a>
+            <a class="qc-row" href="./Vue d'ensemble/index.html">
+              <div class="qc-left">
+                <div class="qc-icon" style="background:var(--amber-dim);color:var(--amber);">◈</div>
+                <div>
+                  <p class="qc-label">Vue d'ensemble</p>
+                  <p class="qc-sub">Dashboard principal</p>
+                </div>
+              </div>
+              <div class="qc-right">
+                <p class="qc-val">Live</p>
+                <p class="qc-delta delta-up">↑ Ouvert</p>
+              </div>
+            </a>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    /* Horloge */
+    const clockEl = document.getElementById('clock');
+    const tick = () => { clockEl.textContent = new Date().toLocaleTimeString('fr-FR', { hour12:false }); };
+    tick(); setInterval(tick, 1000);
+
+    /* Greeting */
+    const h = new Date().getHours();
+    document.getElementById('greetingText').textContent =
+      (h < 12 ? 'Bonjour' : h < 18 ? 'Bon après-midi' : 'Bonsoir') + ' 👋';
+
+    /* Live activity */
+    const activities = [
+      { color:'var(--green)',  msg:'<strong>Commande</strong> — €189 de Pierre M.',               time:"à l'instant" },
+      { color:'var(--blue)',   msg:'<strong>Nouvel utilisateur</strong> depuis Lyon',              time:"à l'instant" },
+      { color:'var(--violet)', msg:'<strong>Rapport</strong> généré automatiquement',              time:"à l'instant" },
+      { color:'var(--amber)',  msg:'<strong>Alerte stock</strong> — Produit #B104 critique',       time:"à l'instant" },
+      { color:'var(--green)',  msg:'<strong>Paiement reçu</strong> — Abonnement Enterprise €299',  time:"à l'instant" },
+      { color:'var(--red)',    msg:'<strong>Échec paiement</strong> — Commande #9012 refusée',     time:"à l'instant" },
+    ];
+    const timeLabels = ['il y a 5 min','il y a 10 min','il y a 15 min','il y a 22 min'];
+    let idx = 0;
+    setInterval(() => {
+      const items = document.querySelectorAll('#activityList .ac-item');
+      if (!items.length) return;
+      const d = activities[idx % activities.length];
+      items[0].querySelector('.ac-dot').style.background = d.color;
+      items[0].querySelector('.ac-msg').innerHTML = d.msg;
+      items[0].querySelector('.ac-time').textContent = d.time;
+      items[0].style.background = 'rgba(59,130,246,0.07)';
+      setTimeout(() => { items[0].style.background = ''; }, 1200);
+      items.forEach((item, i) => {
+        if (i === 0) return;
+        const t = item.querySelector('.ac-time');
+        if (t && timeLabels[i-1]) t.textContent = timeLabels[i-1];
+      });
+      idx++;
+    }, 5000);
+  </script>
+
+  <script>
+    /* Sidebar — même logique que sidebar.js existant */
+    (function () {
+      function loadProfile() {
+        try { const r=localStorage.getItem('nexus_profile'); if(r){const p=JSON.parse(r);if(p&&p.prenom)return p;} } catch(e){}
+        try { const r=sessionStorage.getItem('nexus_profile'); if(r){const p=JSON.parse(r);if(p&&p.prenom)return p;} } catch(e){}
+        try { const m=document.cookie.match(/nexus_profile=([^;]+)/); if(m){const p=JSON.parse(decodeURIComponent(m[1]));if(p&&p.prenom)return p;} } catch(e){}
+        return { prenom:'Lucas', nom:'Zanelli', email:'lucas@nexus.io' };
+      }
+      function loadAvatar() {
+        try { const v=localStorage.getItem('nexus_avatar'); if(v) return v; } catch(e){}
+        try { const v=sessionStorage.getItem('nexus_avatar'); if(v) return v; } catch(e){}
+        return null;
+      }
+      function getInitials(p){ return (((p.prenom||'').charAt(0))+((p.nom||'').charAt(0))).toUpperCase()||'LZ'; }
+      function getFullName(p){ return [(p.prenom||'').trim(),(p.nom||'').trim()].filter(Boolean).join(' ')||'Utilisateur'; }
+
+      const PAGE_MAP = {
+        "Accueil":           "#",
+        "Vue d'ensemble":    "./Vue d'ensemble/index.html",
+        "Analytique":        "./Analytique/index.html",
+        "Rapports":          "./Rapports/index.html",
+        "Campagnes":         "./Campagnes/index.html",
+        "Revenus":           "./Revenus/index.html",
+        "Clients":           "./Clients/index.html",
+        "Produits":          "./Produits/index.html",
+        "Commandes":         "./Commandes/index.html",
+        "Performance":       "./Performance/index.html",
+        "Logs":              "./Logs/index.html",
+        "Param\u00e8tres":   "./Param\u00e8tres/index.html",
+      };
+
+      const NAV = [
+        { label:'Principal', items:[
+          { name:'Accueil',          icon:'⌂' },
+          { name:"Vue d'ensemble",   icon:'◈' },
+          { name:'Analytique',       icon:'◫', badge:'NEW' },
+          { name:'Rapports',         icon:'◉' },
+          { name:'Campagnes',        icon:'▤' },
+        ]},
+        { label:'Commerce', items:[
+          { name:'Revenus',   icon:'◈' },
+          { name:'Clients',   icon:'⊞' },
+          { name:'Produits',  icon:'◧' },
+          { name:'Commandes', icon:'◈' },
+        ]},
+        { label:'Syst\u00e8me', items:[
+          { name:'Performance',       icon:'◩' },
+          { name:'Logs',              icon:'◈' },
+          { name:'Param\u00e8tres',   icon:'◧' },
+        ]},
+      ];
+
+      function buildHTML(profile) {
+        const ini = getInitials(profile), name = getFullName(profile);
+        let sections = '';
+        NAV.forEach(function(sec) {
+          let items = '';
+          sec.items.forEach(function(item) {
+            const isActive = item.name === 'Accueil';
+            const badge = item.badge ? '<span class="sb-badge">'+item.badge+'</span>' : '';
+            items += '<a href="'+(PAGE_MAP[item.name]||'#')+'" class="sb-item'+(isActive?' active':'')+'"><span class="sb-icon">'+item.icon+'</span> '+item.name+badge+'</a>';
+          });
+          sections += '<div class="sb-section"><p class="sb-section-label">'+sec.label+'</p>'+items+'</div>';
+        });
+        return '<div class="sb-logo"><div class="logo-icon">Nx</div><span class="logo-text">Nexus</span></div>'
+          + sections
+          + '<div class="sb-bottom"><div class="sb-user"><div class="user-av" id="sidebarAv">'+ini+'</div><div><p class="user-name" id="sidebarName">'+name+'</p><p class="user-plan">Pro &middot; Admin</p></div></div></div>';
+      }
+
+      function inject() {
+        const sidebar = document.querySelector('aside.sidebar');
+        if (!sidebar) return;
+        sidebar.innerHTML = buildHTML(loadProfile());
+        const photo = loadAvatar(), av = document.getElementById('sidebarAv');
+        if (av && photo) { av.textContent=''; av.style.backgroundImage='url('+photo+')'; av.style.backgroundSize='cover'; av.style.backgroundPosition='center'; }
+      }
+
+      document.readyState === 'loading' ? document.addEventListener('DOMContentLoaded', inject) : inject();
+
+      window.NexusSidebar = { getProfile: loadProfile, refresh: inject };
+    })();
+  </script>
+
+</body>
+</html>
