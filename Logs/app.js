@@ -21,19 +21,19 @@ document.addEventListener('DOMContentLoaded', () => {
    ============================================ */
 const VOLUME_DATA = {
   '15min': {
-    labels: ['14h45','14h47','14h49','14h51','14h53','14h55','14h57','14h59'],
+    labels: NexusDates.lastTimes(8, 2),
     info:   [820,  940,  880,  1020, 960,  1140, 1080, 1200],
     warn:   [28,   34,   26,   42,   38,   48,   44,   52],
     error:  [2,    4,    3,    6,    4,    5,    3,    7],
   },
   '1H': {
-    labels: ['14h00','14h10','14h20','14h30','14h40','14h50','15h00'],
+    labels: NexusDates.lastTimes(7, 10),
     info:   [7200,  8400,  7800,  9100,  8600,  10200, 9800],
     warn:   [240,   280,   260,   310,   290,   340,   320],
     error:  [14,    18,    12,    24,    20,    28,    22],
   },
   '6H': {
-    labels: ['09h','10h','11h','12h','13h','14h','15h'],
+    labels: NexusDates.lastTimes(7, 60, true),
     info:   [42000, 48000, 52000, 46000, 44000, 58000, 54000],
     warn:   [1400,  1600,  1800,  1500,  1480,  1940,  1820],
     error:  [80,    92,    104,   86,    84,    112,   96],
@@ -188,7 +188,7 @@ function renderTerminal() {
   }).slice(0, 100);
 
   const countEl = document.getElementById('logCount');
-  if (countEl) countEl.textContent = 'Affichage de ' + filtered.length + ' entrees';
+  if (countEl) countEl.textContent = 'Affichage de ' + filtered.length + ' entrées';
 
   // CSS classes from style.css: .log-line, .log-error, .log-warn, .log-debug
   // .log-ts, .log-lvl, .log-lvl-info/warn/error/debug, .log-svc, .log-msg
@@ -252,7 +252,7 @@ function initClear() {
   btn.addEventListener('click', () => {
     _allLogs = [];
     renderTerminal();
-    showToastNotif('Terminal efface');
+    showToastNotif('Terminal effacé');
   });
 }
 
@@ -270,7 +270,7 @@ function initDatePicker() {
   const endIn     = document.getElementById('dpEnd');
   if (!btn || !popup) return;
 
-  const today = new Date().toISOString().slice(0,10);
+  const today = toLocalISODate(new Date());
   if (startIn) startIn.value = today;
   if (endIn)   endIn.value   = today;
 
@@ -288,8 +288,8 @@ function initDatePicker() {
       const days = parseInt(p.dataset.days);
       const end = new Date(), start = new Date();
       if (days > 0) start.setDate(end.getDate() - days);
-      startIn.value = start.toISOString().slice(0,10);
-      endIn.value   = end.toISOString().slice(0,10);
+      startIn.value = toLocalISODate(start);
+      endIn.value   = toLocalISODate(end);
     });
   });
 
@@ -303,7 +303,7 @@ function initDatePicker() {
       label.textContent = fmt(s) + ' — ' + fmt(e);
     }
     popup.style.display = 'none';
-    showToastNotif('Periode mise a jour');
+    showToastNotif('✓ Période mise à jour');
   });
   cancelBtn.addEventListener('click', () => { popup.style.display = 'none'; });
 }
@@ -387,4 +387,9 @@ function showToastNotif(msg) {
   t.classList.add('show');
   if (_toastTimer) clearTimeout(_toastTimer);
   _toastTimer = setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+/* Date locale au format AAAA-MM-JJ (toISOString renvoie la date UTC) */
+function toLocalISODate(d) {
+  return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
 }

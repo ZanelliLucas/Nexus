@@ -34,7 +34,7 @@
       </div>
       <div class="tb-right">
         <div class="date-range" id="dateRangeBtn">
-          📅 <span id="dateRangeLabel">Nov 1 — Nov 30, 2025</span> ▾
+          📅 <span id="dateRangeLabel" data-date="1 {mon:0} — {dmy:0}">Nov 1 — Nov 30, 2026</span> ▾
         </div>
         <button class="tb-btn ghost" id="exportBtn">↓ Exporter</button>
         <button class="tb-btn primary" id="campagneBtn">+ Nouvelle campagne</button>
@@ -268,8 +268,8 @@
                   <div class="camp-name">
                     <div class="camp-icon" style="background:var(--blue-dim); color:var(--blue);">✉</div>
                     <div>
-                      <p class="camp-title">Promo Black Friday</p>
-                      <p class="camp-date">Lancée le 20 Nov</p>
+                      <p class="camp-title">Vente flash</p>
+                      <p class="camp-date">Lancée le <span data-date="{dm:-8}">20 Nov</span></p>
                     </div>
                   </div>
                 </td>
@@ -291,7 +291,7 @@
                     <div class="camp-icon" style="background:var(--violet-dim); color:var(--violet);">💬</div>
                     <div>
                       <p class="camp-title">Relance panier abandonné</p>
-                      <p class="camp-date">Lancée le 15 Nov</p>
+                      <p class="camp-date">Lancée le <span data-date="{dm:-13}">15 Nov</span></p>
                     </div>
                   </div>
                 </td>
@@ -312,8 +312,8 @@
                   <div class="camp-name">
                     <div class="camp-icon" style="background:var(--green-dim); color:var(--green);">🔔</div>
                     <div>
-                      <p class="camp-title">Nouveaux produits hiver</p>
-                      <p class="camp-date">Lancée le 10 Nov</p>
+                      <p class="camp-title">Nouveautés du catalogue</p>
+                      <p class="camp-date">Lancée le <span data-date="{dm:-18}">10 Nov</span></p>
                     </div>
                   </div>
                 </td>
@@ -334,8 +334,8 @@
                   <div class="camp-name">
                     <div class="camp-icon" style="background:var(--amber-dim); color:var(--amber);">📣</div>
                     <div>
-                      <p class="camp-title">Cyber Monday 2025</p>
-                      <p class="camp-date">Lancée le 2 Nov</p>
+                      <p class="camp-title">Offre week-end</p>
+                      <p class="camp-date">Lancée le <span data-date="{dm:-26}">2 Nov</span></p>
                     </div>
                   </div>
                 </td>
@@ -357,7 +357,7 @@
                     <div class="camp-icon" style="background:var(--blue-dim); color:var(--blue);">✉</div>
                     <div>
                       <p class="camp-title">Newsletter mensuelle</p>
-                      <p class="camp-date">Lancée le 1 Nov</p>
+                      <p class="camp-date">Lancée le <span data-date="{dm:-27}">1 Nov</span></p>
                     </div>
                   </div>
                 </td>
@@ -379,7 +379,7 @@
                     <div class="camp-icon" style="background:var(--cyan-dim); color:var(--cyan);">✉</div>
                     <div>
                       <p class="camp-title">Réactivation inactifs</p>
-                      <p class="camp-date">Prévu le 5 Déc</p>
+                      <p class="camp-date">Prévu le <span data-date="{dm:7}">5 Déc</span></p>
                     </div>
                   </div>
                 </td>
@@ -437,7 +437,7 @@
               <div class="top-item">
                 <span class="top-rank">03</span>
                 <div class="top-info">
-                  <p class="top-name">Promo Black Friday</p>
+                  <p class="top-name">Vente flash</p>
                   <div class="gauge-track" style="margin-top:5px;">
                     <div class="gauge-fill" style="width:57%; background:var(--blue);"></div>
                   </div>
@@ -448,7 +448,7 @@
               <div class="top-item">
                 <span class="top-rank">04</span>
                 <div class="top-info">
-                  <p class="top-name">Nouveaux produits hiver</p>
+                  <p class="top-name">Nouveautés du catalogue</p>
                   <div class="gauge-track" style="margin-top:5px;">
                     <div class="gauge-fill" style="width:44%; background:var(--green);"></div>
                   </div>
@@ -459,7 +459,7 @@
               <div class="top-item">
                 <span class="top-rank">05</span>
                 <div class="top-info">
-                  <p class="top-name">Cyber Monday 2025</p>
+                  <p class="top-name">Offre week-end</p>
                   <div class="gauge-track" style="margin-top:5px;">
                     <div class="gauge-fill" style="width:40%; background:var(--amber);"></div>
                   </div>
@@ -490,7 +490,7 @@
                   </div>
                 </div>
                 <div class="upc-date">
-                  <p class="upc-day">5 Déc</p>
+                  <p class="upc-day" data-date="{dm:7}">5 Déc</p>
                   <p class="upc-rel">Dans 7j</p>
                 </div>
               </div>
@@ -499,12 +499,12 @@
                 <div class="upcoming-left">
                   <div class="upc-dot" style="background:var(--green);"></div>
                   <div>
-                    <p class="upc-name">Fêtes de fin d'année</p>
+                    <p class="upc-name">Anniversaire clients</p>
                     <p class="upc-meta">Push · 52,000 dest.</p>
                   </div>
                 </div>
                 <div class="upc-date">
-                  <p class="upc-day">12 Déc</p>
+                  <p class="upc-day" data-date="{dm:14}">12 Déc</p>
                   <p class="upc-rel">Dans 14j</p>
                 </div>
               </div>
@@ -513,12 +513,12 @@
                 <div class="upcoming-left">
                   <div class="upc-dot" style="background:var(--amber);"></div>
                   <div>
-                    <p class="upc-name">Soldes janvier 2026</p>
+                    <p class="upc-name">Grandes soldes</p>
                     <p class="upc-meta">Email + SMS · 94,000 dest.</p>
                   </div>
                 </div>
                 <div class="upc-date">
-                  <p class="upc-day">2 Jan</p>
+                  <p class="upc-day" data-date="{dm:35}">2 Jan</p>
                   <p class="upc-rel">Dans 35j</p>
                 </div>
               </div>
@@ -545,8 +545,8 @@
       <button class="dp-preset" data-days="365">Cette année</button>
     </div>
     <div class="dp-custom">
-      <div class="dp-field"><label>Début</label><input type="date" id="dpStart" value="2025-11-01"/></div>
-      <div class="dp-field"><label>Fin</label><input type="date" id="dpEnd" value="2025-11-30"/></div>
+      <div class="dp-field"><label>Début</label><input type="date" id="dpStart" value="2026-11-01" data-date="{iso1:0}" data-date-attr="value"/></div>
+      <div class="dp-field"><label>Fin</label><input type="date" id="dpEnd" value="2026-11-30" data-date="{iso:0}" data-date-attr="value"/></div>
     </div>
     <div class="dp-footer">
       <button class="dp-cancel" id="dpCancel">Annuler</button>
@@ -564,7 +564,7 @@
       <div class="modal-body">
         <div class="modal-field">
           <label>Nom de la campagne</label>
-          <input type="text" class="modal-input" id="campagneNom" placeholder="Ex : Black Friday 2025"/>
+          <input type="text" class="modal-input" id="campagneNom" placeholder="Ex : Vente flash 2026" data-date="Ex : Vente flash {year:0}" data-date-attr="placeholder"/>
         </div>
         <div class="modal-field">
           <label>Canal</label>
@@ -600,6 +600,7 @@
   <!-- ── Toast ── -->
   <div class="toast-notif" id="toastNotif"></div>
 
+  <script src="../dates.js"></script>
   <script src="app.js"></script>
 <script>
 /* ============================================

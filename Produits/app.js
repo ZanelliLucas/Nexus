@@ -19,7 +19,7 @@ document.addEventListener('DOMContentLoaded', () => {
    ============================================ */
 const PRODUITS_DATA = {
   '7J': {
-    labels:  ['L 24', 'M 25', 'M 26', 'J 27', 'V 28', 'S 29', 'D 30'],
+    labels:  NexusDates.last7(),
     ventes:  [142, 184, 162, 210, 188, 248, 224],
     retours: [4,   6,   3,   8,   5,   7,   6],
   },
@@ -29,7 +29,7 @@ const PRODUITS_DATA = {
     retours: [24,  32,  28,  38],
   },
   '90J': {
-    labels:  ['Sep', 'Oct', 'Nov'],
+    labels:  NexusDates.lastMonths(3),
     ventes:  [3200, 3840, 4248],
     retours: [88,   108,  120],
   },
@@ -153,8 +153,8 @@ function initDatePicker() {
       p.classList.add('active');
       const days = parseInt(p.dataset.days), end = new Date(), start = new Date();
       start.setDate(end.getDate() - days);
-      startIn.value = start.toISOString().slice(0, 10);
-      endIn.value   = end.toISOString().slice(0, 10);
+      startIn.value = toLocalISODate(start);
+      endIn.value   = toLocalISODate(end);
     });
   });
 
@@ -179,8 +179,7 @@ function initExport() {
   menu.className = 'export-menu';
   menu.style.display = 'none';
   menu.innerHTML = '<div class="export-item" data-fmt="CSV">📊 Exporter en CSV</div>'
-                 + '<div class="export-item" data-fmt="JSON">📋 Exporter en JSON</div>'
-                 + '<div class="export-item" data-fmt="PDF">📄 Exporter en PDF</div>';
+                 + '<div class="export-item" data-fmt="JSON">📋 Exporter en JSON</div>';
   btn.parentElement.appendChild(menu);
 
   btn.addEventListener('click', (e) => { e.stopPropagation(); menu.style.display = menu.style.display === 'none' ? 'block' : 'none'; });
@@ -273,4 +272,9 @@ function showToastNotif(msg) {
   t.classList.add('show');
   if (_toastTimer) clearTimeout(_toastTimer);
   _toastTimer = setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+/* Date locale au format AAAA-MM-JJ (toISOString renvoie la date UTC) */
+function toLocalISODate(d) {
+  return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
 }

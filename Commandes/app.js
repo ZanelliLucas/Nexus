@@ -20,7 +20,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 const COMMANDES_DATA = {
   '7J': {
-    labels:   ['L 24', 'M 25', 'M 26', 'J 27', 'V 28', 'S 29', 'D 30'],
+    labels:   NexusDates.last7(),
     recues:   [82,  108, 94,  138, 120, 162, 144],
     livrees:  [74,   96, 86,  122, 108, 148, 132],
   },
@@ -30,7 +30,7 @@ const COMMANDES_DATA = {
     livrees:  [586, 700, 644, 908],
   },
   '90J': {
-    labels:   ['Sep', 'Oct', 'Nov'],
+    labels:   NexusDates.lastMonths(3),
     recues:   [2400, 2720, 3018],
     livrees:  [2288, 2592, 2938],
   },
@@ -168,8 +168,8 @@ function initDatePicker() {
       const days = parseInt(p.dataset.days);
       const end  = new Date(), start = new Date();
       start.setDate(end.getDate() - days);
-      startIn.value = start.toISOString().slice(0, 10);
-      endIn.value   = end.toISOString().slice(0, 10);
+      startIn.value = toLocalISODate(start);
+      endIn.value   = toLocalISODate(end);
     });
   });
 
@@ -193,8 +193,7 @@ function initExport() {
   menu.style.display = 'none';
   menu.innerHTML = `
     <div class="export-item" data-fmt="CSV">📊 Exporter en CSV</div>
-    <div class="export-item" data-fmt="JSON">📋 Exporter en JSON</div>
-    <div class="export-item" data-fmt="PDF">📄 Exporter en PDF</div>`;
+    <div class="export-item" data-fmt="JSON">📋 Exporter en JSON</div>`;
   btn.parentElement.appendChild(menu);
 
   btn.addEventListener('click', (e) => {
@@ -282,4 +281,9 @@ function showToastNotif(msg) {
   t.classList.add('show');
   if (_toastTimer) clearTimeout(_toastTimer);
   _toastTimer = setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+/* Date locale au format AAAA-MM-JJ (toISOString renvoie la date UTC) */
+function toLocalISODate(d) {
+  return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
 }

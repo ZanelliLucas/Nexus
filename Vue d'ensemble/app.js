@@ -20,7 +20,7 @@ function initBarChart() {
   const chart = document.getElementById('barChart');
   if (!chart) return;
 
-  const days = ['L 24', 'M 25', 'M 26', 'J 27', 'V 28', 'S 29', 'D 30'];
+  const days = NexusDates.last7();
   const rev  = [65, 82, 71, 90, 78, 95, 88];
   const ses  = [45, 60, 55, 70, 62, 75, 68];
   const maxV = Math.max(...rev);
@@ -160,7 +160,7 @@ function refreshBarChart(period) {
 
   const data = {
     '7J' : {
-      labels : ['L 24', 'M 25', 'M 26', 'J 27', 'V 28', 'S 29', 'D 30'],
+      labels : NexusDates.last7(),
       rev    : [65, 82, 71, 90, 78, 95, 88],
       ses    : [45, 60, 55, 70, 62, 75, 68],
     },
@@ -170,7 +170,7 @@ function refreshBarChart(period) {
       ses    : [210, 240, 220, 260],
     },
     '90J': {
-      labels : ['Jan', 'Fév', 'Mar'],
+      labels : NexusDates.lastMonths(3),
       rev    : [820, 940, 1100],
       ses    : [630, 720, 850],
     },
@@ -265,8 +265,8 @@ function initDatePicker() {
       const end  = new Date();
       const start= new Date();
       start.setDate(end.getDate() - days);
-      startIn.value = start.toISOString().slice(0,10);
-      endIn.value   = end.toISOString().slice(0,10);
+      startIn.value = toLocalISODate(start);
+      endIn.value   = toLocalISODate(end);
     });
   });
 
@@ -294,7 +294,6 @@ function initExport() {
   menu.innerHTML = `
     <div class="export-item" data-fmt="CSV">📊 Exporter en CSV</div>
     <div class="export-item" data-fmt="JSON">📋 Exporter en JSON</div>
-    <div class="export-item" data-fmt="PDF">📄 Exporter en PDF</div>
   `;
   btn.parentElement.style.position = 'relative';
   btn.parentElement.appendChild(menu);
@@ -321,7 +320,7 @@ function initExport() {
         a.download = 'nexus-export.csv';
         a.click();
       } else if (fmt === 'JSON') {
-        const data = {periode:'Nov 2025', kpi:{revenu:284591, utilisateurs:48291, conversion:3.82, panier:94.30}};
+        const data = {periode:NexusDates.fmt('{mon:0} {year:0}'), kpi:{revenu:284591, utilisateurs:48291, conversion:3.82, panier:94.30}};
         const blob = new Blob([JSON.stringify(data, null, 2)], {type:'application/json'});
         const a = document.createElement('a');
         a.href = URL.createObjectURL(blob);
@@ -373,4 +372,9 @@ function showToastNotif(msg) {
   t.classList.add('show');
   if (_toastTimer) clearTimeout(_toastTimer);
   _toastTimer = setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+/* Date locale au format AAAA-MM-JJ (toISOString renvoie la date UTC) */
+function toLocalISODate(d) {
+  return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
 }

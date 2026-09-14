@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 const TRAFFIC_DATA = {
   '7J': {
-    labels:   ['L 24', 'M 25', 'M 26', 'J 27', 'V 28', 'S 29', 'D 30'],
+    labels:   NexusDates.last7(),
     sessions: [32, 41, 38, 52, 44, 61, 55],
     uniques:  [22, 29, 27, 38, 31, 44, 40],
   },
@@ -24,7 +24,7 @@ const TRAFFIC_DATA = {
     uniques:  [110, 128, 118, 142],
   },
   '90J': {
-    labels:   ['Jan', 'Fév', 'Mar'],
+    labels:   NexusDates.lastMonths(3),
     sessions: [520, 610, 680],
     uniques:  [390, 460, 510],
   },
@@ -89,7 +89,7 @@ function initDatePicker() {
     p.addEventListener('click', () => {
       presets.forEach(x => x.classList.remove('active')); p.classList.add('active');
       const days = parseInt(p.dataset.days), end = new Date(), start = new Date();
-      start.setDate(end.getDate() - days); startIn.value = start.toISOString().slice(0, 10); endIn.value = end.toISOString().slice(0, 10);
+      start.setDate(end.getDate() - days); startIn.value = toLocalISODate(start); endIn.value = toLocalISODate(end);
     });
   });
   applyBtn.addEventListener('click', () => {
@@ -104,7 +104,7 @@ function initExport() {
   const btn = document.getElementById('exportBtn');
   if (!btn) return;
   const menu = document.createElement('div'); menu.className = 'export-menu'; menu.style.display = 'none';
-  menu.innerHTML = `<div class="export-item" data-fmt="CSV">📊 Exporter en CSV</div><div class="export-item" data-fmt="JSON">📋 Exporter en JSON</div><div class="export-item" data-fmt="PDF">📄 Exporter en PDF</div>`;
+  menu.innerHTML = `<div class="export-item" data-fmt="CSV">📊 Exporter en CSV</div><div class="export-item" data-fmt="JSON">📋 Exporter en JSON</div>`;
   btn.parentElement.appendChild(menu);
   btn.addEventListener('click', (e) => { e.stopPropagation(); menu.style.display = menu.style.display === 'none' ? 'block' : 'none'; });
   document.addEventListener('click', () => { menu.style.display = 'none'; });
@@ -113,7 +113,7 @@ function initExport() {
     item.addEventListener('click', () => {
       const fmt = item.dataset.fmt; menu.style.display = 'none'; showToastNotif(`✓ Export ${fmt} en cours…`);
       if (fmt === 'CSV') { const csv = 'Métrique,Valeur\nSessions,248391\nRebond,38.4%'; const blob = new Blob([csv], { type: 'text/csv' }); const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'nexus-analytique.csv'; a.click(); }
-      else if (fmt === 'JSON') { const data = { periode: 'Mar 2025', kpi: { sessions: 248391, rebond: 38.4 } }; const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' }); const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'nexus-analytique.json'; a.click(); }
+      else if (fmt === 'JSON') { const data = { periode: NexusDates.fmt('{mon:0} {year:0}'), kpi: { sessions: 248391, rebond: 38.4 } }; const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' }); const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'nexus-analytique.json'; a.click(); }
     });
   });
 }
@@ -141,4 +141,9 @@ function showToastNotif(msg) {
   t.textContent = msg; t.classList.add('show');
   if (_toastTimer) clearTimeout(_toastTimer);
   _toastTimer = setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+/* Date locale au format AAAA-MM-JJ (toISOString renvoie la date UTC) */
+function toLocalISODate(d) {
+  return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
 }

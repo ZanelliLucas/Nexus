@@ -43,7 +43,8 @@ function initNav() {
    ============================================ */
 function initToggles() {
   // Restaurer états sauvegardés
-  const saved = JSON.parse(localStorage.getItem('nexus_toggles') || '{}');
+  let saved = {};
+  try { saved = JSON.parse(localStorage.getItem('nexus_toggles') || '{}'); } catch(e) {}
   document.querySelectorAll('.toggle[data-id]').forEach(tog => {
     const id = tog.dataset.id;
     if (id in saved) {
@@ -59,7 +60,7 @@ function initToggles() {
       document.querySelectorAll('.toggle[data-id]').forEach(t => {
         states[t.dataset.id] = t.classList.contains('active');
       });
-      localStorage.setItem('nexus_toggles', JSON.stringify(states));
+      try { localStorage.setItem('nexus_toggles', JSON.stringify(states)); } catch(e) {}
       markDirty();
     });
   });
@@ -72,19 +73,14 @@ function initDarkMode() {
   const toggle = document.getElementById('darkToggle');
   if (!toggle) return;
 
-  function applyDark(on) {
-    document.body.classList.toggle('light-mode', !on);
-  }
-
-  // Appliquer l'état sauvegardé au chargement
-  const saved = JSON.parse(localStorage.getItem('nexus_toggles') || '{}');
-  const isDark = 'dark' in saved ? saved.dark : true; // sombre par défaut
-  applyDark(isDark);
+  // Aucun thème clair n'existe dans le CSS : le toggle reste activé
+  toggle.classList.add('active');
 
   toggle.addEventListener('click', () => {
-    // Le clic est déjà géré par initToggles — on lit l'état après
+    // Le clic est déjà géré par initToggles — on rétablit l'état après
     setTimeout(() => {
-      applyDark(toggle.classList.contains('active'));
+      toggle.classList.add('active');
+      showToast('Le thème clair n\'est pas encore disponible', '');
     }, 0);
   });
 }
@@ -132,7 +128,8 @@ function initPhotoUpload() {
   });
 
   // Restaurer la photo sauvegardée au chargement
-  const savedPhoto = localStorage.getItem('nexus_avatar');
+  let savedPhoto = null;
+  try { savedPhoto = localStorage.getItem('nexus_avatar'); } catch(e) {}
   if (savedPhoto) {
     avatarEl.textContent = '';
     avatarEl.style.backgroundImage   = `url(${savedPhoto})`;
@@ -197,7 +194,8 @@ function initProfileLiveUpdate() {
     const full = [prenom, nom].filter(Boolean).join(' ') || 'Utilisateur';
     const avatarEl = document.getElementById('avatarInitials');
     const nameEl   = document.getElementById('avatarName');
-    if (avatarEl) avatarEl.textContent = ini;
+    // Ne pas écrire les initiales par-dessus une photo
+    if (avatarEl && !avatarEl.style.backgroundImage) avatarEl.textContent = ini;
     if (nameEl)   nameEl.textContent   = full;
   }
 
@@ -253,6 +251,7 @@ function initSaveDiscard() {
         snapshotValues();
         dirty = false;
         saveBtn.textContent = 'Enregistrer les modifications';
+        saveBtn.style.background = '';
         saveBtn.disabled = false;
         showToast('✓ Modifications enregistrées', 'success');
       }, 600);
@@ -283,15 +282,15 @@ function initSaveDiscard() {
         const nameEl     = document.getElementById('avatarName');
         const sidebarAv  = document.querySelector('.user-av');
         const sidebarName= document.querySelector('.user-name');
-        if (avatarEl)    avatarEl.textContent    = initials;
+        if (avatarEl && !avatarEl.style.backgroundImage)   avatarEl.textContent  = initials;
         if (nameEl)      nameEl.textContent      = fullName;
-        if (sidebarAv)   sidebarAv.textContent   = initials;
+        if (sidebarAv && !sidebarAv.style.backgroundImage) sidebarAv.textContent = initials;
         if (sidebarName) sidebarName.textContent = fullName;
       }
 
       dirty = false;
       const btn = document.getElementById('saveBtn');
-      if (btn) btn.textContent = 'Enregistrer les modifications';
+      if (btn) { btn.textContent = 'Enregistrer les modifications'; btn.style.background = ''; }
       showToast('Modifications annulées', '');
     });
   }

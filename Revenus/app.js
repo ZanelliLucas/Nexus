@@ -19,7 +19,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 const REVENUS_DATA = {
   '7J': {
-    labels: ['L 24', 'M 25', 'M 26', 'J 27', 'V 28', 'S 29', 'D 30'],
+    labels: NexusDates.last7(),
     bruts:  [8200, 10400, 9100, 12800, 10600, 15200, 13400],
     nets:   [6100, 7800,  6800, 9600,  7900,  11400, 10000],
   },
@@ -29,7 +29,7 @@ const REVENUS_DATA = {
     nets:   [43000, 51000, 54000, 64800],
   },
   '90J': {
-    labels: ['Sep', 'Oct', 'Nov'],
+    labels: NexusDates.lastMonths(3),
     bruts:  [218000, 253000, 284591],
     nets:   [163000, 189000, 213000],
   },
@@ -157,8 +157,8 @@ function initDatePicker() {
       const days = parseInt(p.dataset.days);
       const end  = new Date(), start = new Date();
       start.setDate(end.getDate() - days);
-      startIn.value = start.toISOString().slice(0, 10);
-      endIn.value   = end.toISOString().slice(0, 10);
+      startIn.value = toLocalISODate(start);
+      endIn.value   = toLocalISODate(end);
     });
   });
 
@@ -182,8 +182,7 @@ function initExport() {
   menu.style.display = 'none';
   menu.innerHTML = `
     <div class="export-item" data-fmt="CSV">📊 Exporter en CSV</div>
-    <div class="export-item" data-fmt="JSON">📋 Exporter en JSON</div>
-    <div class="export-item" data-fmt="PDF">📄 Exporter en PDF</div>`;
+    <div class="export-item" data-fmt="JSON">📋 Exporter en JSON</div>`;
   btn.parentElement.appendChild(menu);
 
   btn.addEventListener('click', (e) => {
@@ -226,7 +225,7 @@ function initNouvelleTransaction() {
   if (!openBtn || !modal) return;
 
   const dateInput = document.getElementById('txDate');
-  if (dateInput) dateInput.value = new Date().toISOString().slice(0, 10);
+  if (dateInput) dateInput.value = toLocalISODate(new Date());
 
   const open  = () => { modal.style.display = 'flex'; };
   const close = () => { modal.style.display = 'none'; };
@@ -273,4 +272,9 @@ function showToastNotif(msg) {
   t.classList.add('show');
   if (_toastTimer) clearTimeout(_toastTimer);
   _toastTimer = setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+/* Date locale au format AAAA-MM-JJ (toISOString renvoie la date UTC) */
+function toLocalISODate(d) {
+  return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
 }

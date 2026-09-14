@@ -849,3 +849,43 @@ tbody td            { padding: 12px 20px; font-size: 12px; }
 }
 
 /* Topbar — les popups sont positionnés via tb-right déjà flex */
+
+/* ══════════════════════════════
+   RESPONSIVE — tablette & mobile
+══════════════════════════════ */
+@media (max-width: 900px) {
+  html, body { height: auto; }
+  body { flex-direction: column; overflow: auto; overflow-x: hidden; min-height: 100vh; }
+
+  /* Sidebar -> barre de navigation horizontale défilante */
+  .sidebar {
+    width: 100%; height: auto;
+    flex-direction: row; align-items: center;
+    overflow-x: auto; overflow-y: hidden;
+    border-right: none; border-bottom: 1px solid var(--border);
+    position: sticky; top: 0; z-index: 50;
+  }
+  .sb-logo { border: none; flex-shrink: 0; }
+  .sb-section { display: flex; gap: 2px; padding: 8px 4px; flex-shrink: 0; }
+  .sb-section-label, .sb-bottom { display: none; }
+  .sb-item { white-space: nowrap; flex-shrink: 0; }
+
+  .main { overflow: visible; }
+  .topbar { position: static; height: auto; min-height: 52px; flex-wrap: wrap; gap: 10px; padding: 10px 16px; }
+  .tb-right { flex-wrap: wrap; }
+  .content { padding: 16px; }
+
+  .kpi-row { grid-template-columns: repeat(2, 1fr); }
+  .mid-row, .bot-row, .settings-layout, .integrations-grid, .usage-grid { grid-template-columns: 1fr; }
+  .kpi-row > *, .mid-row > *, .bot-row > *, .settings-layout > * { min-width: 0; }
+
+  .table-card { overflow-x: auto; }
+  .table-card table { min-width: 640px; }
+
+  .date-picker-popup { left: 16px; right: 16px; width: auto; }
+  .export-menu { right: 16px; }
+}
+
+@media (max-width: 560px) {
+  .kpi-row, .field-row, .dp-custom { grid-template-columns: 1fr; }
+}

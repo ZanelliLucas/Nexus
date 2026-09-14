@@ -273,7 +273,7 @@
                   <div class="twofa-icon" style="background:var(--green-dim);color:var(--green);">✓</div>
                   <div>
                     <p class="twofa-title">2FA activée via application</p>
-                    <p class="twofa-sub">Google Authenticator · Configurée le 12 Sep 2025</p>
+                    <p class="twofa-sub">Google Authenticator · Configurée le <span data-date="12 {mon:-2} {year:-2}">12 Sep 2026</span></p>
                   </div>
                   <button class="twofa-btn">Reconfigurer</button>
                 </div>
@@ -511,7 +511,7 @@
                 <div class="plan-badge">PRO</div>
                 <div>
                   <p class="plan-name">Plan Pro</p>
-                  <p class="plan-price">€89 / mois · Renouvellement le 1 Déc 2025</p>
+                  <p class="plan-price">€89 / mois · Renouvellement le <span data-date="1 {mon:1} {year:1}">1 Déc 2026</span></p>
                 </div>
               </div>
               <button class="tb-btn primary" style="font-size:12px;">Passer à Enterprise</button>
@@ -544,7 +544,7 @@
                 <div class="card-icon">💳</div>
                 <div>
                   <p class="card-name">Visa •••• •••• •••• 4242</p>
-                  <p class="card-exp">Expire 12/2027</p>
+                  <p class="card-exp">Expire 12/<span data-date="{year:12}">2027</span></p>
                 </div>
                 <button class="session-revoke" style="margin-left:auto;">Modifier</button>
               </div>
@@ -555,21 +555,21 @@
               <p class="toggle-section-title">Factures récentes</p>
               <div class="invoice-list">
                 <div class="invoice-item">
-                  <span class="inv-date">Nov 2025</span>
+                  <span class="inv-date" data-date="{mon:0} {year:0}">Nov 2026</span>
                   <span class="inv-desc">Plan Pro · 1 mois</span>
                   <span class="inv-amount">€89.00</span>
                   <span class="inv-status st-paid">Payé</span>
                   <button class="inv-dl">↓ PDF</button>
                 </div>
                 <div class="invoice-item">
-                  <span class="inv-date">Oct 2025</span>
+                  <span class="inv-date" data-date="{mon:-1} {year:-1}">Oct 2026</span>
                   <span class="inv-desc">Plan Pro · 1 mois</span>
                   <span class="inv-amount">€89.00</span>
                   <span class="inv-status st-paid">Payé</span>
                   <button class="inv-dl">↓ PDF</button>
                 </div>
                 <div class="invoice-item">
-                  <span class="inv-date">Sep 2025</span>
+                  <span class="inv-date" data-date="{mon:-2} {year:-2}">Sep 2026</span>
                   <span class="inv-desc">Plan Pro · 1 mois</span>
                   <span class="inv-amount">€89.00</span>
                   <span class="inv-status st-paid">Payé</span>
@@ -693,6 +693,7 @@
   <!-- Toast notification -->
   <div class="toast" id="toast"></div>
 
+  <script src="../dates.js"></script>
   <script src="app.js"></script>
 <script>
 /* ============================================

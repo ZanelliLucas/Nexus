@@ -36,9 +36,9 @@ function initUptimeDots() {
    2. LATENCY CHART
    ============================================ */
 const LATENCY_DATA = {
-  '1H':  { labels: ['14h00','14h10','14h20','14h30','14h40','14h50','15h00'], p50: [28,32,26,35,29,24,30], p95: [72,88,64,98,80,68,84],   p99: [148,184,132,210,168,140,172] },
-  '6H':  { labels: ['09h00','10h00','11h00','12h00','13h00','14h00','15h00'], p50: [24,28,38,42,30,26,30], p95: [60,72,104,118,82,74,84],  p99: [122,148,214,248,172,152,172] },
-  '24H': { labels: ['03h','06h','09h','12h','15h','18h','21h'],               p50: [18,20,35,44,31,28,22], p95: [44,52,92,120,86,74,60],   p99: [88,108,188,252,178,152,122] },
+  '1H':  { labels: NexusDates.lastTimes(7, 10), p50: [28,32,26,35,29,24,30], p95: [72,88,64,98,80,68,84],   p99: [148,184,132,210,168,140,172] },
+  '6H':  { labels: NexusDates.lastTimes(7, 60), p50: [24,28,38,42,30,26,30], p95: [60,72,104,118,82,74,84],  p99: [122,148,214,248,172,152,172] },
+  '24H': { labels: NexusDates.lastTimes(7, 180, true), p50: [18,20,35,44,31,28,22], p95: [44,52,92,120,86,74,60],   p99: [88,108,188,252,178,152,122] },
 };
 
 function initLatencyChart() { buildLatencyChart('1H'); }
@@ -132,7 +132,7 @@ function initDatePicker() {
   const startIn = document.getElementById('dpStart'), endIn = document.getElementById('dpEnd');
   if (!btn || !popup) return;
 
-  const today = new Date().toISOString().slice(0,10);
+  const today = toLocalISODate(new Date());
   if (startIn) startIn.value = today;
   if (endIn)   endIn.value   = today;
 
@@ -145,7 +145,7 @@ function initDatePicker() {
       presets.forEach(x => x.classList.remove('active')); p.classList.add('active');
       const days = parseInt(p.dataset.days), end = new Date(), start = new Date();
       if (days > 0) start.setDate(end.getDate() - days);
-      startIn.value = start.toISOString().slice(0,10); endIn.value = end.toISOString().slice(0,10);
+      startIn.value = toLocalISODate(start); endIn.value = toLocalISODate(end);
     });
   });
 
@@ -162,7 +162,7 @@ function initExport() {
   const btn = document.getElementById('exportBtn');
   if (!btn) return;
   const menu = document.createElement('div'); menu.className = 'export-menu'; menu.style.display = 'none';
-  menu.innerHTML = `<div class="export-item" data-fmt="CSV">📊 Métriques en CSV</div><div class="export-item" data-fmt="JSON">📋 Métriques en JSON</div><div class="export-item" data-fmt="PDF">📄 Rapport PDF</div>`;
+  menu.innerHTML = `<div class="export-item" data-fmt="CSV">📊 Métriques en CSV</div><div class="export-item" data-fmt="JSON">📋 Métriques en JSON</div>`;
   btn.parentElement.appendChild(menu);
   btn.addEventListener('click', (e) => { e.stopPropagation(); menu.style.display = menu.style.display === 'none' ? 'block' : 'none'; });
   document.addEventListener('click', () => { menu.style.display = 'none'; });
@@ -201,4 +201,9 @@ function showToastNotif(msg) {
   t.textContent = msg; t.classList.add('show');
   if (_toastTimer) clearTimeout(_toastTimer);
   _toastTimer = setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+/* Date locale au format AAAA-MM-JJ (toISOString renvoie la date UTC) */
+function toLocalISODate(d) {
+  return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
 }

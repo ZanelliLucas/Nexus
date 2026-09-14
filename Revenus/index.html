@@ -34,7 +34,7 @@
       </div>
       <div class="tb-right">
         <div class="date-range" id="dateRangeBtn">
-          📅 <span id="dateRangeLabel">Nov 1 — Nov 30, 2025</span> ▾
+          📅 <span id="dateRangeLabel" data-date="1 {mon:0} — {dmy:0}">Nov 1 — Nov 30, 2026</span> ▾
         </div>
         <button class="tb-btn ghost" id="exportBtn">↓ Exporter</button>
         <button class="tb-btn primary" id="transactionBtn">+ Nouvelle transaction</button>
@@ -161,7 +161,7 @@
           <div class="card-header">
             <div>
               <p class="card-title">Évolution des revenus</p>
-              <p class="card-subtitle">Revenus bruts &amp; nets — Novembre 2025</p>
+              <p class="card-subtitle">Revenus bruts &amp; nets — <span data-date="{Month:0} {year:0}">Novembre 2026</span></p>
             </div>
             <div class="chart-tabs">
               <span class="chart-tab active">7J</span>
@@ -275,7 +275,7 @@
                 </td>
                 <td class="t-client">Société Dupont SAS</td>
                 <td><span class="source-badge" style="background:var(--blue-dim); color:var(--blue);">Abonnement</span></td>
-                <td class="t-val">28 Nov 2025</td>
+                <td class="t-val" data-date="{dmy:0}">28 Nov 2026</td>
                 <td class="t-amount t-pos">+€2,990</td>
                 <td><span class="status-pill st-up">✓ Payé</span></td>
               </tr>
@@ -291,7 +291,7 @@
                 </td>
                 <td class="t-client">Marie Laurent</td>
                 <td><span class="source-badge" style="background:var(--green-dim); color:var(--green);">Vente directe</span></td>
-                <td class="t-val">27 Nov 2025</td>
+                <td class="t-val" data-date="{dmy:-1}">27 Nov 2026</td>
                 <td class="t-amount t-pos">+€349</td>
                 <td><span class="status-pill st-up">✓ Payé</span></td>
               </tr>
@@ -307,7 +307,7 @@
                 </td>
                 <td class="t-client">TechCorp EURL</td>
                 <td><span class="source-badge" style="background:var(--violet-dim); color:var(--violet);">Services</span></td>
-                <td class="t-val">25 Nov 2025</td>
+                <td class="t-val" data-date="{dmy:-3}">25 Nov 2026</td>
                 <td class="t-amount t-pos">+€1,800</td>
                 <td><span class="status-pill st-up">✓ Payé</span></td>
               </tr>
@@ -323,7 +323,7 @@
                 </td>
                 <td class="t-client">Pierre Moreau</td>
                 <td><span class="source-badge" style="background:var(--green-dim); color:var(--green);">Vente directe</span></td>
-                <td class="t-val">23 Nov 2025</td>
+                <td class="t-val" data-date="{dmy:-5}">23 Nov 2026</td>
                 <td class="t-amount t-neg">−€189</td>
                 <td><span class="status-pill st-dn">↩ Remboursé</span></td>
               </tr>
@@ -339,7 +339,7 @@
                 </td>
                 <td class="t-client">Agence Boost</td>
                 <td><span class="source-badge" style="background:var(--amber-dim); color:var(--amber);">Partenariat</span></td>
-                <td class="t-val">21 Nov 2025</td>
+                <td class="t-val" data-date="{dmy:-7}">21 Nov 2026</td>
                 <td class="t-amount t-pos">+€620</td>
                 <td><span class="status-pill st-up">✓ Payé</span></td>
               </tr>
@@ -355,7 +355,7 @@
                 </td>
                 <td class="t-client">Sophie Martin</td>
                 <td><span class="source-badge" style="background:var(--blue-dim); color:var(--blue);">Abonnement</span></td>
-                <td class="t-val">18 Nov 2025</td>
+                <td class="t-val" data-date="{dmy:-10}">18 Nov 2026</td>
                 <td class="t-amount t-pos">+€89</td>
                 <td><span class="status-pill st-pending">⏳ En attente</span></td>
               </tr>
@@ -371,7 +371,7 @@
             <div class="card-header" style="margin-bottom:16px;">
               <div>
                 <p class="card-title">Objectifs du mois</p>
-                <p class="card-subtitle">Novembre 2025</p>
+                <p class="card-subtitle"><span data-date="{Month:0} {year:0}">Novembre 2026</span></p>
               </div>
               <span class="obj-badge">4/5</span>
             </div>
@@ -529,8 +529,8 @@
       <button class="dp-preset" data-days="365">Cette année</button>
     </div>
     <div class="dp-custom">
-      <div class="dp-field"><label>Début</label><input type="date" id="dpStart" value="2025-11-01"/></div>
-      <div class="dp-field"><label>Fin</label><input type="date" id="dpEnd" value="2025-11-30"/></div>
+      <div class="dp-field"><label>Début</label><input type="date" id="dpStart" value="2026-11-01" data-date="{iso1:0}" data-date-attr="value"/></div>
+      <div class="dp-field"><label>Fin</label><input type="date" id="dpEnd" value="2026-11-30" data-date="{iso:0}" data-date-attr="value"/></div>
     </div>
     <div class="dp-footer">
       <button class="dp-cancel" id="dpCancel">Annuler</button>
@@ -586,6 +586,7 @@
   <!-- ── Toast ── -->
   <div class="toast-notif" id="toastNotif"></div>
 
+  <script src="../dates.js"></script>
   <script src="app.js"></script>
 <script>
 /* ============================================

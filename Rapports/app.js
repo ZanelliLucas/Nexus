@@ -19,7 +19,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 const RAPPORTS_DATA = {
   '7J': {
-    labels:    ['L 24', 'M 25', 'M 26', 'J 27', 'V 28', 'S 29', 'D 30'],
+    labels:    NexusDates.last7(),
     generes:   [48, 62, 55, 71, 58, 80, 74],
     planifies: [12, 18, 14, 22, 16, 20, 18],
   },
@@ -29,7 +29,7 @@ const RAPPORTS_DATA = {
     planifies: [60, 75, 68, 82],
   },
   '90J': {
-    labels:    ['Jan', 'Fév', 'Mar'],
+    labels:    NexusDates.lastMonths(3),
     generes:   [940, 1080, 1284],
     planifies: [210, 245, 280],
   },
@@ -158,8 +158,8 @@ function initDatePicker() {
       const end   = new Date();
       const start = new Date();
       start.setDate(end.getDate() - days);
-      startIn.value = start.toISOString().slice(0, 10);
-      endIn.value   = end.toISOString().slice(0, 10);
+      startIn.value = toLocalISODate(start);
+      endIn.value   = toLocalISODate(end);
     });
   });
 
@@ -183,8 +183,7 @@ function initExport() {
   menu.style.display = 'none';
   menu.innerHTML = `
     <div class="export-item" data-fmt="CSV">📊 Exporter en CSV</div>
-    <div class="export-item" data-fmt="JSON">📋 Exporter en JSON</div>
-    <div class="export-item" data-fmt="PDF">📄 Exporter en PDF</div>`;
+    <div class="export-item" data-fmt="JSON">📋 Exporter en JSON</div>`;
   btn.parentElement.appendChild(menu);
 
   btn.addEventListener('click', (e) => {
@@ -200,7 +199,7 @@ function initExport() {
       menu.style.display = 'none';
       showToastNotif(`✓ Export ${fmt} en cours…`);
       if (fmt === 'CSV') {
-        const csv  = 'Rapport,Type,Statut,Date\nRapport Mensuel,Exécutif,Livré,2025-11-30\nAnalyse Trafic,Analytique,Livré,2025-11-28';
+        const csv  = 'Rapport,Type,Statut,Date\nRapport Mensuel,Exécutif,Livré,' + NexusDates.fmt('{iso:0}') + '\nAnalyse Trafic,Analytique,Livré,' + NexusDates.fmt('{iso:-3}');
         const blob = new Blob([csv], { type: 'text/csv' });
         const a    = document.createElement('a');
         a.href     = URL.createObjectURL(blob);
@@ -261,4 +260,9 @@ function showToastNotif(msg) {
   t.classList.add('show');
   if (_toastTimer) clearTimeout(_toastTimer);
   _toastTimer = setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+/* Date locale au format AAAA-MM-JJ (toISOString renvoie la date UTC) */
+function toLocalISODate(d) {
+  return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
 }

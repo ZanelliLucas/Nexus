@@ -35,7 +35,7 @@
       </div>
       <div class="tb-right">
         <div class="date-range" id="dateRangeBtn">
-          📅 <span id="dateRangeLabel">Nov 1 — Nov 30, 2025</span> ▾
+          📅 <span id="dateRangeLabel" data-date="1 {mon:0} — {dmy:0}">Nov 1 — Nov 30, 2026</span> ▾
         </div>
         <button class="tb-btn ghost" id="exportBtn">↓ Tout exporter</button>
         <button class="tb-btn primary" id="rapportBtn">+ Nouveau rapport</button>
@@ -270,12 +270,12 @@
                 <td>
                   <div class="report-name">
                     <div class="report-icon" style="background:var(--blue-dim); color:var(--blue);">📊</div>
-                    <span>Rapport ventes Nov. 2025</span>
+                    <span data-date="Rapport ventes {mon:0} {year:0}">Rapport ventes Nov 2026</span>
                   </div>
                 </td>
                 <td><span class="type-badge" style="background:var(--blue-dim); color:var(--blue);">Ventes</span></td>
                 <td class="t-author">Jean D.</td>
-                <td class="t-val">28 Nov 2025</td>
+                <td class="t-val" data-date="{dmy:0}">28 Nov 2026</td>
                 <td class="t-val">2.4 MB</td>
                 <td><span class="status-pill st-up">✓ Livré</span></td>
               </tr>
@@ -283,12 +283,12 @@
                 <td>
                   <div class="report-name">
                     <div class="report-icon" style="background:var(--violet-dim); color:var(--violet);">📈</div>
-                    <span>Analyse trafic Q4</span>
+                    <span data-date="Analyse trafic {q:0}">Analyse trafic Q4</span>
                   </div>
                 </td>
                 <td><span class="type-badge" style="background:var(--violet-dim); color:var(--violet);">Analytique</span></td>
                 <td class="t-author">Marie L.</td>
-                <td class="t-val">25 Nov 2025</td>
+                <td class="t-val" data-date="{dmy:-3}">25 Nov 2026</td>
                 <td class="t-val">5.1 MB</td>
                 <td><span class="status-pill st-up">✓ Livré</span></td>
               </tr>
@@ -296,12 +296,12 @@
                 <td>
                   <div class="report-name">
                     <div class="report-icon" style="background:var(--green-dim); color:var(--green);">⚡</div>
-                    <span>Performance serveurs Oct.</span>
+                    <span data-date="Performance serveurs {mon:-1}">Performance serveurs Oct</span>
                   </div>
                 </td>
                 <td><span class="type-badge" style="background:var(--green-dim); color:var(--green);">Performance</span></td>
                 <td class="t-author">Alex T.</td>
-                <td class="t-val">22 Nov 2025</td>
+                <td class="t-val" data-date="{dmy:-6}">22 Nov 2026</td>
                 <td class="t-val">1.8 MB</td>
                 <td><span class="status-pill st-up">✓ Livré</span></td>
               </tr>
@@ -314,7 +314,7 @@
                 </td>
                 <td><span class="type-badge" style="background:var(--amber-dim); color:var(--amber);">Personnalisé</span></td>
                 <td class="t-author">Sophie M.</td>
-                <td class="t-val">20 Nov 2025</td>
+                <td class="t-val" data-date="{dmy:-8}">20 Nov 2026</td>
                 <td class="t-val">3.7 MB</td>
                 <td><span class="status-pill st-pending">⏳ En cours</span></td>
               </tr>
@@ -322,12 +322,12 @@
                 <td>
                   <div class="report-name">
                     <div class="report-icon" style="background:var(--blue-dim); color:var(--blue);">📊</div>
-                    <span>Bilan mensuel Oct. 2025</span>
+                    <span data-date="Bilan mensuel {mon:-1} {year:-1}">Bilan mensuel Oct 2026</span>
                   </div>
                 </td>
                 <td><span class="type-badge" style="background:var(--blue-dim); color:var(--blue);">Ventes</span></td>
                 <td class="t-author">Jean D.</td>
-                <td class="t-val">18 Nov 2025</td>
+                <td class="t-val" data-date="{dmy:-10}">18 Nov 2026</td>
                 <td class="t-val">4.2 MB</td>
                 <td><span class="status-pill st-up">✓ Livré</span></td>
               </tr>
@@ -340,7 +340,7 @@
                 </td>
                 <td><span class="type-badge" style="background:var(--violet-dim); color:var(--violet);">Analytique</span></td>
                 <td class="t-author">Alex T.</td>
-                <td class="t-val">15 Nov 2025</td>
+                <td class="t-val" data-date="{dmy:-13}">15 Nov 2026</td>
                 <td class="t-val">0.9 MB</td>
                 <td><span class="status-pill st-dn">✕ Erreur</span></td>
               </tr>
@@ -495,8 +495,8 @@
       <button class="dp-preset" data-days="365">Cette année</button>
     </div>
     <div class="dp-custom">
-      <div class="dp-field"><label>Début</label><input type="date" id="dpStart" value="2025-11-01"/></div>
-      <div class="dp-field"><label>Fin</label><input type="date" id="dpEnd" value="2025-11-30"/></div>
+      <div class="dp-field"><label>Début</label><input type="date" id="dpStart" value="2026-11-01" data-date="{iso1:0}" data-date-attr="value"/></div>
+      <div class="dp-field"><label>Fin</label><input type="date" id="dpEnd" value="2026-11-30" data-date="{iso:0}" data-date-attr="value"/></div>
     </div>
     <div class="dp-footer">
       <button class="dp-cancel" id="dpCancel">Annuler</button>
@@ -513,7 +513,7 @@
       <div class="modal-body">
         <div class="modal-field">
           <label>Nom du rapport</label>
-          <input type="text" class="modal-input" id="rapportNom" value="Rapport Novembre 2025"/>
+          <input type="text" class="modal-input" id="rapportNom" value="Rapport Novembre 2026" data-date="Rapport {Month:0} {year:0}" data-date-attr="value"/>
         </div>
         <div class="modal-field">
           <label>Type</label>
@@ -551,6 +551,7 @@
 
   <div class="toast-notif" id="toastNotif"></div>
 
+  <script src="../dates.js"></script>
   <script src="app.js"></script>
 <script>
 /* ============================================

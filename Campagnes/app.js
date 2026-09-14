@@ -19,7 +19,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 const CAMPAGNES_DATA = {
   '7J': {
-    labels:    ['L 24', 'M 25', 'M 26', 'J 27', 'V 28', 'S 29', 'D 30'],
+    labels:    NexusDates.last7(),
     envois:    [38200, 44100, 40800, 52300, 47600, 61400, 55900],
     ouvertures:[10800, 12500, 11600, 14900, 13500, 17400, 15800],
   },
@@ -29,7 +29,7 @@ const CAMPAGNES_DATA = {
     ouvertures:[41900, 48700, 45300, 54900],
   },
   '90J': {
-    labels:    ['Sep', 'Oct', 'Nov'],
+    labels:    NexusDates.lastMonths(3),
     envois:    [520000, 610000, 674910],
     ouvertures:[147000, 172800, 191000],
   },
@@ -106,7 +106,7 @@ function initTableRows() {
 }
 
 /* ============================================
-   4. NAV ITEMS — delegation (sidebar injectee dynamiquement)
+   4. NAV ITEMS — délégation (sidebar injectée dynamiquement)
    ============================================ */
 function initNavItems() {
   const sidebar = document.querySelector('aside.sidebar');
@@ -150,8 +150,8 @@ function initDatePicker() {
       const end   = new Date();
       const start = new Date();
       start.setDate(end.getDate() - days);
-      startIn.value = start.toISOString().slice(0, 10);
-      endIn.value   = end.toISOString().slice(0, 10);
+      startIn.value = toLocalISODate(start);
+      endIn.value   = toLocalISODate(end);
     });
   });
 
@@ -161,7 +161,7 @@ function initDatePicker() {
     const fmt = d => d.toLocaleDateString('fr-FR', { day: 'numeric', month: 'short', year: 'numeric' });
     label.textContent   = fmt(s) + ' — ' + fmt(e);
     popup.style.display = 'none';
-    showToastNotif('OK Periode mise a jour');
+    showToastNotif('✓ Période mise à jour');
   });
   cancelBtn.addEventListener('click', () => { popup.style.display = 'none'; });
 }
@@ -177,8 +177,7 @@ function initExport() {
   menu.className     = 'export-menu';
   menu.style.display = 'none';
   menu.innerHTML = '<div class="export-item" data-fmt="CSV">Exporter en CSV</div>' +
-                   '<div class="export-item" data-fmt="JSON">Exporter en JSON</div>' +
-                   '<div class="export-item" data-fmt="PDF">Exporter en PDF</div>';
+                   '<div class="export-item" data-fmt="JSON">Exporter en JSON</div>';
   btn.parentElement.appendChild(menu);
 
   btn.addEventListener('click', (e) => {
@@ -194,14 +193,14 @@ function initExport() {
       menu.style.display = 'none';
       showToastNotif('Export ' + fmt + ' en cours...');
       if (fmt === 'CSV') {
-        const csv  = 'Campagne,Canal,Envois,Ouvertures,Clics,Revenus,Statut\nPromo Black Friday,Email,84200,28.4%,9.2%,18420,Actif\nRelance panier,SMS,12840,41.2%,18.7%,9810,Actif';
+        const csv  = 'Campagne,Canal,Envois,Ouvertures,Clics,Revenus,Statut\nVente flash,Email,84200,28.4%,9.2%,18420,Actif\nRelance panier,SMS,12840,41.2%,18.7%,9810,Actif';
         const blob = new Blob([csv], { type: 'text/csv' });
         const a    = document.createElement('a');
         a.href     = URL.createObjectURL(blob);
         a.download = 'nexus-campagnes.csv';
         a.click();
       } else if (fmt === 'JSON') {
-        const data = { campagnes: [{ nom: 'Promo Black Friday', canal: 'Email', envois: 84200 }] };
+        const data = { campagnes: [{ nom: 'Vente flash', canal: 'Email', envois: 84200 }] };
         const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
         const a    = document.createElement('a');
         a.href     = URL.createObjectURL(blob);
@@ -224,7 +223,7 @@ function initNouvelleCampagne() {
   if (!openBtn || !modal) return;
 
   const dateInput = document.getElementById('campagneDate');
-  if (dateInput) dateInput.value = new Date().toISOString().slice(0, 10);
+  if (dateInput) dateInput.value = toLocalISODate(new Date());
 
   const open  = () => { modal.style.display = 'flex'; };
   const close = () => { modal.style.display = 'none'; };
@@ -246,16 +245,16 @@ function initNouvelleCampagne() {
     }
     nomInput.style.borderColor = '';
 
-    createBtn.textContent = 'Creation...';
+    createBtn.textContent = 'Création…';
     createBtn.disabled    = true;
 
     setTimeout(() => {
       const nomVal = nomInput.value.trim();
       close();
-      createBtn.textContent = 'Creer la campagne';
+      createBtn.textContent = 'Créer la campagne';
       createBtn.disabled    = false;
       nomInput.value = '';
-      showToastNotif('Campagne "' + nomVal + '" (' + canal + ' - ' + audience + ') creee');
+      showToastNotif('✓ Campagne "' + nomVal + '" (' + canal + ' · ' + audience + ') créée');
     }, 900);
   });
 }
@@ -271,4 +270,9 @@ function showToastNotif(msg) {
   t.classList.add('show');
   if (_toastTimer) clearTimeout(_toastTimer);
   _toastTimer = setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+/* Date locale au format AAAA-MM-JJ (toISOString renvoie la date UTC) */
+function toLocalISODate(d) {
+  return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
 }
