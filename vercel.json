@@ -12,6 +12,61 @@
   ],
   "redirects": [
     {
+      "source": "/vue-ensemble",
+      "destination": "/vue-ensemble/index.html",
+      "permanent": true
+    },
+    {
+      "source": "/analytique",
+      "destination": "/analytique/index.html",
+      "permanent": true
+    },
+    {
+      "source": "/rapports",
+      "destination": "/rapports/index.html",
+      "permanent": true
+    },
+    {
+      "source": "/campagnes",
+      "destination": "/campagnes/index.html",
+      "permanent": true
+    },
+    {
+      "source": "/revenus",
+      "destination": "/revenus/index.html",
+      "permanent": true
+    },
+    {
+      "source": "/clients",
+      "destination": "/clients/index.html",
+      "permanent": true
+    },
+    {
+      "source": "/produits",
+      "destination": "/produits/index.html",
+      "permanent": true
+    },
+    {
+      "source": "/commandes",
+      "destination": "/commandes/index.html",
+      "permanent": true
+    },
+    {
+      "source": "/performance",
+      "destination": "/performance/index.html",
+      "permanent": true
+    },
+    {
+      "source": "/logs",
+      "destination": "/logs/index.html",
+      "permanent": true
+    },
+    {
+      "source": "/parametres",
+      "destination": "/parametres/index.html",
+      "permanent": true
+    },
+    {
       "source": "/Vue d'ensemble",
       "destination": "/vue-ensemble/index.html",
       "permanent": true
