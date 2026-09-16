@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NEXUS — Campagnes</title>
+  <meta name="description" content="Gestion et suivi des campagnes marketing : envois, ouvertures, clics et revenus générés.">
+  <meta name="theme-color" content="#09090B">
+  <link rel="icon" href="../assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="../assets/img/apple-touch-icon.png">
+  <link rel="canonical" href="https://nexus-sigma-pearl.vercel.app/campagnes/index.html">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="NEXUS">
+  <meta property="og:locale" content="fr_FR">
+  <meta property="og:title" content="NEXUS — Campagnes">
+  <meta property="og:description" content="Gestion et suivi des campagnes marketing : envois, ouvertures, clics et revenus générés.">
+  <meta property="og:url" content="https://nexus-sigma-pearl.vercel.app/campagnes/index.html">
+  <meta property="og:image" content="https://nexus-sigma-pearl.vercel.app/assets/img/og-image.jpg">
+  <meta property="og:image:width" content="960">
+  <meta property="og:image:height" content="456">
+  <meta property="og:image:alt" content="Aperçu de la page Vue d'ensemble du tableau de bord NEXUS">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500&family=Inter:wght@300;400;500;600&display=swap"
+    rel="stylesheet"
+  >
+
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="../assets/css/responsive.css">
+</head>
+<body>
+
+  <!-- ==========================================
+       SIDEBAR
+       ========================================== -->
+  <aside class="sidebar"></aside>
+
+
+  <!-- ==========================================
+       MAIN
+       ========================================== -->
+  <div class="main">
+
+    <div class="topbar">
+      <div class="tb-left">
+        <div>
+          <p class="page-title">Campagnes</p>
+          <p class="page-sub">Gestion et suivi de vos campagnes marketing</p>
+        </div>
+      </div>
+      <div class="tb-right">
+        <div class="date-range" id="dateRangeBtn">
+          📅 <span id="dateRangeLabel" data-date="1 {mon:0} — {dmy:0}">Nov 1 — Nov 30, 2026</span> ▾
+        </div>
+        <button class="tb-btn ghost" id="exportBtn">↓ Exporter</button>
+        <button class="tb-btn primary" id="campagneBtn">+ Nouvelle campagne</button>
+      </div>
+    </div>
+
+
+    <div class="content">
+
+      <!-- ---- KPI Cards ---- -->
+      <div class="kpi-row">
+
+        <div class="kpi-card">
+          <div class="kpi-header">
+            <span class="kpi-label">Campagnes actives</span>
+            <div class="kpi-icon" style="background:var(--green-dim); color:var(--green);">▶</div>
+          </div>
+          <div class="kpi-value">12</div>
+          <div class="kpi-delta">
+            <span class="delta-up">↑ 3</span>
+            <span class="delta-text">vs mois dernier</span>
+          </div>
+          <div class="sparkline">
+            <svg class="spark-svg" viewBox="0 0 120 36" preserveAspectRatio="none">
+              <defs>
+                <linearGradient id="sg1" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%"   stop-color="#22C55E" stop-opacity=".3"/>
+                  <stop offset="100%" stop-color="#22C55E" stop-opacity="0"/>
+                </linearGradient>
+              </defs>
+              <path d="M0,28 L15,24 L30,20 L45,18 L60,22 L75,14 L90,10 L105,8 L120,6"
+                    fill="none" stroke="#22C55E" stroke-width="1.5"/>
+              <path d="M0,28 L15,24 L30,20 L45,18 L60,22 L75,14 L90,10 L105,8 L120,6 L120,36 L0,36Z"
+                    fill="url(#sg1)"/>
+            </svg>
+          </div>
+        </div>
+
+        <div class="kpi-card">
+          <div class="kpi-header">
+            <span class="kpi-label">Emails envoyés</span>
+            <div class="kpi-icon" style="background:var(--blue-dim); color:var(--blue);">✉</div>
+          </div>
+          <div class="kpi-value">284,910</div>
+          <div class="kpi-delta">
+            <span class="delta-up">↑ 18.4%</span>
+            <span class="delta-text">vs mois dernier</span>
+          </div>
+          <div class="sparkline">
+            <svg class="spark-svg" viewBox="0 0 120 36" preserveAspectRatio="none">
+              <defs>
+                <linearGradient id="sg2" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%"   stop-color="#3B82F6" stop-opacity=".3"/>
+                  <stop offset="100%" stop-color="#3B82F6" stop-opacity="0"/>
+                </linearGradient>
+              </defs>
+              <path d="M0,30 L15,26 L30,28 L45,18 L60,20 L75,12 L90,14 L105,7 L120,5"
+                    fill="none" stroke="#3B82F6" stroke-width="1.5"/>
+              <path d="M0,30 L15,26 L30,28 L45,18 L60,20 L75,12 L90,14 L105,7 L120,5 L120,36 L0,36Z"
+                    fill="url(#sg2)"/>
+            </svg>
+          </div>
+        </div>
+
+        <div class="kpi-card">
+          <div class="kpi-header">
+            <span class="kpi-label">Taux d'ouverture</span>
+            <div class="kpi-icon" style="background:var(--violet-dim); color:var(--violet);">◎</div>
+          </div>
+          <div class="kpi-value">28.3%</div>
+          <div class="kpi-delta">
+            <span class="delta-up">↑ 2.1%</span>
+            <span class="delta-text">vs mois dernier</span>
+          </div>
+          <div class="sparkline">
+            <svg class="spark-svg" viewBox="0 0 120 36" preserveAspectRatio="none">
+              <defs>
+                <linearGradient id="sg3" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%"   stop-color="#8B5CF6" stop-opacity=".3"/>
+                  <stop offset="100%" stop-color="#8B5CF6" stop-opacity="0"/>
+                </linearGradient>
+              </defs>
+              <path d="M0,22 L15,20 L30,18 L45,16 L60,20 L75,12 L90,10 L105,8 L120,6"
+                    fill="none" stroke="#8B5CF6" stroke-width="1.5"/>
+              <path d="M0,22 L15,20 L30,18 L45,16 L60,20 L75,12 L90,10 L105,8 L120,6 L120,36 L0,36Z"
+                    fill="url(#sg3)"/>
+            </svg>
+          </div>
+        </div>
+
+        <div class="kpi-card">
+          <div class="kpi-header">
+            <span class="kpi-label">Revenus générés</span>
+            <div class="kpi-icon" style="background:var(--amber-dim); color:var(--amber);">€</div>
+          </div>
+          <div class="kpi-value">€48,291</div>
+          <div class="kpi-delta">
+            <span class="delta-up">↑ 11.7%</span>
+            <span class="delta-text">vs mois dernier</span>
+          </div>
+          <div class="sparkline">
+            <svg class="spark-svg" viewBox="0 0 120 36" preserveAspectRatio="none">
+              <defs>
+                <linearGradient id="sg4" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%"   stop-color="#F59E0B" stop-opacity=".3"/>
+                  <stop offset="100%" stop-color="#F59E0B" stop-opacity="0"/>
+                </linearGradient>
+              </defs>
+              <path d="M0,26 L15,22 L30,24 L45,16 L60,18 L75,12 L90,10 L105,7 L120,5"
+                    fill="none" stroke="#F59E0B" stroke-width="1.5"/>
+              <path d="M0,26 L15,22 L30,24 L45,16 L60,18 L75,12 L90,10 L105,7 L120,5 L120,36 L0,36Z"
+                    fill="url(#sg4)"/>
+            </svg>
+          </div>
+        </div>
+
+      </div>
+
+
+      <!-- ---- Graphique performances + Canaux ---- -->
+      <div class="mid-row">
+
+        <div class="chart-card">
+          <div class="card-header">
+            <div>
+              <p class="card-title">Performance des campagnes</p>
+              <p class="card-subtitle">Envois, ouvertures &amp; clics</p>
+            </div>
+            <div class="chart-tabs">
+              <span class="chart-tab active">7J</span>
+              <span class="chart-tab">30J</span>
+              <span class="chart-tab">90J</span>
+            </div>
+          </div>
+          <div class="bar-chart" id="campagnesChart"></div>
+          <div class="chart-legend">
+            <span class="cl-item">
+              <span class="cl-dot" style="background:var(--blue);"></span>Envois
+            </span>
+            <span class="cl-item">
+              <span class="cl-dot" style="background:rgba(59,130,246,0.3);"></span>Ouvertures
+            </span>
+          </div>
+        </div>
+
+        <div class="chart-card">
+          <div class="card-header">
+            <div>
+              <p class="card-title">Canaux</p>
+              <p class="card-subtitle">Répartition des campagnes</p>
+            </div>
+          </div>
+          <div class="donut-wrap">
+            <div class="donut-svg-wrap">
+              <svg class="donut-svg" viewBox="0 0 120 120">
+                <circle cx="60" cy="60" r="45" fill="none" stroke="#3B82F6"
+                        stroke-width="18" stroke-dasharray="127 155" stroke-dashoffset="0"/>
+                <circle cx="60" cy="60" r="45" fill="none" stroke="#8B5CF6"
+                        stroke-width="18" stroke-dasharray="72 210" stroke-dashoffset="-127"/>
+                <circle cx="60" cy="60" r="45" fill="none" stroke="#22C55E"
+                        stroke-width="18" stroke-dasharray="45 237" stroke-dashoffset="-199"/>
+                <circle cx="60" cy="60" r="45" fill="none" stroke="#F59E0B"
+                        stroke-width="18" stroke-dasharray="38 244" stroke-dashoffset="-244"/>
+              </svg>
+              <div class="donut-center">
+                <p class="donut-val">12</p>
+                <p class="donut-lbl">actives</p>
+              </div>
+            </div>
+            <div class="donut-legend">
+              <div class="legend-item">
+                <div class="legend-dot" style="background:#3B82F6;"></div>
+                <span class="legend-name">Email</span>
+                <div class="legend-bar"><div class="legend-fill" style="width:45%; background:#3B82F6;"></div></div>
+                <span class="legend-pct">45%</span>
+              </div>
+              <div class="legend-item">
+                <div class="legend-dot" style="background:#8B5CF6;"></div>
+                <span class="legend-name">SMS</span>
+                <div class="legend-bar"><div class="legend-fill" style="width:26%; background:#8B5CF6;"></div></div>
+                <span class="legend-pct">26%</span>
+              </div>
+              <div class="legend-item">
+                <div class="legend-dot" style="background:#22C55E;"></div>
+                <span class="legend-name">Push</span>
+                <div class="legend-bar"><div class="legend-fill" style="width:16%; background:#22C55E;"></div></div>
+                <span class="legend-pct">16%</span>
+              </div>
+              <div class="legend-item">
+                <div class="legend-dot" style="background:#F59E0B;"></div>
+                <span class="legend-name">Social</span>
+                <div class="legend-bar"><div class="legend-fill" style="width:13%; background:#F59E0B;"></div></div>
+                <span class="legend-pct">13%</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+
+      <!-- ---- Tableau campagnes + Détails ---- -->
+      <div class="bot-row">
+
+        <div class="table-card">
+          <div class="tc-head card-header">
+            <div>
+              <p class="card-title">Liste des campagnes</p>
+              <p class="card-subtitle">Toutes les campagnes ce mois</p>
+            </div>
+            <div style="display:flex; gap:8px;">
+              <button class="tb-btn ghost" style="font-size:11px;" data-action="filtrer">🔍 Filtrer</button>
+              <button class="tb-btn ghost" style="font-size:11px;" data-action="voir-tout">Voir tout</button>
+            </div>
+          </div>
+          <table>
+            <thead>
+              <tr>
+                <th>Campagne</th>
+                <th>Canal</th>
+                <th>Envois</th>
+                <th>Ouvertures</th>
+                <th>Clics</th>
+                <th>Revenus</th>
+                <th>Statut</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <div class="camp-name">
+                    <div class="camp-icon" style="background:var(--blue-dim); color:var(--blue);">✉</div>
+                    <div>
+                      <p class="camp-title">Vente flash</p>
+                      <p class="camp-date">Lancée le <span data-date="{dm:-8}">20 Nov</span></p>
+                    </div>
+                  </div>
+                </td>
+                <td><span class="canal-badge" style="background:var(--blue-dim); color:var(--blue);">Email</span></td>
+                <td class="t-val">84,200</td>
+                <td>
+                  <div class="metric-cell">
+                    <span class="t-val">28.4%</span>
+                    <div class="mini-bar"><div class="mini-fill" style="width:57%; background:var(--blue);"></div></div>
+                  </div>
+                </td>
+                <td class="t-val">9.2%</td>
+                <td class="t-val">€18,420</td>
+                <td><span class="status-pill st-active">● Actif</span></td>
+              </tr>
+              <tr>
+                <td>
+                  <div class="camp-name">
+                    <div class="camp-icon" style="background:var(--violet-dim); color:var(--violet);">💬</div>
+                    <div>
+                      <p class="camp-title">Relance panier abandonné</p>
+                      <p class="camp-date">Lancée le <span data-date="{dm:-13}">15 Nov</span></p>
+                    </div>
+                  </div>
+                </td>
+                <td><span class="canal-badge" style="background:var(--violet-dim); color:var(--violet);">SMS</span></td>
+                <td class="t-val">12,840</td>
+                <td>
+                  <div class="metric-cell">
+                    <span class="t-val">41.2%</span>
+                    <div class="mini-bar"><div class="mini-fill" style="width:82%; background:var(--violet);"></div></div>
+                  </div>
+                </td>
+                <td class="t-val">18.7%</td>
+                <td class="t-val">€9,810</td>
+                <td><span class="status-pill st-active">● Actif</span></td>
+              </tr>
+              <tr>
+                <td>
+                  <div class="camp-name">
+                    <div class="camp-icon" style="background:var(--green-dim); color:var(--green);">🔔</div>
+                    <div>
+                      <p class="camp-title">Nouveautés du catalogue</p>
+                      <p class="camp-date">Lancée le <span data-date="{dm:-18}">10 Nov</span></p>
+                    </div>
+                  </div>
+                </td>
+                <td><span class="canal-badge" style="background:var(--green-dim); color:var(--green);">Push</span></td>
+                <td class="t-val">48,910</td>
+                <td>
+                  <div class="metric-cell">
+                    <span class="t-val">22.1%</span>
+                    <div class="mini-bar"><div class="mini-fill" style="width:44%; background:var(--green);"></div></div>
+                  </div>
+                </td>
+                <td class="t-val">6.4%</td>
+                <td class="t-val">€7,240</td>
+                <td><span class="status-pill st-active">● Actif</span></td>
+              </tr>
+              <tr>
+                <td>
+                  <div class="camp-name">
+                    <div class="camp-icon" style="background:var(--amber-dim); color:var(--amber);">📣</div>
+                    <div>
+                      <p class="camp-title">Offre week-end</p>
+                      <p class="camp-date">Lancée le <span data-date="{dm:-26}">2 Nov</span></p>
+                    </div>
+                  </div>
+                </td>
+                <td><span class="canal-badge" style="background:var(--amber-dim); color:var(--amber);">Social</span></td>
+                <td class="t-val">139,960</td>
+                <td>
+                  <div class="metric-cell">
+                    <span class="t-val">19.8%</span>
+                    <div class="mini-bar"><div class="mini-fill" style="width:40%; background:var(--amber);"></div></div>
+                  </div>
+                </td>
+                <td class="t-val">4.1%</td>
+                <td class="t-val">€8,200</td>
+                <td><span class="status-pill st-ended">◼ Terminé</span></td>
+              </tr>
+              <tr>
+                <td>
+                  <div class="camp-name">
+                    <div class="camp-icon" style="background:var(--blue-dim); color:var(--blue);">✉</div>
+                    <div>
+                      <p class="camp-title">Newsletter mensuelle</p>
+                      <p class="camp-date">Lancée le <span data-date="{dm:-27}">1 Nov</span></p>
+                    </div>
+                  </div>
+                </td>
+                <td><span class="canal-badge" style="background:var(--blue-dim); color:var(--blue);">Email</span></td>
+                <td class="t-val">62,400</td>
+                <td>
+                  <div class="metric-cell">
+                    <span class="t-val">31.5%</span>
+                    <div class="mini-bar"><div class="mini-fill" style="width:63%; background:var(--blue);"></div></div>
+                  </div>
+                </td>
+                <td class="t-val">7.8%</td>
+                <td class="t-val">€4,621</td>
+                <td><span class="status-pill st-ended">◼ Terminé</span></td>
+              </tr>
+              <tr>
+                <td>
+                  <div class="camp-name">
+                    <div class="camp-icon" style="background:var(--cyan-dim); color:var(--cyan);">✉</div>
+                    <div>
+                      <p class="camp-title">Réactivation inactifs</p>
+                      <p class="camp-date">Prévu le <span data-date="{dm:7}">5 Déc</span></p>
+                    </div>
+                  </div>
+                </td>
+                <td><span class="canal-badge" style="background:var(--blue-dim); color:var(--blue);">Email</span></td>
+                <td class="t-val">—</td>
+                <td>
+                  <div class="metric-cell">
+                    <span class="t-val">—</span>
+                    <div class="mini-bar"></div>
+                  </div>
+                </td>
+                <td class="t-val">—</td>
+                <td class="t-val">—</td>
+                <td><span class="status-pill st-draft">◌ Brouillon</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Colonne droite -->
+        <div class="right-col">
+
+          <!-- Top performers -->
+          <div class="side-card">
+            <div class="card-header" style="margin-bottom:16px;">
+              <div>
+                <p class="card-title">Meilleures campagnes</p>
+                <p class="card-subtitle">Par taux d'ouverture</p>
+              </div>
+            </div>
+            <div class="top-list">
+
+              <div class="top-item">
+                <span class="top-rank">01</span>
+                <div class="top-info">
+                  <p class="top-name">Relance panier abandonné</p>
+                  <div class="gauge-track" style="margin-top:5px;">
+                    <div class="gauge-fill" style="width:82%; background:var(--violet);"></div>
+                  </div>
+                </div>
+                <span class="top-val" style="color:var(--violet);">41.2%</span>
+              </div>
+
+              <div class="top-item">
+                <span class="top-rank">02</span>
+                <div class="top-info">
+                  <p class="top-name">Newsletter mensuelle</p>
+                  <div class="gauge-track" style="margin-top:5px;">
+                    <div class="gauge-fill" style="width:63%; background:var(--blue);"></div>
+                  </div>
+                </div>
+                <span class="top-val" style="color:var(--blue);">31.5%</span>
+              </div>
+
+              <div class="top-item">
+                <span class="top-rank">03</span>
+                <div class="top-info">
+                  <p class="top-name">Vente flash</p>
+                  <div class="gauge-track" style="margin-top:5px;">
+                    <div class="gauge-fill" style="width:57%; background:var(--blue);"></div>
+                  </div>
+                </div>
+                <span class="top-val" style="color:var(--blue);">28.4%</span>
+              </div>
+
+              <div class="top-item">
+                <span class="top-rank">04</span>
+                <div class="top-info">
+                  <p class="top-name">Nouveautés du catalogue</p>
+                  <div class="gauge-track" style="margin-top:5px;">
+                    <div class="gauge-fill" style="width:44%; background:var(--green);"></div>
+                  </div>
+                </div>
+                <span class="top-val" style="color:var(--green);">22.1%</span>
+              </div>
+
+              <div class="top-item">
+                <span class="top-rank">05</span>
+                <div class="top-info">
+                  <p class="top-name">Offre week-end</p>
+                  <div class="gauge-track" style="margin-top:5px;">
+                    <div class="gauge-fill" style="width:40%; background:var(--amber);"></div>
+                  </div>
+                </div>
+                <span class="top-val" style="color:var(--amber);">19.8%</span>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- Prochaines campagnes -->
+          <div class="side-card">
+            <div class="card-header" style="margin-bottom:16px;">
+              <div>
+                <p class="card-title">À venir</p>
+                <p class="card-subtitle">Campagnes planifiées</p>
+              </div>
+              <span class="count-badge">3</span>
+            </div>
+            <div class="upcoming-list">
+
+              <div class="upcoming-item">
+                <div class="upcoming-left">
+                  <div class="upc-dot" style="background:var(--blue);"></div>
+                  <div>
+                    <p class="upc-name">Réactivation inactifs</p>
+                    <p class="upc-meta">Email · 28,400 dest.</p>
+                  </div>
+                </div>
+                <div class="upc-date">
+                  <p class="upc-day" data-date="{dm:7}">5 Déc</p>
+                  <p class="upc-rel">Dans 7j</p>
+                </div>
+              </div>
+
+              <div class="upcoming-item">
+                <div class="upcoming-left">
+                  <div class="upc-dot" style="background:var(--green);"></div>
+                  <div>
+                    <p class="upc-name">Anniversaire clients</p>
+                    <p class="upc-meta">Push · 52,000 dest.</p>
+                  </div>
+                </div>
+                <div class="upc-date">
+                  <p class="upc-day" data-date="{dm:14}">12 Déc</p>
+                  <p class="upc-rel">Dans 14j</p>
+                </div>
+              </div>
+
+              <div class="upcoming-item">
+                <div class="upcoming-left">
+                  <div class="upc-dot" style="background:var(--amber);"></div>
+                  <div>
+                    <p class="upc-name">Grandes soldes</p>
+                    <p class="upc-meta">Email + SMS · 94,000 dest.</p>
+                  </div>
+                </div>
+                <div class="upc-date">
+                  <p class="upc-day" data-date="{dm:35}">2 Jan</p>
+                  <p class="upc-rel">Dans 35j</p>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- ── Date Picker ── -->
+  <div class="date-picker-popup" id="datePickerPopup" style="display:none;">
+    <div class="dp-header">Sélectionner une période</div>
+    <div class="dp-presets">
+      <button class="dp-preset active" data-days="30">30 derniers jours</button>
+      <button class="dp-preset" data-days="7">7 derniers jours</button>
+      <button class="dp-preset" data-days="90">90 derniers jours</button>
+      <button class="dp-preset" data-days="365">Cette année</button>
+    </div>
+    <div class="dp-custom">
+      <div class="dp-field"><label>Début</label><input type="date" id="dpStart" value="2026-11-01" data-date="{iso1:0}" data-date-attr="value"/></div>
+      <div class="dp-field"><label>Fin</label><input type="date" id="dpEnd" value="2026-11-30" data-date="{iso:0}" data-date-attr="value"/></div>
+    </div>
+    <div class="dp-footer">
+      <button class="dp-cancel" id="dpCancel">Annuler</button>
+      <button class="dp-apply" id="dpApply">Appliquer</button>
+    </div>
+  </div>
+
+  <!-- ── Modal Nouvelle campagne ── -->
+  <div class="modal-overlay" id="campagneModal" style="display:none;">
+    <div class="modal">
+      <div class="modal-header">
+        <p class="modal-title">Nouvelle campagne</p>
+        <button class="modal-close" id="campagneClose">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="modal-field">
+          <label>Nom de la campagne</label>
+          <input type="text" class="modal-input" id="campagneNom" placeholder="Ex : Vente flash 2026" data-date="Ex : Vente flash {year:0}" data-date-attr="placeholder"/>
+        </div>
+        <div class="modal-field">
+          <label>Canal</label>
+          <select class="modal-select" id="campagneCanal">
+            <option>Email</option>
+            <option>SMS</option>
+            <option>Push</option>
+            <option>Social</option>
+          </select>
+        </div>
+        <div class="modal-field">
+          <label>Audience cible</label>
+          <select class="modal-select" id="campagneAudience">
+            <option>Tous les utilisateurs</option>
+            <option>Clients actifs</option>
+            <option>Nouveaux inscrits</option>
+            <option>Clients inactifs</option>
+            <option>VIP</option>
+          </select>
+        </div>
+        <div class="modal-field">
+          <label>Date de lancement</label>
+          <input type="date" class="modal-input" id="campagneDate"/>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="tb-btn ghost" id="campagneCancelBtn">Annuler</button>
+        <button class="tb-btn primary" id="campagneCreateBtn">Créer la campagne</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Toast ── -->
+  <div class="toast-notif" id="toastNotif"></div>
+
+  <script src="../assets/js/dates.js"></script>
+  <script src="../assets/js/ui.js"></script>
+  <script src="app.js"></script>
+<script src="../assets/js/sidebar.js"></script>
+</body>
+</html>

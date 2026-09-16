@@ -3,8 +3,208 @@
     {
       "source": "/(.*)",
       "headers": [
-        { "key": "Content-Security-Policy", "value": "frame-ancestors *" }
+        {
+          "key": "Content-Security-Policy",
+          "value": "frame-ancestors *"
+        }
       ]
+    }
+  ],
+  "redirects": [
+    {
+      "source": "/Vue d'ensemble",
+      "destination": "/vue-ensemble/index.html",
+      "permanent": true
+    },
+    {
+      "source": "/Vue d'ensemble/",
+      "destination": "/vue-ensemble/index.html",
+      "permanent": true
+    },
+    {
+      "source": "/Vue d'ensemble/:file",
+      "destination": "/vue-ensemble/:file",
+      "permanent": true
+    },
+    {
+      "source": "/Vue%20d'ensemble",
+      "destination": "/vue-ensemble/index.html",
+      "permanent": true
+    },
+    {
+      "source": "/Vue%20d'ensemble/",
+      "destination": "/vue-ensemble/index.html",
+      "permanent": true
+    },
+    {
+      "source": "/Vue%20d'ensemble/:file",
+      "destination": "/vue-ensemble/:file",
+      "permanent": true
+    },
+    {
+      "source": "/Analytique",
+      "destination": "/analytique/index.html",
+      "permanent": true
+    },
+    {
+      "source": "/Analytique/",
+      "destination": "/analytique/index.html",
+      "permanent": true
+    },
+    {
+      "source": "/Analytique/:file",
+      "destination": "/analytique/:file",
+      "permanent": true
+    },
+    {
+      "source": "/Rapports",
+      "destination": "/rapports/index.html",
+      "permanent": true
+    },
+    {
+      "source": "/Rapports/",
+      "destination": "/rapports/index.html",
+      "permanent": true
+    },
+    {
+      "source": "/Rapports/:file",
+      "destination": "/rapports/:file",
+      "permanent": true
+    },
+    {
+      "source": "/Campagnes",
+      "destination": "/campagnes/index.html",
+      "permanent": true
+    },
+    {
+      "source": "/Campagnes/",
+      "destination": "/campagnes/index.html",
+      "permanent": true
+    },
+    {
+      "source": "/Campagnes/:file",
+      "destination": "/campagnes/:file",
+      "permanent": true
+    },
+    {
+      "source": "/Revenus",
+      "destination": "/revenus/index.html",
+      "permanent": true
+    },
+    {
+      "source": "/Revenus/",
+      "destination": "/revenus/index.html",
+      "permanent": true
+    },
+    {
+      "source": "/Revenus/:file",
+      "destination": "/revenus/:file",
+      "permanent": true
+    },
+    {
+      "source": "/Clients",
+      "destination": "/clients/index.html",
+      "permanent": true
+    },
+    {
+      "source": "/Clients/",
+      "destination": "/clients/index.html",
+      "permanent": true
+    },
+    {
+      "source": "/Clients/:file",
+      "destination": "/clients/:file",
+      "permanent": true
+    },
+    {
+      "source": "/Produits",
+      "destination": "/produits/index.html",
+      "permanent": true
+    },
+    {
+      "source": "/Produits/",
+      "destination": "/produits/index.html",
+      "permanent": true
+    },
+    {
+      "source": "/Produits/:file",
+      "destination": "/produits/:file",
+      "permanent": true
+    },
+    {
+      "source": "/Commandes",
+      "destination": "/commandes/index.html",
+      "permanent": true
+    },
+    {
+      "source": "/Commandes/",
+      "destination": "/commandes/index.html",
+      "permanent": true
+    },
+    {
+      "source": "/Commandes/:file",
+      "destination": "/commandes/:file",
+      "permanent": true
+    },
+    {
+      "source": "/Performance",
+      "destination": "/performance/index.html",
+      "permanent": true
+    },
+    {
+      "source": "/Performance/",
+      "destination": "/performance/index.html",
+      "permanent": true
+    },
+    {
+      "source": "/Performance/:file",
+      "destination": "/performance/:file",
+      "permanent": true
+    },
+    {
+      "source": "/Logs",
+      "destination": "/logs/index.html",
+      "permanent": true
+    },
+    {
+      "source": "/Logs/",
+      "destination": "/logs/index.html",
+      "permanent": true
+    },
+    {
+      "source": "/Logs/:file",
+      "destination": "/logs/:file",
+      "permanent": true
+    },
+    {
+      "source": "/Paramètres",
+      "destination": "/parametres/index.html",
+      "permanent": true
+    },
+    {
+      "source": "/Paramètres/",
+      "destination": "/parametres/index.html",
+      "permanent": true
+    },
+    {
+      "source": "/Paramètres/:file",
+      "destination": "/parametres/:file",
+      "permanent": true
+    },
+    {
+      "source": "/Param%C3%A8tres",
+      "destination": "/parametres/index.html",
+      "permanent": true
+    },
+    {
+      "source": "/Param%C3%A8tres/",
+      "destination": "/parametres/index.html",
+      "permanent": true
+    },
+    {
+      "source": "/Param%C3%A8tres/:file",
+      "destination": "/parametres/:file",
+      "permanent": true
     }
   ]
 }

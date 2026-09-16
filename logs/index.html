@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NEXUS — Logs</title>
+  <meta name="description" content="Journal des événements système en temps réel, filtrable par niveau et par service.">
+  <meta name="theme-color" content="#09090B">
+  <link rel="icon" href="../assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="../assets/img/apple-touch-icon.png">
+  <link rel="canonical" href="https://nexus-sigma-pearl.vercel.app/logs/index.html">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="NEXUS">
+  <meta property="og:locale" content="fr_FR">
+  <meta property="og:title" content="NEXUS — Logs">
+  <meta property="og:description" content="Journal des événements système en temps réel, filtrable par niveau et par service.">
+  <meta property="og:url" content="https://nexus-sigma-pearl.vercel.app/logs/index.html">
+  <meta property="og:image" content="https://nexus-sigma-pearl.vercel.app/assets/img/og-image.jpg">
+  <meta property="og:image:width" content="960">
+  <meta property="og:image:height" content="456">
+  <meta property="og:image:alt" content="Aperçu de la page Vue d'ensemble du tableau de bord NEXUS">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500&family=Inter:wght@300;400;500;600&display=swap"
+    rel="stylesheet"
+  >
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="../assets/css/responsive.css">
+</head>
+<body>
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar"></aside>
+
+
+  <!-- MAIN -->
+  <div class="main">
+
+    <div class="topbar">
+      <div class="tb-left">
+        <div>
+          <p class="page-title">Logs</p>
+          <p class="page-sub">Journaux système en temps réel</p>
+        </div>
+      </div>
+      <div class="tb-right">
+        <div class="live-badge" id="liveBadge"><span class="live-dot"></span>Live</div>
+        <div class="date-range" id="dateRangeBtn">📅 <span id="dateRangeLabel">Aujourd'hui</span> ▾</div>
+        <button class="tb-btn ghost" id="exportBtn">↓ Exporter</button>
+        <button class="tb-btn ghost" id="pauseBtn">⏸ Pause</button>
+      </div>
+    </div>
+
+
+    <div class="content">
+
+      <!-- KPI row -->
+      <div class="kpi-row">
+
+        <div class="kpi-card">
+          <div class="kpi-header">
+            <span class="kpi-label">Total entrées</span>
+            <div class="kpi-icon" style="background:var(--blue-dim);color:var(--blue);">≡</div>
+          </div>
+          <div class="kpi-value" id="totalLogs">284,910</div>
+          <div class="kpi-delta"><span class="delta-up">↑ 1,284/min</span><span class="delta-text">en ce moment</span></div>
+        </div>
+
+        <div class="kpi-card">
+          <div class="kpi-header">
+            <span class="kpi-label">Erreurs (ERROR)</span>
+            <div class="kpi-icon" style="background:var(--red-dim);color:var(--red);">✕</div>
+          </div>
+          <div class="kpi-value kpi-red" id="errorCount">47</div>
+          <div class="kpi-delta"><span class="delta-down">↑ 3</span><span class="delta-text">dernière heure</span></div>
+        </div>
+
+        <div class="kpi-card">
+          <div class="kpi-header">
+            <span class="kpi-label">Avertissements (WARN)</span>
+            <div class="kpi-icon" style="background:var(--amber-dim);color:var(--amber);">⚠</div>
+          </div>
+          <div class="kpi-value kpi-amber" id="warnCount">312</div>
+          <div class="kpi-delta"><span class="delta-down">↑ 28</span><span class="delta-text">dernière heure</span></div>
+        </div>
+
+        <div class="kpi-card">
+          <div class="kpi-header">
+            <span class="kpi-label">Taux d'erreur</span>
+            <div class="kpi-icon" style="background:var(--violet-dim);color:var(--violet);">%</div>
+          </div>
+          <div class="kpi-value">0.016%</div>
+          <div class="kpi-delta"><span class="delta-up">↓ 0.004%</span><span class="delta-text">amélioration</span></div>
+        </div>
+
+      </div>
+
+
+      <!-- Barre de filtres + Volume chart -->
+      <div class="mid-row">
+
+        <!-- Graphique volume logs -->
+        <div class="chart-card">
+          <div class="card-header">
+            <div>
+              <p class="card-title">Volume de logs</p>
+              <p class="card-subtitle">Entrées par minute</p>
+            </div>
+            <div class="chart-tabs">
+              <span class="chart-tab active">15min</span>
+              <span class="chart-tab">1H</span>
+              <span class="chart-tab">6H</span>
+            </div>
+          </div>
+          <div class="bar-chart" id="logsVolumeChart"></div>
+          <div class="chart-legend">
+            <span class="cl-item"><span class="cl-dot" style="background:var(--blue);"></span>INFO</span>
+            <span class="cl-item"><span class="cl-dot" style="background:var(--amber);"></span>WARN</span>
+            <span class="cl-item"><span class="cl-dot" style="background:var(--red);"></span>ERROR</span>
+          </div>
+        </div>
+
+        <!-- Top services par erreurs -->
+        <div class="chart-card">
+          <div class="card-header">
+            <div>
+              <p class="card-title">Erreurs par service</p>
+              <p class="card-subtitle">Dernière heure</p>
+            </div>
+          </div>
+          <div class="service-errors">
+
+            <div class="svc-err-item">
+              <div class="svc-err-left">
+                <div class="svc-err-dot" style="background:var(--red);"></div>
+                <span class="svc-err-name">SMS Provider</span>
+              </div>
+              <div class="svc-err-bar-wrap">
+                <div class="svc-err-bar" style="width:100%; background:var(--red);"></div>
+              </div>
+              <span class="svc-err-val svc-err-red">18</span>
+            </div>
+
+            <div class="svc-err-item">
+              <div class="svc-err-left">
+                <div class="svc-err-dot" style="background:var(--amber);"></div>
+                <span class="svc-err-name">Reporting Worker</span>
+              </div>
+              <div class="svc-err-bar-wrap">
+                <div class="svc-err-bar" style="width:72%; background:var(--amber);"></div>
+              </div>
+              <span class="svc-err-val svc-err-amber">13</span>
+            </div>
+
+            <div class="svc-err-item">
+              <div class="svc-err-left">
+                <div class="svc-err-dot" style="background:var(--blue);"></div>
+                <span class="svc-err-name">API Gateway</span>
+              </div>
+              <div class="svc-err-bar-wrap">
+                <div class="svc-err-bar" style="width:44%; background:var(--blue);"></div>
+              </div>
+              <span class="svc-err-val">8</span>
+            </div>
+
+            <div class="svc-err-item">
+              <div class="svc-err-left">
+                <div class="svc-err-dot" style="background:var(--violet);"></div>
+                <span class="svc-err-name">Auth Service</span>
+              </div>
+              <div class="svc-err-bar-wrap">
+                <div class="svc-err-bar" style="width:22%; background:var(--violet);"></div>
+              </div>
+              <span class="svc-err-val">4</span>
+            </div>
+
+            <div class="svc-err-item">
+              <div class="svc-err-left">
+                <div class="svc-err-dot" style="background:var(--green);"></div>
+                <span class="svc-err-name">Payment Gateway</span>
+              </div>
+              <div class="svc-err-bar-wrap">
+                <div class="svc-err-bar" style="width:11%; background:var(--green);"></div>
+              </div>
+              <span class="svc-err-val">2</span>
+            </div>
+
+            <div class="svc-err-item">
+              <div class="svc-err-left">
+                <div class="svc-err-dot" style="background:var(--muted);"></div>
+                <span class="svc-err-name">Autres</span>
+              </div>
+              <div class="svc-err-bar-wrap">
+                <div class="svc-err-bar" style="width:11%; background:var(--muted);"></div>
+              </div>
+              <span class="svc-err-val">2</span>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+
+
+      <!-- Terminal de logs -->
+      <div class="terminal-section">
+
+        <!-- Barre de filtres -->
+        <div class="filter-bar">
+          <div class="filter-left">
+            <div class="search-box">
+              <span class="search-icon">🔍</span>
+              <input class="search-input" id="logSearch" placeholder="Filtrer les logs…" autocomplete="off"/>
+            </div>
+            <div class="level-filters">
+              <button class="level-btn active" data-level="ALL">Tous</button>
+              <button class="level-btn" data-level="INFO">INFO</button>
+              <button class="level-btn" data-level="WARN">WARN</button>
+              <button class="level-btn" data-level="ERROR">ERROR</button>
+              <button class="level-btn" data-level="DEBUG">DEBUG</button>
+            </div>
+            <select class="svc-select" id="svcFilter">
+              <option value="ALL">Tous les services</option>
+              <option value="api-gateway">API Gateway</option>
+              <option value="database">Base de données</option>
+              <option value="auth">Auth Service</option>
+              <option value="sms">SMS Provider</option>
+              <option value="reporting">Reporting Worker</option>
+              <option value="payment">Payment Gateway</option>
+            </select>
+          </div>
+          <div class="filter-right">
+            <span class="log-count" id="logCount">Affichage de 50 entrées</span>
+            <button class="tb-btn ghost" style="font-size:11px;" id="clearBtn">✕ Effacer</button>
+          </div>
+        </div>
+
+        <!-- Terminal -->
+        <div class="terminal" id="terminal">
+          <div class="terminal-inner" id="terminalInner">
+            <!-- Logs injected by JS -->
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- ── Date Picker ── -->
+  <div class="date-picker-popup" id="datePickerPopup" style="display:none;">
+    <div class="dp-header">Sélectionner une période</div>
+    <div class="dp-presets">
+      <button class="dp-preset active" data-label="Aujourd'hui" data-days="0">Aujourd'hui</button>
+      <button class="dp-preset" data-label="7 derniers jours" data-days="7">7 derniers jours</button>
+      <button class="dp-preset" data-label="30 derniers jours" data-days="30">30 derniers jours</button>
+      <button class="dp-preset" data-label="90 derniers jours" data-days="90">90 derniers jours</button>
+    </div>
+    <div class="dp-custom">
+      <div class="dp-field"><label>Début</label><input type="date" id="dpStart"/></div>
+      <div class="dp-field"><label>Fin</label><input type="date" id="dpEnd"/></div>
+    </div>
+    <div class="dp-footer">
+      <button class="dp-cancel" id="dpCancel">Annuler</button>
+      <button class="dp-apply" id="dpApply">Appliquer</button>
+    </div>
+  </div>
+
+  <!-- ── Toast ── -->
+  <div class="toast-notif" id="toastNotif"></div>
+
+  <script src="../assets/js/dates.js"></script>
+  <script src="../assets/js/ui.js"></script>
+  <script src="app.js"></script>
+<script src="../assets/js/sidebar.js"></script>
+</body>
+</html>
