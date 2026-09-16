@@ -433,6 +433,10 @@
     try { const v = sessionStorage.getItem('nexus_avatar'); if (v) return v; } catch(e){}
     return null;
   }
+  function loadPlan() {
+    try { return JSON.parse(localStorage.getItem('nexus_settings') || '{}').plan || 'Pro'; } catch(e) { return 'Pro'; }
+  }
+
   function getInitials(p) { return (((p.prenom||'').charAt(0)) + ((p.nom||'').charAt(0))).toUpperCase() || 'JD'; }
   function getFullName(p) { return [(p.prenom||'').trim(),(p.nom||'').trim()].filter(Boolean).join(' ') || 'Utilisateur'; }
   const PAGE_MAP = {
@@ -465,7 +469,7 @@
       });
       sections += '<div class="sb-section"><p class="sb-section-label">'+sec.label+'</p>'+items+'</div>';
     });
-    return '<div class="sb-logo"><div class="logo-icon">Nx</div><span class="logo-text">Nexus</span></div>'+sections+'<div class="sb-bottom"><div class="sb-user"><div class="user-av" id="sidebarAv">'+ini+'</div><div><p class="user-name" id="sidebarName">'+name+'</p><p class="user-plan">Pro &middot; Admin</p></div></div></div>';
+    return '<div class="sb-logo"><div class="logo-icon">Nx</div><span class="logo-text">Nexus</span></div>'+sections+'<div class="sb-bottom"><div class="sb-user"><div class="user-av" id="sidebarAv">'+ini+'</div><div><p class="user-name" id="sidebarName">'+name+'</p><p class="user-plan">'+loadPlan()+' &middot; Admin</p></div></div></div>';
   }
   function applyAvatar() {
     const photo = loadAvatar(); const av = document.getElementById('sidebarAv');

@@ -4,6 +4,7 @@
    ============================================ */
 
 document.addEventListener('DOMContentLoaded', () => {
+  restoreFields();
   initNav();
   initToggles();
   initDarkMode();
@@ -21,6 +22,47 @@ document.addEventListener('DOMContentLoaded', () => {
   initWebhooks();
   initDataExport();
 });
+
+/* ============================================
+   0. PERSISTANCE — état de la page dans localStorage
+   ============================================ */
+const SETTINGS_KEY = 'nexus_settings';
+
+function loadSettings() {
+  try { return JSON.parse(localStorage.getItem(SETTINGS_KEY) || '{}'); } catch(e) { return {}; }
+}
+
+function saveSetting(key, value) {
+  const s = loadSettings();
+  s[key] = value;
+  try { localStorage.setItem(SETTINGS_KEY, JSON.stringify(s)); } catch(e) {}
+}
+
+// "à l'instant", "il y a 5 min", "il y a 3 h", "le 14 sept."
+function sinceText(ts) {
+  const min = Math.floor((Date.now() - ts) / 60000);
+  if (min < 1)    return 'à l\'instant';
+  if (min < 60)   return 'il y a ' + min + ' min';
+  if (min < 1440) return 'il y a ' + Math.floor(min / 60) + ' h';
+  return 'le ' + new Date(ts).toLocaleDateString('fr-FR', { day: 'numeric', month: 'short' });
+}
+
+// Champs enregistrés par "Enregistrer" : hors prénom/nom/email (gérés par NexusSidebar) et hors mots de passe
+function persistedFields() {
+  return [...document.querySelectorAll('.field-input:not([readonly]):not([type="password"]), .field-select, .field-textarea')]
+    .filter(el => !['fieldPrenom', 'fieldNom', 'fieldEmail'].includes(el.id));
+}
+
+function saveFields() {
+  saveSetting('fields', persistedFields().map(el => el.value));
+}
+
+function restoreFields() {
+  const saved  = loadSettings().fields;
+  const fields = persistedFields();
+  if (!Array.isArray(saved) || saved.length !== fields.length) return;
+  fields.forEach((el, i) => { el.value = saved[i]; });
+}
 
 /* ============================================
    1. NAVIGATION ENTRE SECTIONS
@@ -147,9 +189,15 @@ function initPhotoUpload() {
    3. NOTIFICATION CHIPS
    ============================================ */
 function initNotifChips() {
-  document.querySelectorAll('.notif-chip').forEach(chip => {
+  const chips = [...document.querySelectorAll('.notif-chip')];
+  const saved = loadSettings().chips;
+  if (Array.isArray(saved) && saved.length === chips.length) {
+    chips.forEach((chip, i) => chip.classList.toggle('active', !!saved[i]));
+  }
+  chips.forEach(chip => {
     chip.addEventListener('click', () => {
       chip.classList.toggle('active');
+      saveSetting('chips', chips.map(c => c.classList.contains('active')));
       markDirty();
     });
   });
@@ -251,6 +299,7 @@ function initSaveDiscard() {
 
         // Sauvegarder via NexusSidebar (localStorage + mise à jour sidebar)
         NexusSidebar.saveProfile(prenom, nom, email);
+        saveFields();
 
         // Nouveau snapshot pour le bouton Annuler
         snapshotValues();
@@ -305,15 +354,21 @@ function initSaveDiscard() {
    5. SECURITY ACTIONS
    ============================================ */
 function initSecurityActions() {
-  // Session revoke
-  document.querySelectorAll('.session-revoke').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const item = btn.closest('.session-item');
-      if (!item) return;
+  const revoked = loadSettings().revoked || [];
+  document.querySelectorAll('.session-item .session-revoke').forEach(btn => {
+    const item = btn.closest('.session-item');
+    const name = item.querySelector('.session-name').textContent;
+    const revoke = () => {
       btn.textContent = 'Révoqué';
       btn.disabled = true;
       btn.style.opacity = '0.4';
       item.style.opacity = '0.4';
+    };
+    if (revoked.includes(name)) revoke();
+
+    btn.addEventListener('click', () => {
+      revoke();
+      saveSetting('revoked', [...new Set([...(loadSettings().revoked || []), name])]);
       showToast('Session révoquée', 'success');
     });
   });
@@ -438,6 +493,9 @@ function initTwoFA() {
   const btn = document.querySelector('.twofa-btn');
   const sub = document.querySelector('.twofa-sub');
   if (!btn || !sub) return;
+  const setDate = date => { sub.textContent = 'Google Authenticator · Configurée le ' + date; };
+  const saved = loadSettings().twofa;
+  if (saved) setDate(saved);
 
   btn.addEventListener('click', async () => {
     const code = await NexusUI.ask({
@@ -448,7 +506,9 @@ function initTwoFA() {
       validate:    v => /^\d{6}$/.test(v.replace(/\s/g, '')) ? '' : 'Le code doit contenir 6 chiffres.',
     });
     if (code === null) return;
-    sub.textContent = 'Google Authenticator · Configurée le ' + NexusDates.fmt('{dmy:0}');
+    const date = NexusDates.fmt('{dmy:0}');
+    setDate(date);
+    saveSetting('twofa', date);
     showToast('✓ Authentification à deux facteurs reconfigurée', 'success');
   });
 }
@@ -459,6 +519,23 @@ function initTwoFA() {
 function initIntegrations() {
   const grid = document.querySelector('.integrations-grid');
   if (!grid) return;
+
+  // État sauvegardé : { "Jira": { action: "Connecté", at: 1789… } }
+  const render = (card, state) => {
+    const status = card.querySelector('.integ-status');
+    const btn    = card.querySelector('.integ-btn');
+    card.classList.add('connected');
+    status.className   = 'integ-status st-connected';
+    status.textContent = '● Connecté';
+    btn.className      = 'integ-btn integ-btn-config';
+    btn.textContent    = 'Synchroniser';
+    card.querySelector('.integ-meta').textContent = state.action + ' ' + sinceText(state.at);
+  };
+  const saved = loadSettings().integrations || {};
+  grid.querySelectorAll('.integ-card').forEach(card => {
+    const state = saved[card.querySelector('.integ-name').textContent];
+    if (state) render(card, state);
+  });
 
   grid.addEventListener('click', (e) => {
     const btn = e.target.closest('.integ-btn');
@@ -471,16 +548,12 @@ function initIntegrations() {
     btn.textContent = connecting ? 'Connexion…' : 'Synchronisation…';
 
     setTimeout(() => {
-      if (connecting) {
-        const status = card.querySelector('.integ-status');
-        card.classList.add('connected');
-        status.className   = 'integ-status st-connected';
-        status.textContent = '● Connecté';
-        btn.className      = 'integ-btn integ-btn-config';
-      }
-      card.querySelector('.integ-meta').textContent = (connecting ? 'Connecté' : 'Synchronisé') + ' à l\'instant';
-      btn.textContent = 'Synchroniser';
-      btn.disabled    = false;
+      const state = { action: connecting ? 'Connecté' : 'Synchronisé', at: Date.now() };
+      render(card, state);
+      btn.disabled = false;
+      const all = loadSettings().integrations || {};
+      all[name] = state;
+      saveSetting('integrations', all);
       showToast('✓ ' + name + (connecting ? ' connecté' : ' synchronisé'), 'success');
     }, 900);
   });
@@ -492,7 +565,20 @@ function initIntegrations() {
 function initBilling() {
   // Passer à Enterprise
   const upgradeBtn = document.querySelector('.plan-card .tb-btn');
+  const applyEnterprise = () => {
+    document.querySelector('.plan-badge').textContent = 'ENTERPRISE';
+    document.querySelector('.plan-name').textContent  = 'Plan Enterprise';
+    document.querySelector('.plan-price').firstChild.nodeValue = '€299 / mois · Renouvellement le ';
+    const role = document.querySelector('.avatar-role');
+    if (role) role.textContent = 'Administrateur · Plan Enterprise';
+    const sbPlan = document.querySelector('.user-plan');
+    if (sbPlan) sbPlan.textContent = 'Enterprise · Admin';
+    upgradeBtn.textContent   = 'Plan actuel';
+    upgradeBtn.disabled      = true;
+    upgradeBtn.style.opacity = '0.5';
+  };
   if (upgradeBtn) {
+    if (loadSettings().plan === 'Enterprise') applyEnterprise();
     upgradeBtn.addEventListener('click', async () => {
       const ok = await NexusUI.confirm({
         title:  'Passer au plan Enterprise',
@@ -500,14 +586,8 @@ function initBilling() {
         okText: 'Confirmer',
       });
       if (!ok) return;
-      document.querySelector('.plan-badge').textContent = 'ENTERPRISE';
-      document.querySelector('.plan-name').textContent  = 'Plan Enterprise';
-      document.querySelector('.plan-price').firstChild.nodeValue = '€299 / mois · Renouvellement le ';
-      const role = document.querySelector('.avatar-role');
-      if (role) role.textContent = 'Administrateur · Plan Enterprise';
-      upgradeBtn.textContent   = 'Plan actuel';
-      upgradeBtn.disabled      = true;
-      upgradeBtn.style.opacity = '0.5';
+      applyEnterprise();
+      saveSetting('plan', 'Enterprise');
       showToast('✓ Vous êtes passé au plan Enterprise', 'success');
     });
   }
@@ -526,6 +606,8 @@ function initBilling() {
   const cardBtn = document.querySelector('.card-payment .session-revoke');
   const cardExp = document.querySelector('.card-exp');
   if (cardBtn && cardExp) {
+    const savedExp = loadSettings().cardExp;
+    if (savedExp) cardExp.textContent = 'Expire ' + savedExp;
     cardBtn.addEventListener('click', async () => {
       const exp = await NexusUI.ask({
         title:       'Modifier la carte',
@@ -540,6 +622,7 @@ function initBilling() {
       });
       if (exp === null) return;
       cardExp.textContent = 'Expire ' + exp;
+      saveSetting('cardExp', exp);
       showToast('✓ Carte mise à jour', 'success');
     });
   }
@@ -619,6 +702,35 @@ function initWebhooks() {
   if (!list) return;
   const validate = v => /^https:\/\/[^\s/]+\.[^\s]+$/.test(v) ? '' : 'L\'URL doit commencer par https://';
 
+  const render = (w) => {
+    const item = document.createElement('div');
+    item.className = 'webhook-item';
+    item.innerHTML =
+        '<div class="wh-left"><div class="wh-dot"></div>'
+      + '<div><p class="wh-url"></p><p class="wh-events"></p></div></div>'
+      + '<div class="wh-right"><span class="wh-rate"></span><button class="session-revoke">Modifier</button></div>';
+    item.querySelector('.wh-dot').style.background = w.dot;
+    item.querySelector('.wh-url').textContent      = w.url;
+    item.querySelector('.wh-events').textContent   = w.events;
+    const rate = item.querySelector('.wh-rate');
+    rate.textContent = w.rate;
+    rate.style.color = w.rateColor;
+    return item;
+  };
+  const save = () => saveSetting('webhooks', [...list.querySelectorAll('.webhook-item')].map(item => ({
+    url:       item.querySelector('.wh-url').textContent,
+    events:    item.querySelector('.wh-events').textContent,
+    rate:      item.querySelector('.wh-rate').textContent,
+    rateColor: item.querySelector('.wh-rate').style.color,
+    dot:       item.querySelector('.wh-dot').style.background,
+  })));
+
+  const saved = loadSettings().webhooks;
+  if (Array.isArray(saved)) {
+    list.innerHTML = '';
+    saved.forEach(w => list.appendChild(render(w)));
+  }
+
   list.addEventListener('click', async (e) => {
     const btn = e.target.closest('.session-revoke');
     if (!btn) return;
@@ -626,6 +738,7 @@ function initWebhooks() {
     const v = await NexusUI.ask({ title: 'Modifier l\'endpoint', value: url.textContent, okText: 'Enregistrer', validate });
     if (v === null) return;
     url.textContent = v;
+    save();
     showToast('✓ Endpoint mis à jour', 'success');
   });
 
@@ -640,14 +753,14 @@ function initWebhooks() {
       validate,
     });
     if (v === null) return;
-    const item = document.createElement('div');
-    item.className = 'webhook-item';
-    item.innerHTML =
-        '<div class="wh-left"><div class="wh-dot" style="background:var(--blue);"></div>'
-      + '<div><p class="wh-url"></p><p class="wh-events">Tous les événements · en attente du premier envoi</p></div></div>'
-      + '<div class="wh-right"><span class="wh-rate" style="color:var(--muted);">—</span><button class="session-revoke">Modifier</button></div>';
-    item.querySelector('.wh-url').textContent = v;
-    list.appendChild(item);
+    list.appendChild(render({
+      url:       v,
+      events:    'Tous les événements · en attente du premier envoi',
+      rate:      '—',
+      rateColor: 'var(--muted)',
+      dot:       'var(--blue)',
+    }));
+    save();
     showToast('✓ Endpoint ajouté', 'success');
   });
 }

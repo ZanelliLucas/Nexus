@@ -675,6 +675,10 @@
     return null;
   }
 
+  function loadPlan() {
+    try { return JSON.parse(localStorage.getItem('nexus_settings') || '{}').plan || 'Pro'; } catch(e) { return 'Pro'; }
+  }
+
   function getInitials(p) {
     return (((p.prenom||'').charAt(0)) + ((p.nom||'').charAt(0))).toUpperCase() || 'JD';
   }
@@ -749,7 +753,7 @@
     });
     return '<div class="sb-logo"><div class="logo-icon">Nx</div><span class="logo-text">Nexus</span></div>'
       + sections
-      + '<div class="sb-bottom"><div class="sb-user"><div class="user-av" id="sidebarAv">'+ini+'</div><div><p class="user-name" id="sidebarName">'+name+'</p><p class="user-plan">Pro &middot; Admin</p></div></div></div>';
+      + '<div class="sb-bottom"><div class="sb-user"><div class="user-av" id="sidebarAv">'+ini+'</div><div><p class="user-name" id="sidebarName">'+name+'</p><p class="user-plan">'+loadPlan()+' &middot; Admin</p></div></div></div>';
   }
 
   function applyAvatar() {
