@@ -15,6 +15,11 @@ document.addEventListener('DOMContentLoaded', () => {
   initApiActions();
   initDangerZone();
   initNavItems();
+  initTwoFA();
+  initIntegrations();
+  initBilling();
+  initWebhooks();
+  initDataExport();
 });
 
 /* ============================================
@@ -354,30 +359,39 @@ function initDangerZone() {
   // Reset analytics
   const resetBtn = document.getElementById('resetAnalyticsBtn');
   if (resetBtn) {
-    resetBtn.addEventListener('click', () => {
-      if (confirm('Réinitialiser toutes les données analytiques ? Cette action est irréversible.')) {
-        resetBtn.textContent = 'Réinitialisation…';
-        resetBtn.disabled = true;
-        setTimeout(() => {
-          resetBtn.textContent = '✓ Réinitialisé';
-          showToast('Données analytiques réinitialisées', 'success');
-        }, 1200);
-      }
+    resetBtn.addEventListener('click', async () => {
+      const ok = await NexusUI.confirm({
+        title:  'Réinitialiser les données analytiques ?',
+        text:   'Toutes les données d\'analytique seront effacées. Cette action est irréversible.',
+        okText: 'Réinitialiser',
+        danger: true,
+      });
+      if (!ok) return;
+      resetBtn.textContent = 'Réinitialisation…';
+      resetBtn.disabled = true;
+      setTimeout(() => {
+        resetBtn.textContent = '✓ Réinitialisé';
+        showToast('Données analytiques réinitialisées', 'success');
+      }, 1200);
     });
   }
 
   // Delete workspace
   const deleteBtn = document.getElementById('deleteWorkspaceBtn');
   if (deleteBtn) {
-    deleteBtn.addEventListener('click', () => {
-      const confirmed = prompt('Tapez "SUPPRIMER" pour confirmer la suppression définitive du workspace :');
-      if (confirmed === 'SUPPRIMER') {
-        deleteBtn.textContent = '✕ Suppression en cours…';
-        deleteBtn.disabled = true;
-        showToast('Suppression initiée — vous serez déconnecté dans 5s', 'error');
-      } else if (confirmed !== null) {
-        showToast('Confirmation incorrecte — annulé', 'error');
-      }
+    deleteBtn.addEventListener('click', async () => {
+      const confirmed = await NexusUI.ask({
+        title:       'Supprimer le workspace',
+        text:        'Tapez SUPPRIMER pour confirmer la suppression définitive du workspace.',
+        placeholder: 'SUPPRIMER',
+        okText:      'Supprimer',
+        danger:      true,
+        validate:    v => v === 'SUPPRIMER' ? '' : 'Tapez exactement SUPPRIMER.',
+      });
+      if (confirmed === null) return;
+      deleteBtn.textContent = '✕ Suppression programmée';
+      deleteBtn.disabled = true;
+      showToast('Suppression programmée — démo : aucune donnée n\'est supprimée', 'error');
     });
   }
 }
@@ -414,5 +428,268 @@ function initNavItems() {
       sidebar.querySelectorAll('.sb-item').forEach(i => i.classList.remove('active'));
       item.classList.add('active');
     }
+  });
+}
+
+/* ============================================
+   10. SÉCURITÉ — Reconfigurer la 2FA
+   ============================================ */
+function initTwoFA() {
+  const btn = document.querySelector('.twofa-btn');
+  const sub = document.querySelector('.twofa-sub');
+  if (!btn || !sub) return;
+
+  btn.addEventListener('click', async () => {
+    const code = await NexusUI.ask({
+      title:       'Reconfigurer la 2FA',
+      text:        'Saisissez le code à 6 chiffres affiché dans votre application d\'authentification.',
+      placeholder: '123456',
+      okText:      'Vérifier',
+      validate:    v => /^\d{6}$/.test(v.replace(/\s/g, '')) ? '' : 'Le code doit contenir 6 chiffres.',
+    });
+    if (code === null) return;
+    sub.textContent = 'Google Authenticator · Configurée le ' + NexusDates.fmt('{dmy:0}');
+    showToast('✓ Authentification à deux facteurs reconfigurée', 'success');
+  });
+}
+
+/* ============================================
+   11. INTÉGRATIONS — Connecter / Synchroniser
+   ============================================ */
+function initIntegrations() {
+  const grid = document.querySelector('.integrations-grid');
+  if (!grid) return;
+
+  grid.addEventListener('click', (e) => {
+    const btn = e.target.closest('.integ-btn');
+    if (!btn || btn.disabled) return;
+    const card       = btn.closest('.integ-card');
+    const name       = card.querySelector('.integ-name').textContent;
+    const connecting = btn.classList.contains('integ-btn-connect');
+
+    btn.disabled    = true;
+    btn.textContent = connecting ? 'Connexion…' : 'Synchronisation…';
+
+    setTimeout(() => {
+      if (connecting) {
+        const status = card.querySelector('.integ-status');
+        card.classList.add('connected');
+        status.className   = 'integ-status st-connected';
+        status.textContent = '● Connecté';
+        btn.className      = 'integ-btn integ-btn-config';
+      }
+      card.querySelector('.integ-meta').textContent = (connecting ? 'Connecté' : 'Synchronisé') + ' à l\'instant';
+      btn.textContent = 'Synchroniser';
+      btn.disabled    = false;
+      showToast('✓ ' + name + (connecting ? ' connecté' : ' synchronisé'), 'success');
+    }, 900);
+  });
+}
+
+/* ============================================
+   12. FACTURATION — Plan, factures PDF, carte
+   ============================================ */
+function initBilling() {
+  // Passer à Enterprise
+  const upgradeBtn = document.querySelector('.plan-card .tb-btn');
+  if (upgradeBtn) {
+    upgradeBtn.addEventListener('click', async () => {
+      const ok = await NexusUI.confirm({
+        title:  'Passer au plan Enterprise',
+        text:   'Utilisateurs illimités, 10 M d\'appels API par mois et support prioritaire pour €299 / mois. Le changement prend effet immédiatement.',
+        okText: 'Confirmer',
+      });
+      if (!ok) return;
+      document.querySelector('.plan-badge').textContent = 'ENTERPRISE';
+      document.querySelector('.plan-name').textContent  = 'Plan Enterprise';
+      document.querySelector('.plan-price').firstChild.nodeValue = '€299 / mois · Renouvellement le ';
+      const role = document.querySelector('.avatar-role');
+      if (role) role.textContent = 'Administrateur · Plan Enterprise';
+      upgradeBtn.textContent   = 'Plan actuel';
+      upgradeBtn.disabled      = true;
+      upgradeBtn.style.opacity = '0.5';
+      showToast('✓ Vous êtes passé au plan Enterprise', 'success');
+    });
+  }
+
+  // Factures : vrai fichier PDF
+  document.querySelectorAll('.inv-dl').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const item = btn.closest('.invoice-item');
+      const get  = sel => item.querySelector(sel).textContent.trim();
+      downloadInvoice(get('.inv-date'), get('.inv-desc'), get('.inv-amount'), get('.inv-status'));
+      showToast('✓ Facture ' + get('.inv-date') + ' téléchargée', 'success');
+    });
+  });
+
+  // Carte bancaire : date d'expiration
+  const cardBtn = document.querySelector('.card-payment .session-revoke');
+  const cardExp = document.querySelector('.card-exp');
+  if (cardBtn && cardExp) {
+    cardBtn.addEventListener('click', async () => {
+      const exp = await NexusUI.ask({
+        title:       'Modifier la carte',
+        text:        'Nouvelle date d\'expiration de la carte Visa •••• 4242.',
+        placeholder: 'MM/AAAA',
+        okText:      'Enregistrer',
+        validate:    v => {
+          const m = v.match(/^(0[1-9]|1[0-2])\/(\d{4})$/);
+          if (!m) return 'Format attendu : MM/AAAA';
+          return new Date(+m[2], +m[1], 0) < new Date() ? 'Cette date est déjà passée.' : '';
+        },
+      });
+      if (exp === null) return;
+      cardExp.textContent = 'Expire ' + exp;
+      showToast('✓ Carte mise à jour', 'success');
+    });
+  }
+}
+
+function downloadInvoice(periode, desc, montant, statut) {
+  const p   = NexusSidebar.getProfile();
+  const num = 'NX-' + periode.replace(/\s+/g, '-').toUpperCase();
+  const client = [p.prenom, p.nom].filter(Boolean).join(' ') + (p.email ? ' — ' + p.email : '');
+
+  const blob = buildPdf([
+    { text: 'NEXUS Analytics SAS', y: 780, size: 18, bold: true },
+    { text: 'Facture ' + num,       y: 752, size: 12 },
+    { text: 'Période : ' + periode, y: 734 },
+    { text: 'Client : ' + client,   y: 716 },
+    { text: 'Description',          y: 670, bold: true },
+    { text: 'Montant',              y: 670, x: 460, bold: true },
+    { text: desc,                   y: 648 },
+    { text: montant,                y: 648, x: 460 },
+    { text: 'Total TTC',            y: 612, size: 12, bold: true },
+    { text: montant,                y: 612, x: 460, size: 12, bold: true },
+    { text: 'Statut : ' + statut,   y: 590 },
+    { text: 'Document généré par la démo NEXUS — sans valeur comptable.', y: 60, size: 9 },
+  ]);
+
+  const a = document.createElement('a');
+  a.href     = URL.createObjectURL(blob);
+  a.download = 'facture-' + num.toLowerCase() + '.pdf';
+  a.click();
+  setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+}
+
+// PDF minimal (une page A4, polices Helvetica standard) : aucune bibliothèque nécessaire
+function buildPdf(lines) {
+  const esc = s => s.replace(/[\\()]/g, '\\$&');
+  let stream = 'BT\n';
+  lines.forEach(l => {
+    stream += '/' + (l.bold ? 'F2' : 'F1') + ' ' + (l.size || 11) + ' Tf 1 0 0 1 ' + (l.x || 56) + ' ' + l.y + ' Tm (' + esc(l.text) + ') Tj\n';
+  });
+  stream += 'ET';
+
+  const objects = [
+    '<< /Type /Catalog /Pages 2 0 R >>',
+    '<< /Type /Pages /Kids [3 0 R] /Count 1 >>',
+    '<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 4 0 R /F2 5 0 R >> >> /Contents 6 0 R >>',
+    '<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica /Encoding /WinAnsiEncoding >>',
+    '<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold /Encoding /WinAnsiEncoding >>',
+    '<< /Length ' + stream.length + ' >>\nstream\n' + stream + '\nendstream',
+  ];
+
+  let pdf = '%PDF-1.4\n';
+  const offsets = objects.map((obj, i) => {
+    const at = pdf.length;
+    pdf += (i + 1) + ' 0 obj\n' + obj + '\nendobj\n';
+    return at;
+  });
+  const xref = pdf.length;
+  pdf += 'xref\n0 ' + (objects.length + 1) + '\n0000000000 65535 f \n'
+       + offsets.map(o => String(o).padStart(10, '0') + ' 00000 n \n').join('')
+       + 'trailer\n<< /Size ' + (objects.length + 1) + ' /Root 1 0 R >>\nstartxref\n' + xref + '\n%%EOF';
+
+  // Un caractère = un octet en WinAnsi (les offsets ci-dessus restent donc justes)
+  const WIN = { 0x20AC: 0x80, 0x2014: 0x97, 0x2013: 0x96, 0x2019: 0x92, 0x2022: 0x95 };
+  const bytes = new Uint8Array(pdf.length);
+  for (let i = 0; i < pdf.length; i++) {
+    const c = pdf.charCodeAt(i);
+    bytes[i] = WIN[c] || (c < 256 ? c : 0x3F);
+  }
+  return new Blob([bytes], { type: 'application/pdf' });
+}
+
+/* ============================================
+   13. WEBHOOKS — Ajouter / Modifier
+   ============================================ */
+function initWebhooks() {
+  const list = document.querySelector('.webhook-list');
+  if (!list) return;
+  const validate = v => /^https:\/\/[^\s/]+\.[^\s]+$/.test(v) ? '' : 'L\'URL doit commencer par https://';
+
+  list.addEventListener('click', async (e) => {
+    const btn = e.target.closest('.session-revoke');
+    if (!btn) return;
+    const url = btn.closest('.webhook-item').querySelector('.wh-url');
+    const v = await NexusUI.ask({ title: 'Modifier l\'endpoint', value: url.textContent, okText: 'Enregistrer', validate });
+    if (v === null) return;
+    url.textContent = v;
+    showToast('✓ Endpoint mis à jour', 'success');
+  });
+
+  const addBtn = list.closest('.toggle-section').querySelector('.tb-btn');
+  if (!addBtn) return;
+  addBtn.addEventListener('click', async () => {
+    const v = await NexusUI.ask({
+      title:       'Ajouter un endpoint',
+      text:        'Les événements seront envoyés en POST à cette URL.',
+      placeholder: 'https://api.exemple.com/webhooks',
+      okText:      'Ajouter',
+      validate,
+    });
+    if (v === null) return;
+    const item = document.createElement('div');
+    item.className = 'webhook-item';
+    item.innerHTML =
+        '<div class="wh-left"><div class="wh-dot" style="background:var(--blue);"></div>'
+      + '<div><p class="wh-url"></p><p class="wh-events">Tous les événements · en attente du premier envoi</p></div></div>'
+      + '<div class="wh-right"><span class="wh-rate" style="color:var(--muted);">—</span><button class="session-revoke">Modifier</button></div>';
+    item.querySelector('.wh-url').textContent = v;
+    list.appendChild(item);
+    showToast('✓ Endpoint ajouté', 'success');
+  });
+}
+
+/* ============================================
+   14. EXPORT DES DONNÉES (JSON)
+   ============================================ */
+function initDataExport() {
+  const btn = document.querySelector('.danger-btn-soft');
+  if (!btn) return;
+
+  btn.addEventListener('click', () => {
+    btn.disabled    = true;
+    btn.textContent = 'Préparation…';
+    setTimeout(() => {
+      let preferences = {};
+      try { preferences = JSON.parse(localStorage.getItem('nexus_toggles') || '{}'); } catch(e) {}
+      const texts = sel => [...document.querySelectorAll(sel)].map(el => el.textContent.trim());
+      const data = {
+        exporte_le:   new Date().toISOString(),
+        profil:       NexusSidebar.getProfile(),
+        plan:         document.querySelector('.plan-name').textContent,
+        preferences,
+        integrations: [...document.querySelectorAll('.integ-card')].map(c => ({
+          nom:    c.querySelector('.integ-name').textContent,
+          statut: c.querySelector('.integ-status').textContent.replace(/^[●○]\s*/, ''),
+        })),
+        webhooks:     texts('.wh-url'),
+        factures:     [...document.querySelectorAll('.invoice-item')].map(i => ({
+          periode: i.querySelector('.inv-date').textContent,
+          montant: i.querySelector('.inv-amount').textContent,
+          statut:  i.querySelector('.inv-status').textContent,
+        })),
+      };
+      const a = document.createElement('a');
+      a.href     = URL.createObjectURL(new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' }));
+      a.download = 'nexus-donnees.json';
+      a.click();
+      setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+      btn.disabled    = false;
+      btn.textContent = '↓ Exporter';
+      showToast('✓ Archive de vos données téléchargée', 'success');
+    }, 800);
   });
 }
